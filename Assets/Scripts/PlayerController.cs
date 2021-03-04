@@ -8,7 +8,7 @@ namespace Zom.Pie
     {
         Rigidbody rb;
 
-        float maxSpeed = 5;
+        float maxSpeed = 7.5f;
 
         float currentSpeed = 0;
         public float CurrentSpeed

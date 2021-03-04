@@ -6,7 +6,7 @@ namespace Zom.Pie
 {
     public class Ball : MonoBehaviour
     {
-        float speed = 7.5f;
+        float speed = 5f;
 
         Rigidbody rb;
 
@@ -31,6 +31,14 @@ namespace Zom.Pie
         private void OnCollisionEnter(Collision collision)
         {
             ContactPoint contact = collision.GetContact(0);
+
+            // Sometimes the ball hits two bricks and then turns twice ( going through the second brick )
+            if (Vector3.Dot(transform.up, contact.normal) > 0)
+                return;
+
+            // If we hit a brick we must report the hit
+            if ("brick".Equals(collision.collider.tag.ToLower()))
+                collision.collider.GetComponent<Brick>().Hit();
 
             // Get the angle between forward and the collision normal
             float angle = Vector3.SignedAngle(transform.up, contact.normal, Vector3.forward);
@@ -60,10 +68,12 @@ namespace Zom.Pie
 
             }
 
+            // Add a little random value
+            //angle += UnityEngine.Random.Range(-3f, 3f);
 
             // Get the new direction
             transform.up = Quaternion.AngleAxis(angle - 180.0f, Vector3.forward) * contact.normal;
-
+            Debug.Log("ContactNormal:" + contact.normal);
 
 
         }
