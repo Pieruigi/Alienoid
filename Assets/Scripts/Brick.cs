@@ -13,15 +13,13 @@ namespace Zom.Pie
         [SerializeField]
         float rebuildCooldown = 10f;
 
-        MeshRenderer rend;
+        Renderer rend;
         Collider coll;
 
         bool destroyed = false;
         float timer = 0;
- 
 
         Vector3 scaleDefault;
-
 
         private void Awake()
         {
@@ -68,8 +66,10 @@ namespace Zom.Pie
 
         IEnumerator Destroy()
         {
-            transform.DOScale(Vector3.zero, 0.25f);
-            yield return new WaitForSeconds(0.25f);
+            float time = 0.25f;
+            transform.DOScale(Vector3.zero, time);
+            //coll.transform.DOScale(Vector3.zero, time);
+            yield return new WaitForSeconds(time);
 
             // Destroy brick
             rend.enabled = false;
@@ -82,13 +82,14 @@ namespace Zom.Pie
 
         IEnumerator Build()
         {
-            
-            transform.DOScale(scaleDefault, 0.25f);
-            yield return new WaitForSeconds(0.25f);
-
-            // Destroy brick
+            // Enable brick
             rend.enabled = true;
             coll.enabled = true;
+
+            float time = 0.25f;
+            transform.DOScale(scaleDefault, time);
+            //coll.transform.DOScale(Vector3.one, time);
+            yield return new WaitForSeconds(time);
 
             destroyed = false;
             
