@@ -13,11 +13,15 @@ namespace Zom.Pie
         [SerializeField]
         GameObject puppetPrefab;
 
+        [SerializeField]
+        float spawnInterval = 3f;
+
         Transform lastSpawner;
 
         int puppetCount = 0;
         DateTime lastSpawnTime;
-        float spawnInterval = 30f;
+
+        
 
         List<GameObject> puppets = new List<GameObject>();
 
@@ -59,9 +63,9 @@ namespace Zom.Pie
 
                 // Set the direction of the puppet.
                 if (lastSpawner.right == Vector3.right)
-                    puppet.GetComponent<Puppet>().SetMoveDirection(1);
+                    puppet.GetComponent<Puppet>().SetAIMoveDirection(1);
                 else
-                    puppet.GetComponent<Puppet>().SetMoveDirection(-1);
+                    puppet.GetComponent<Puppet>().SetAIMoveDirection(-1);
 
                 // Update timer
                 lastSpawnTime = DateTime.UtcNow;

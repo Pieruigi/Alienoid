@@ -37,7 +37,7 @@ namespace Zom.Pie
                 return;
 
             // If we hit a brick we must report the hit
-            if ("brick".Equals(collision.collider.tag.ToLower()))
+            if (Tags.Brick.Equals(collision.collider.tag))
                 collision.collider.GetComponent<Brick>().Hit();
 
             // Get the angle between forward and the collision normal

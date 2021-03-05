@@ -4,7 +4,10 @@ using UnityEngine;
 
 namespace Zom.Pie
 {
-    public class BottomTrigger : MonoBehaviour
+    /// <summary>
+    /// Determines the puppet direction on this floor by using the right axis.
+    /// </summary>
+    public class AIDirectionHelper : MonoBehaviour
     {
         // Start is called before the first frame update
         void Start()
@@ -22,9 +25,11 @@ namespace Zom.Pie
         {
             if (Tags.Puppet.Equals(other.tag))
             {
-                other.GetComponent<Puppet>().Die();
+                // On enter we set the ai direction of the puppet on this floor
+                other.GetComponent<Puppet>().SetAIMoveDirection(transform.right == Vector3.right ? 1 : -1);
             }
         }
+                
     }
 
 }
