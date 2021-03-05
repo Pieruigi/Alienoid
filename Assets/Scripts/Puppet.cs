@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Zom.Pie
 {
     public class Puppet : MonoBehaviour
     {
+        public UnityAction<Puppet> OnDead;
+
         Rigidbody rb;
 
         float moveSpeed = 1.5f;
@@ -32,11 +35,14 @@ namespace Zom.Pie
         // Update is called once per frame
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.A))
-                SetMoveDirection(-1);
-            else
-                if (Input.GetKeyDown(KeyCode.D))
-                SetMoveDirection(1);
+
+        }
+
+        public void Die()
+        {
+            OnDead?.Invoke(this);
+
+            Destroy(gameObject, 1f);
         }
 
         public void SetMoveDirection(int direction)
@@ -76,11 +82,22 @@ namespace Zom.Pie
 
         bool IsGrounded()
         {
-            Vector3 origin = rb.position;
-            float distance = coll.height / 2f + coll.radius;
-            Ray ray = new Ray(origin, Vector3.down);
+            //Vector3 origin = rb.position;
+            //float distance = coll.height / 2f + coll.radius;
+            //Ray ray = new Ray(origin, Vector3.down);
+            //int layer = LayerMask.GetMask(new string[] { "Floor" });
+            //if (Physics.Raycast(ray, distance, layer))
+            //    return true;
+
+            Vector3 position = rb.position - coll.height / 2f * Vector3.up;
+            position -= Vector3.up * 0.1f;
             int layer = LayerMask.GetMask(new string[] { "Floor" });
-            if (Physics.Raycast(ray, distance, layer))
+            Collider[] colls = null;
+            colls = Physics.OverlapSphere(position, coll.radius, layer);
+            if(colls.Length == 0) Debug.Log("Colls.length:" + colls.Length);
+            
+
+            if (colls!=null && colls.Length>0)
                 return true;
 
             return false;
