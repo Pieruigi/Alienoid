@@ -13,6 +13,9 @@ namespace Zom.Pie
         [SerializeField]
         float rebuildCooldown = 10f;
 
+        [SerializeField]
+        ParticleSystem destroyPS;
+
         Renderer rend;
         Collider coll;
 
@@ -66,6 +69,9 @@ namespace Zom.Pie
 
         IEnumerator Destroy()
         {
+            // Play particle system
+            destroyPS.Play();
+
             float time = 0.25f;
             transform.DOScale(Vector3.zero, time);
             //coll.transform.DOScale(Vector3.zero, time);

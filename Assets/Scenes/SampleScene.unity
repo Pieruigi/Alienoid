@@ -285,11 +285,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6525489180255193524, guid: 72b5ba100ad0b444cafa7fac5b4122e2,
-        type: 3}
-      propertyPath: rebuildCooldown
-      value: 10
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 72b5ba100ad0b444cafa7fac5b4122e2, type: 3}
 --- !u!4 &167097769 stripped
@@ -1689,8 +1684,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe3257a4625221e40a2616bd6521e824, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 7.5
-  rb: {fileID: 0}
 --- !u!135 &1655147400
 SphereCollider:
   m_ObjectHideFlags: 0
