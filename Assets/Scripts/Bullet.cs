@@ -6,9 +6,10 @@ namespace Zom.Pie
 {
     public class Bullet : MonoBehaviour
     {
-        float speed = 0;
 
         Rigidbody rb;
+
+        
 
         private void Awake()
         {
@@ -29,15 +30,13 @@ namespace Zom.Pie
 
         private void FixedUpdate()
         {
-            if (speed == 0)
-                return;
-
-            rb.MovePosition(rb.position + transform.forward * speed * Time.fixedDeltaTime);
+            //rb.MovePosition(rb.position + transform.forward * 44 * Time.deltaTime);
         }
 
-        public void Shoot(float speed)
+        public void Shoot(Vector3 velocity)
         {
-            this.speed = speed;
+            
+            rb.AddForce(velocity, ForceMode.VelocityChange);
         }
 
        
@@ -46,8 +45,8 @@ namespace Zom.Pie
         {
             Debug.Log("Collision:" + collision.gameObject);
 
-            speed = 0;
-
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
             gameObject.SetActive(false);
         }
     }

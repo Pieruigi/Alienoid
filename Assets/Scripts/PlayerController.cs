@@ -75,6 +75,7 @@ namespace Zom.Pie
                 {
                     // Get the next bullet from the pool
                     GameObject bullet = BulletPool.Instance.GetBullet();
+                    //GameObject bullet = GameObject.Instantiate(bulletPrefab);
 
                     // Set position and orientation
                     bullet.transform.position = firePoint.position;
@@ -84,7 +85,8 @@ namespace Zom.Pie
                     bullet.SetActive(true);
 
                     // Shoot the bullet
-                    bullet.GetComponent<Bullet>().Shoot(firePower);
+
+                    bullet.GetComponent<Bullet>().Shoot(firePower * firePoint.up);
 
                     // Reset cooldown
                     lastShot = DateTime.UtcNow;
