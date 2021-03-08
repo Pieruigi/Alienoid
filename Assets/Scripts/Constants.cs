@@ -4,9 +4,7 @@ using UnityEngine;
 
 namespace Zom.Pie
 {
-    public class Layers
-    {
-        public static readonly string Ground = "Ground";
-    }
+    public enum Tag { Player, Bullet }
+    public enum Layer { RaycastPlane }
 
 }
