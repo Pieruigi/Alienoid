@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Zom.Pie
 {
-    public enum Tag { Player, Bullet }
+    public enum Tag { Player, Bullet, Enemy }
     public enum Layer { RaycastPlane }
 
 }
