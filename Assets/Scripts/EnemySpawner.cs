@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,21 +7,36 @@ namespace Zom.Pie
 {
     public class EnemySpawner : MonoBehaviour
     {
-        [SerializeField]
-        int greenCount, redCount, yellowCount;
+        public static EnemySpawner Instance { get; private set; }
 
         [SerializeField]
-        GameObject enemyPrefab;
+        List<Transform> spawnPoints;
 
-        List<GameObject> redPool, yellowPool, greenPool;
+        float forceMagnitude = 5f;
+
+        int nextId = 0;
+
+        DateTime lastSpawnTime;
+        float spawnTime = 1f;
+
+        List<GameObject> spawnList = new List<GameObject>();
 
         private void Awake()
         {
-            // Create pools
-            greenPool = CreateEnemyPool(EnemyType.Green);
-            redPool = CreateEnemyPool(EnemyType.Red);
-            yellowPool = CreateEnemyPool(EnemyType.Yellow);
+            if (!Instance)
+            {
+                Instance = this;
+
+                // Randomize first
+                nextId = UnityEngine.Random.Range(0, spawnPoints.Count);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+
         }
+
 
         // Start is called before the first frame update
         void Start()
@@ -31,45 +47,41 @@ namespace Zom.Pie
         // Update is called once per frame
         void Update()
         {
+            if (spawnList.Count == 0)
+                return;
 
+            if ((DateTime.UtcNow - lastSpawnTime).TotalSeconds < spawnTime)
+                return;
+
+            // Spawn first enemy in the list
+            GameObject enemy = spawnList[0];
+            // Remove from the list
+            spawnList.RemoveAt(0);
+            
+            // Set position
+            enemy.transform.position = spawnPoints[nextId].transform.position;
+            
+            // Activate enemy
+            enemy.SetActive(true);
+
+            // Add force
+            enemy.GetComponent<Rigidbody>().AddForce(spawnPoints[nextId].up * forceMagnitude, ForceMode.VelocityChange);
+
+            // Update next spawn id
+            nextId++;
+            if (nextId >= spawnPoints.Count)
+                nextId = 0;
+
+            lastSpawnTime = DateTime.UtcNow;
         }
 
-        List<GameObject> CreateEnemyPool(EnemyType type)
+        /// <summary>
+        /// Simply add the next enemy to spawn on the list
+        /// </summary>
+        /// <param name="enemy"></param>
+        public void Spawn(GameObject enemy)
         {
-            // Get number of enemies of the given type
-            int count = 0;
-            switch (type)
-            {
-                case EnemyType.Green:
-                    count = greenCount;
-                    break;
-                case EnemyType.Red:
-                    count = redCount;
-                    break;
-                case EnemyType.Yellow:
-                    count = yellowCount;
-                    break;
-            }
-            // No enemies
-            if (count == 0)
-                return null;
-
-            // Create pool
-            List<GameObject> ret = new List<GameObject>(count);
-            for(int i=0; i<count; i++)
-            {
-                // Create enemy
-                GameObject enemy = GameObject.Instantiate(enemyPrefab);
-                // Set enemy type
-                enemy.GetComponent<Enemy>().SetType(type);
-                // Deactivate enemy
-                enemy.SetActive(false);
-                // Add to pool
-                ret.Add(enemy);
-            }
-
-
-            return ret;
+            spawnList.Add(enemy);
         }
     }
 

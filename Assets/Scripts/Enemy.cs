@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+using UnityEngine.Events;
 
 namespace Zom.Pie
 {
@@ -8,6 +10,8 @@ namespace Zom.Pie
 
     public class Enemy : MonoBehaviour
     {
+        public UnityAction<Enemy> OnDead;
+
         [SerializeField]
         Material greenMaterial, yellowMaterial, redMaterial;
 
@@ -18,8 +22,17 @@ namespace Zom.Pie
         int materialId;
 
         EnemyType type;
+        public EnemyType Type
+        {
+            get { return type; }
+        }
 
+        Vector3 scaleDefault;
 
+        private void Awake()
+        {
+            scaleDefault = transform.localScale;
+        }
 
         // Start is called before the first frame update
         void Start()
@@ -31,6 +44,15 @@ namespace Zom.Pie
         void Update()
         {
            
+        }
+
+        private void OnEnable()
+        {
+            // Reset scale
+            transform.localScale = Vector3.zero;
+
+            // Grow up
+            transform.DOScale(scaleDefault, 0.1f);
         }
 
         public void SetType(EnemyType value)
