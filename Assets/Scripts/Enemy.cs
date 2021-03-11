@@ -10,7 +10,7 @@ namespace Zom.Pie
 
     public class Enemy : MonoBehaviour
     {
-        public UnityAction<Enemy> OnDead;
+        public UnityAction<Enemy, BlackHole> OnDead;
 
         [SerializeField]
         Material greenMaterial, yellowMaterial, redMaterial;
@@ -28,6 +28,13 @@ namespace Zom.Pie
         }
 
         Vector3 scaleDefault;
+
+        bool dying = false;
+        public bool Dying
+        {
+            get { return dying; }
+            set { dying = value; }
+        }
 
         private void Awake()
         {
@@ -53,6 +60,17 @@ namespace Zom.Pie
 
             // Grow up
             transform.DOScale(scaleDefault, 0.1f);
+        }
+
+        public void Die(BlackHole blackHole)
+        {
+            Rigidbody rb = GetComponent<Rigidbody>();
+            rb.velocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+
+            dying = false;
+
+            OnDead?.Invoke(this, blackHole);
         }
 
         public void SetType(EnemyType value)

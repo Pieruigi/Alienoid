@@ -52,7 +52,7 @@ namespace Zom.Pie
             // If mouse is down then aim the weapon
             if (Input.GetMouseButton(0))
             {
-                Debug.Log("Shooting...");
+
 
                 // Cast a ray from the mouse position to the world
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -64,7 +64,6 @@ namespace Zom.Pie
                     Vector3 direction = hitInfo.point - transform.position;
                     direction.z = 0;
 
-                    Debug.Log("New cannon direction:" + direction);
 
                     // Aim the cannon
                     cannonPivot.up = direction;

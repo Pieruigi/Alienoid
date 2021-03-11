@@ -40,7 +40,7 @@ namespace Zom.Pie
 				float forceMag = bounceMul * (bouncePower + collision.relativeVelocity.magnitude * 0.175f);
 
 				Vector3 forceDir = -contactPoint.normal;
-				Debug.Log("ContactNormal:" + contactPoint.normal);
+
 
 				collision.gameObject.GetComponent<Rigidbody>().AddForce(forceMag * forceDir, ForceMode.Impulse);
 			}

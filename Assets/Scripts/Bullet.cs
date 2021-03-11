@@ -46,12 +46,10 @@ namespace Zom.Pie
             if (Tag.Enemy.ToString().Equals(collision.collider.tag))
             {
                 // Just add a little force to the enemy
-                Debug.Log("Normal:" + collision.contacts[0].normal);
+                
                 Vector3 force = -minForce * collision.contacts[0].normal;
                 collision.gameObject.GetComponent<Rigidbody>().AddForce(force, ForceMode.VelocityChange);
             }
-
-            Debug.Log("Collision:" + collision.gameObject);
 
             rb.velocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;

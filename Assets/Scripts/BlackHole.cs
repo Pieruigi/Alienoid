@@ -1,0 +1,79 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using DG.Tweening;
+
+namespace Zom.Pie
+{
+    public class BlackHole : MonoBehaviour
+    {
+        EnemyType enemyType = EnemyType.Green;
+        public EnemyType EnemyType
+        {
+            get { return enemyType; }
+        }
+
+        // We put here all the enemies collapsing inside the black hole in order to add to them a force
+        List<Rigidbody> dyingEnemies = new List<Rigidbody>();
+
+        float forceMagnitude = 80f;
+
+        // Start is called before the first frame update
+        void Start()
+        {
+
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+
+        }
+
+        private void FixedUpdate()
+        {
+            foreach(Rigidbody enemy in dyingEnemies)
+            {
+                // Compute the force direction
+                Vector3 dir = transform.position - enemy.position;
+                dir.z = 0;
+
+                // Add force
+                //enemy.AddForce(dir.normalized * forceMagnitude, ForceMode.Acceleration);
+                enemy.velocity = enemy.velocity.magnitude * dir.normalized;
+            }
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (Tag.Enemy.ToString().Equals(other.tag))
+            {
+                Enemy enemy = other.GetComponent<Enemy>();
+                if (!enemy.Dying)
+                {
+                    enemy.Dying = true; 
+                    StartCoroutine(DestroyEnemy(other.gameObject));
+                }
+                    
+            }
+        }
+
+        IEnumerator DestroyEnemy(GameObject enemy)
+        {
+            
+            // Add to the attraction list
+            Rigidbody enemyRB = enemy.GetComponent<Rigidbody>();
+            dyingEnemies.Add(enemyRB);
+
+            yield return enemy.transform.DOScale(Vector3.zero, 0.5f).WaitForCompletion();
+
+            // Remove fro the list
+            dyingEnemies.Remove(enemyRB);
+
+            // Die
+            enemy.GetComponent<Enemy>().Die(this);
+
+        }
+    }
+
+}

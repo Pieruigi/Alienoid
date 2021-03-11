@@ -39,8 +39,7 @@ namespace Zom.Pie
             if (!Instance)
             {
                 Instance = this;
-                // Create pool
-                //pool = new List<GameObject>(maxEnemiesOnScreen*(greenCount > 0 ? 1 : 0 + yellowCount > 0 ? 1 : 0 + redCount > 0 ? 1 : 0));
+                // Create pool 
                 if (greenCount > 0)
                 {
                     AddToPool(EnemyType.Green);
@@ -82,6 +81,15 @@ namespace Zom.Pie
             if (!running)
                 return;
 
+            if (enemiesOnScreen >= maxEnemiesOnScreen)
+                return;
+
+            if (enemies.Count > 0)
+            {
+                // Spawn a new enemy
+                SpawnRandomEnemy();
+            }
+
 
         }
 
@@ -94,7 +102,7 @@ namespace Zom.Pie
         {
             // Create pool
             List<GameObject> ret = new List<GameObject>();
-            for(int i=0; i<maxEnemiesOnScreen; i++)
+            for(int i=0; i<maxEnemiesOnScreen+1; i++)
             {
                 // Create enemy
                 GameObject enemy = GameObject.Instantiate(enemyPrefab);
@@ -133,23 +141,36 @@ namespace Zom.Pie
             }
 
             // Start level
-            running = true;
+            
             PlayerManager.Instance.EnableController(true);
 
             yield return new WaitForSeconds(0.5f);
 
-            for(int i=0; i<maxEnemiesOnScreen; i++)
+            running = true;
+            for (int i=0; i<maxEnemiesOnScreen; i++)
             {
-                // Get the enemy type we are going to spawn
-                EnemyType type = enemies[UnityEngine.Random.Range(0, enemies.Count)];
-
-                // Get the actual enemy
-                GameObject enemy = GetRandomEnemy(type);
-
-                // Spawn it
-                EnemySpawner.Instance.Spawn(enemy);
+                SpawnRandomEnemy();
             }
             
+        }
+
+        void SpawnRandomEnemy()
+        {
+            // Get the enemy type we are going to spawn
+            EnemyType type = enemies[UnityEngine.Random.Range(0, enemies.Count)];
+
+            // Remove from the enemy list
+            enemies.Remove(type);
+
+            // Get the actual enemy
+            GameObject enemy = GetRandomEnemy(type);
+
+            // Spawn it
+            EnemySpawner.Instance.Spawn(enemy);
+
+            // Increase number of enemies
+            enemiesOnScreen++;
+
         }
 
         /// <summary>
@@ -185,10 +206,21 @@ namespace Zom.Pie
             enemy.SetActive(false);
         }
 
-        void HandleOnDead(Enemy enemy)
+        void HandleOnDead(Enemy enemy, BlackHole blackHole)
         {
+            Debug.Log("EnemyDead:" + enemy.gameObject);
+
             // Put the enemy back in the pool
             MoveEnemyToPool(enemy.gameObject);
+
+            // If the black hole and the enemy colors don't match we must put the enemy back in the 
+            // enemy list
+            if (enemy.Type != blackHole.EnemyType)
+                enemies.Add(enemy.Type);
+
+            // Decrease number of enemies
+            enemiesOnScreen--;
+
         }
     }
 

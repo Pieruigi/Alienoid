@@ -35,7 +35,7 @@ namespace Zom.Pie
 
                 Vector3 dir = playerPosition - other.transform.position;
                 dir.y = dir.z = 0;
-                Debug.Log("force.dir:" + dir);
+                
                 rb.AddForce(forceMul * dir.normalized);
 
 

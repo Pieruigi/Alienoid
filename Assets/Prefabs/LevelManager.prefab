@@ -44,8 +44,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   greenCount: 10
-  yellowCount: 1
-  redCount: 0
+  yellowCount: 2
+  redCount: 1
   maxEnemiesOnScreen: 3
   enemyPrefab: {fileID: 6001564578340943021, guid: f0530fd9f9bd99b4a8c046e231af42ea,
     type: 3}
