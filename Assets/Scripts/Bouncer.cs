@@ -28,6 +28,7 @@ namespace Zom.Pie
 
         private void OnCollisionEnter(Collision collision)
         {
+			
 			if (bouncePower == 0)
 				return;
 

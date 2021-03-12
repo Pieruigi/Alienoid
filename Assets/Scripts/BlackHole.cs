@@ -7,6 +7,7 @@ namespace Zom.Pie
 {
     public class BlackHole : MonoBehaviour
     {
+        [SerializeField]
         EnemyType enemyType = EnemyType.Green;
         public EnemyType EnemyType
         {
