@@ -39,9 +39,13 @@ namespace Zom.Pie
                 Vector3 dir = transform.position - enemy.position;
                 dir.z = 0;
 
+                float attractionForce = 20;
+                Vector3 targetVel = attractionForce * dir;
+
                 // Add force
-                //enemy.AddForce(dir.normalized * forceMagnitude, ForceMode.Acceleration);
-                enemy.velocity = enemy.velocity.magnitude * dir.normalized;
+                //enemy.velocity = enemy.velocity.magnitude * dir.normalized;
+                float velChange = Time.fixedDeltaTime * 80f;
+                enemy.velocity = Vector3.MoveTowards(enemy.velocity, targetVel, velChange);
             }
         }
 
