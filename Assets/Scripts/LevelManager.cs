@@ -2,12 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Zom.Pie
 {
     public class LevelManager : MonoBehaviour
     {
-
+        
         public static LevelManager Instance { get; private set; }
 
         [SerializeField]
@@ -28,8 +29,16 @@ namespace Zom.Pie
         // This list represent the actual number of enemies we must destroy
         List<EnemyType> enemies = new List<EnemyType>();
 
-        float startDelay = 0;
+        float startDelay = 3f;
+        public float StartDelay
+        {
+            get { return startDelay; }
+        }
         bool running = false;
+        public bool Running
+        {
+            get { return running; }
+        }
 
         int enemiesOnScreen = 0;
         
@@ -57,7 +66,9 @@ namespace Zom.Pie
                     AddToPool(EnemyType.Red);
                     AddToEnemies(EnemyType.Red, redCount);
                 }
-                   
+
+                // Adjust the starting delay
+                //startDelay = startDelay * Time.timeScale;
             }
             else
             {
@@ -133,7 +144,8 @@ namespace Zom.Pie
             // Disable player controller
             PlayerManager.Instance.EnableController(false);
 
-            float timer = startDelay;
+            // We must take into account the time scale we are playing at
+            float timer = startDelay * Time.timeScale;
             while(timer > 0)
             {
                 timer -= Time.deltaTime;
