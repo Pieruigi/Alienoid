@@ -65,6 +65,8 @@ namespace Zom.Pie
             enemy.SetActive(true);
 
             // Add force
+            Vector3 dir = spawnPoints[nextId].up;
+
             enemy.GetComponent<Rigidbody>().AddForce(spawnPoints[nextId].up * forceMagnitude, ForceMode.VelocityChange);
 
             // Update next spawn id

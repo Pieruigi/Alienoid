@@ -5,6 +5,7 @@ using DG.Tweening;
 
 namespace Zom.Pie
 {
+    [ExecuteInEditMode]
     public class BlackHole : MonoBehaviour
     {
         [SerializeField]
@@ -14,10 +15,29 @@ namespace Zom.Pie
             get { return enemyType; }
         }
 
+        [SerializeField]
+        MeshRenderer rendererToColorize;
+
+        [SerializeField]
+        Material greenMaterial;
+
+        [SerializeField]
+        Material yellowMaterial;
+
+        [SerializeField]
+        Material redMaterial;
+
         // We put here all the enemies collapsing inside the black hole in order to add to them a force
         List<Rigidbody> dyingEnemies = new List<Rigidbody>();
 
         float forceMagnitude = 80f;
+
+
+        private void Awake()
+        {
+            Colorize();
+            
+        }
 
         // Start is called before the first frame update
         void Start()
@@ -28,7 +48,9 @@ namespace Zom.Pie
         // Update is called once per frame
         void Update()
         {
-
+#if UNITY_EDITOR
+            Colorize();
+#endif
         }
 
         private void FixedUpdate()
@@ -78,6 +100,22 @@ namespace Zom.Pie
             // Die
             enemy.GetComponent<Enemy>().Die(this);
 
+        }
+
+        void Colorize()
+        {
+            switch (enemyType)
+            {
+                case EnemyType.Green:
+                    rendererToColorize.sharedMaterial = greenMaterial;
+                    break;
+                case EnemyType.Yellow:
+                    rendererToColorize.sharedMaterial = yellowMaterial;
+                    break;
+                case EnemyType.Red:
+                    rendererToColorize.sharedMaterial = redMaterial;
+                    break;
+            }
         }
     }
 

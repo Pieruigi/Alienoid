@@ -29,7 +29,7 @@ namespace Zom.Pie
         // This list represent the actual number of enemies we must destroy
         List<EnemyType> enemies = new List<EnemyType>();
 
-        float startDelay = 3f;
+        float startDelay = 0f;
         public float StartDelay
         {
             get { return startDelay; }

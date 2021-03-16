@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1057105876484494451}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0, z: 0.6075}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
   m_LocalScale: {x: 1.5, y: 0.0275, z: 1.5}
   m_Children: []
   m_Father: {fileID: 4105765588092424712}
@@ -128,6 +128,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 0
+  rendererToColorize: {fileID: 3564637301931808045}
+  greenMaterial: {fileID: 2100000, guid: c85a2c3da6a62504e9d2c09615c17856, type: 2}
+  yellowMaterial: {fileID: 2100000, guid: efd9cde5e9b83174a9d0adc9aa3ca0e7, type: 2}
+  redMaterial: {fileID: 2100000, guid: fd099b4d18715c44c9a1ba3daec8700d, type: 2}
 --- !u!136 &4105765588092424718
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -168,7 +172,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4105765588912192289}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0, z: 0.5977}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
   m_LocalScale: {x: 1.2, y: 0.07765354, z: 1.2}
   m_Children: []
   m_Father: {fileID: 4105765588092424712}
