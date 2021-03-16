@@ -178,7 +178,7 @@ namespace Zom.Pie
             GameObject enemy = GetRandomEnemy(type);
 
             // Spawn it
-            EnemySpawner.Instance.Spawn(enemy);
+            EnemySpawnerManager.Instance.Spawn(enemy);
 
             // Increase number of enemies
             enemiesOnScreen++;
