@@ -1,3 +1,4 @@
+#define RANDOM
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,7 +22,6 @@ namespace Zom.Pie
 
         List<GameObject> spawnList = new List<GameObject>();
 
-        bool randomSpawner = true;
 
         private void Awake()
         {
@@ -82,17 +82,15 @@ namespace Zom.Pie
         EnemySpawner GetSpawner()
         {
             EnemySpawner ret = null;
-            if (!randomSpawner)
-            {
-                ret = spawners[nextId];
+
+#if !RANDOM
+
+            ret = spawners[nextId];
                 // Update next spawn id
                 nextId++;
                 if (nextId >= spawners.Count)
                     nextId = 0;
-
-            }
-            else
-            {
+#else
                 // We want the enemy not to spawn too close to another enemy, so we first remove from the
                 // list the closer spawner.
                 // Since we only have two enemies on screen at the same time, this means that if we are 
@@ -108,58 +106,59 @@ namespace Zom.Pie
                     // Get the current enemy
                     GameObject currentEnemy = LevelManager.Instance.GetOnScreenEnemies()[0];
 
-                    // Get the closer
-                    bool onlyTheCloserOne = false;
-                    float sqrDist = 0;
-                    List<EnemySpawner> closers = new List<EnemySpawner>();
+                // Get the closer
+                //bool onlyTheCloserOne = false;
+#if THE_CLOSER_ONLY
+                float sqrDist = 0;
                     EnemySpawner closer = null;
-                    // The minimun distance at which the spawner is removed
-                    float minSqrDist = 4f * Enemy.SqrRadius * 16f; 
-                    foreach(EnemySpawner spawner in tmp)
+#else
+                List<EnemySpawner> closers = new List<EnemySpawner>();
+                float minSqrDist = 4f * Enemy.SqrRadius * 16f;
+#endif
+                // The minimun distance at which the spawner is removed
+
+                foreach (EnemySpawner spawner in tmp)
                     {
                         float tmpDist = (spawner.transform.position - currentEnemy.transform.position).sqrMagnitude;
+#if THE_CLOSER_ONLY
 
-                        if (onlyTheCloserOne)
-                        {
                             // We remove only the closer spawner
-                            if (closer == null || sqrDist > tmpDist)
-                            {
-                                sqrDist = tmpDist;
-                                closer = spawner;
-                            }
-                        }
-                        else
+                        if (closer == null || sqrDist > tmpDist)
                         {
-                            // We remove all the spawner which are too close
-                            if (tmpDist < minSqrDist)
-                            {
-                                closers.Add(spawner);
-                            }
+                            sqrDist = tmpDist;
+                            closer = spawner;
                         }
-                        
 
-                        
+#else
+
+                        // We remove all the spawner which are too close
+                        if (tmpDist < minSqrDist)
+                        {
+                            closers.Add(spawner);
+                        }
+   
+#endif
+
+
                     }
 
-                    if (onlyTheCloserOne)
+#if THE_CLOSER_ONLY
+                    if (closer)
                     {
-                        if (closer)
-                        {
-                            tmp.Remove(closer);
-                        }
+                        tmp.Remove(closer);
                     }
-                    else
-                    {
-                        // Try remove
-                        foreach (EnemySpawner spawner in closers)
-                        {
-                            // Debug.Log("Remove closer spawner:" + closer.gameObject);
-                            tmp.Remove(spawner);
-                        }
-                    }
-                    
+#else
 
-                    
+                    // Try remove
+                    foreach (EnemySpawner spawner in closers)
+                    {
+                        // Debug.Log("Remove closer spawner:" + closer.gameObject);
+                        tmp.Remove(spawner);
+                    }
+#endif
+
+
+
                 }
 
                 // Remove the last used spawner
@@ -169,11 +168,9 @@ namespace Zom.Pie
                 ret = tmp[UnityEngine.Random.Range(0, tmp.Count)];
                 // Update the next id ( which in this case is the last used id )
                 nextId = spawners.IndexOf(ret);
+#endif
 
-
-            }
-
-            return ret;
+                return ret;
         }
     }
 

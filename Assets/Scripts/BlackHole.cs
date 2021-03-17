@@ -5,10 +5,10 @@ using DG.Tweening;
 
 namespace Zom.Pie
 {
-    [ExecuteInEditMode]
+    //[ExecuteInEditMode]
     public class BlackHole : MonoBehaviour
     {
-        [SerializeField]
+        //[SerializeField]
         EnemyType enemyType = EnemyType.Green;
         public EnemyType EnemyType
         {
@@ -35,21 +35,21 @@ namespace Zom.Pie
 
         private void Awake()
         {
-            Colorize();
+            
             
         }
 
         // Start is called before the first frame update
         void Start()
         {
-
+            Colorize();
         }
 
         // Update is called once per frame
         void Update()
         {
 #if UNITY_EDITOR
-            Colorize();
+           // Colorize();
 #endif
         }
 
@@ -69,6 +69,12 @@ namespace Zom.Pie
                 float velChange = Time.fixedDeltaTime * 80f;
                 enemy.velocity = Vector3.MoveTowards(enemy.velocity, targetVel, velChange);
             }
+        }
+
+        public void SetEnemyType(EnemyType type)
+        {
+            enemyType = type;
+            Colorize();
         }
 
         private void OnTriggerEnter(Collider other)

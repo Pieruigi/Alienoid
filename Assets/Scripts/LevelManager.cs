@@ -3,24 +3,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Zom.Pie.Collection;
 
 namespace Zom.Pie
 {
+    [ExecuteInEditMode]
     public class LevelManager : MonoBehaviour
     {
-        
+
         public static LevelManager Instance { get; private set; }
 
-        [SerializeField]
+        //[SerializeField]
         int greenCount, yellowCount, redCount;
 
         [SerializeField]
-        int maxEnemiesOnScreen = 3;
+        int maxEnemiesOnScreen = 2;
 
         [SerializeField]
         GameObject enemyPrefab;
 
+        [SerializeField]
+        List<BlackHole> blackHoles;
 
+#if UNITY_EDITOR
+        [Header("****************** DEBUG ******************")]
+        [SerializeField]
+        int debug_levelId = 1;
+#endif
 
         //List<GameObject> redPool, yellowPool, greenPool;
         List<GameObject> pool = new List<GameObject>();
@@ -49,28 +58,20 @@ namespace Zom.Pie
         {
             if (!Instance)
             {
+
                 Instance = this;
-                // Create pool 
-                if (greenCount > 0)
-                {
-                    AddToPool(EnemyType.Green);
-                    AddToEnemies(EnemyType.Green, greenCount);
-                }
 
-                if (yellowCount > 0)
-                {
-                    AddToPool(EnemyType.Yellow);
-                    AddToEnemies(EnemyType.Yellow, yellowCount);
-                }
-                    
-                if(redCount>0)
-                {
-                    AddToPool(EnemyType.Red);
-                    AddToEnemies(EnemyType.Red, redCount);
-                }
+#if UNITY_EDITOR
+                if(Application.isPlaying)
+                    Init(debug_levelId > 0 ? debug_levelId : GameManager.Instance.CurrentLevelId);
+#else
+                Init(GameManager.Instance.CurrentLevelId);
+#endif
 
-                // Adjust the starting delay
-                //startDelay = startDelay * Time.timeScale;
+                // Create the enemy pool 
+                CreateEnemyPool();
+
+
             }
             else
             {
@@ -91,6 +92,11 @@ namespace Zom.Pie
         // Update is called once per frame
         void Update()
         {
+#if UNITY_EDITOR
+            if(!Application.isPlaying)
+                Init(debug_levelId);
+#endif
+
             if (!running)
                 return;
 
@@ -110,6 +116,31 @@ namespace Zom.Pie
         {
             return usedList.FindAll(e => e.activeSelf).AsReadOnly();
         }
+
+        void Init(int levelId)
+        {
+            // Get the configuration data
+            string path = LevelConfigurationData.ResourceFolder;
+            path += string.Format(LevelConfigurationData.FileNamePattern, levelId);
+            Debug.Log("Path:" + path);
+            LevelConfigurationData data = Resources.Load<LevelConfigurationData>(path);
+            Debug.Log("ConfData:"+ data.name);
+
+            greenCount = data.NumberOfGreenEnemies;
+            yellowCount = data.NumberOfYellowEnemies;
+            redCount = data.NumberOfRedEnemies;
+
+           
+            //
+            // Setting black holes
+            //
+            for(int i=0; i<blackHoles.Count; i++)
+            {
+                blackHoles[i].SetEnemyType(data.BlackHoleDataList[i].EnemyType);
+            }
+        }
+
+       
 
         /// <summary>
         /// Create a pool of enemy objects
@@ -148,6 +179,9 @@ namespace Zom.Pie
         /// <returns></returns>
         IEnumerator StartLevel()
         {
+            if (!PlayerManager.Instance)
+                yield break;
+
             // Disable player controller
             PlayerManager.Instance.EnableController(false);
 
@@ -240,6 +274,27 @@ namespace Zom.Pie
             // Decrease number of enemies
             enemiesOnScreen--;
 
+        }
+
+        void CreateEnemyPool()
+        {
+            if (greenCount > 0)
+            {
+                AddToPool(EnemyType.Green);
+                AddToEnemies(EnemyType.Green, greenCount);
+            }
+
+            if (yellowCount > 0)
+            {
+                AddToPool(EnemyType.Yellow);
+                AddToEnemies(EnemyType.Yellow, yellowCount);
+            }
+
+            if (redCount > 0)
+            {
+                AddToPool(EnemyType.Red);
+                AddToEnemies(EnemyType.Red, redCount);
+            }
         }
     }
 
