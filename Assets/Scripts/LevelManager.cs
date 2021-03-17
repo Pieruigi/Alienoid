@@ -25,10 +25,13 @@ namespace Zom.Pie
         [SerializeField]
         List<BlackHole> blackHoles;
 
+        [SerializeField]
+        List<GameObject> groups;
+
 #if UNITY_EDITOR
         [Header("****************** DEBUG ******************")]
         [SerializeField]
-        int debug_levelId = 1;
+        LevelConfigurationData debug_levelData = null;
 #endif
 
         //List<GameObject> redPool, yellowPool, greenPool;
@@ -63,9 +66,9 @@ namespace Zom.Pie
 
 #if UNITY_EDITOR
                 if(Application.isPlaying)
-                    Init(debug_levelId > 0 ? debug_levelId : GameManager.Instance.CurrentLevelId);
+                    Init(debug_levelData != null ? debug_levelData : GetConfigurationData(GameManager.Instance.CurrentLevelId));
 #else
-                Init(GameManager.Instance.CurrentLevelId);
+                Init(GetConfigurationData(GameManager.Instance.CurrentLevelId));
 #endif
 
                 // Create the enemy pool 
@@ -94,7 +97,7 @@ namespace Zom.Pie
         {
 #if UNITY_EDITOR
             if(!Application.isPlaying)
-                Init(debug_levelId);
+                Init(debug_levelData);
 #endif
 
             if (!running)
@@ -117,27 +120,45 @@ namespace Zom.Pie
             return usedList.FindAll(e => e.activeSelf).AsReadOnly();
         }
 
-        void Init(int levelId)
+        LevelConfigurationData GetConfigurationData(int levelId)
         {
             // Get the configuration data
             string path = LevelConfigurationData.ResourceFolder;
             path += string.Format(LevelConfigurationData.FileNamePattern, levelId);
             Debug.Log("Path:" + path);
             LevelConfigurationData data = Resources.Load<LevelConfigurationData>(path);
-            Debug.Log("ConfData:"+ data.name);
+            Debug.Log("ConfData:" + data.name);
+            return data;
+        }
+
+        void Init(LevelConfigurationData data)
+        {
+            
 
             greenCount = data.NumberOfGreenEnemies;
             yellowCount = data.NumberOfYellowEnemies;
             redCount = data.NumberOfRedEnemies;
 
            
-            //
             // Setting black holes
-            //
             for(int i=0; i<blackHoles.Count; i++)
             {
                 blackHoles[i].SetEnemyType(data.BlackHoleDataList[i].EnemyType);
             }
+
+            // Reset all groups
+            for (int i = 0; i < groups.Count; i++)
+            {
+                groups[i].SetActive(false);
+            }
+
+            // Setting available groups
+            List<int> g = data.GetAvailableGroups();
+            for(int i=0; i<g.Count; i++)
+            {
+                groups[g[i]].SetActive(true);
+            }
+            
         }
 
        

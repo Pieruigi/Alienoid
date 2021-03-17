@@ -47,6 +47,24 @@ namespace Zom.Pie.Collection
             get { return blackHoleDataList.AsReadOnly(); }
         }
 
+        [SerializeField]
+        string availableGroups;
+        
+        public List<int> GetAvailableGroups()
+        {
+            string[] s = availableGroups.Split(',');
+            List<int> ret = new List<int>();
+            if (s != null)
+            {
+                for (int i = 0; i < s.Length; i++)
+                {
+                    ret.Add(int.Parse(s[i]));
+                }
+            }
+
+            return ret;
+        }
+
     }
 
 }

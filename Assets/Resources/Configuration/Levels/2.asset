@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 36300fd7cf9a867498a93b9d3c290688, type: 3}
-  m_Name: 1
+  m_Name: 2
   m_EditorClassIdentifier: 
   numberOfGreenEnemies: 25
   numberOfYellowEnemies: 0
@@ -22,3 +22,4 @@ MonoBehaviour:
     hasGate: 0
   - enemyType: 0
     hasGate: 0
+  availableGroups: 0
