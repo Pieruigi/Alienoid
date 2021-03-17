@@ -12,8 +12,8 @@ namespace Zom.Pie
         [SerializeField]
         List<EnemySpawner> spawners;
 
-        float forceMagnitude = 5f;
-
+        // This is the next spawner that will be used when randomSpawner is false, otherwise it represents
+        // the last used spawner id 
         int nextId = 0;
 
         DateTime lastSpawnTime;
@@ -21,13 +21,15 @@ namespace Zom.Pie
 
         List<GameObject> spawnList = new List<GameObject>();
 
+        bool randomSpawner = true;
+
         private void Awake()
         {
             if (!Instance)
             {
                 Instance = this;
 
-                // Randomize first
+                // Randomize first ( both for random and round spawner )
                 nextId = UnityEngine.Random.Range(0, spawners.Count);
             }
             else
@@ -61,12 +63,9 @@ namespace Zom.Pie
             // Activate enemy
             enemy.SetActive(true);
 
-            spawners[nextId].Spawn(enemy);
+            // Spawn the enemy 
+            GetSpawner().Spawn(enemy);
 
-            // Update next spawn id
-            nextId++;
-            if (nextId >= spawners.Count)
-                nextId = 0;
 
             lastSpawnTime = DateTime.UtcNow;
         }
@@ -78,6 +77,34 @@ namespace Zom.Pie
         public void Spawn(GameObject enemy)
         {
             spawnList.Add(enemy);
+        }
+
+        EnemySpawner GetSpawner()
+        {
+            EnemySpawner ret = null;
+            if (!randomSpawner)
+            {
+                ret = spawners[nextId];
+                // Update next spawn id
+                nextId++;
+                if (nextId >= spawners.Count)
+                    nextId = 0;
+
+            }
+            else
+            {
+                // Get all the spawners except for the last used, if any
+                List<EnemySpawner> tmp = spawners.FindAll(s => spawners.IndexOf(s) != nextId);
+
+                // Get a random spawner from the temp list
+                ret = tmp[UnityEngine.Random.Range(0, tmp.Count)];
+                // Update the next id ( which in this case is the last used id )
+                nextId = spawners.IndexOf(ret);
+
+
+            }
+
+            return ret;
         }
     }
 
