@@ -21,10 +21,12 @@ namespace Zom.Pie
         Collider cannonCollider;
 
         [SerializeField]
+        Collider baseCollider;
+
+        [SerializeField]
         Transform firePoint;
 
-
-        Collider baseCollider;
+        
 
         float fireCooldown;
         DateTime lastShot;
@@ -32,7 +34,9 @@ namespace Zom.Pie
 
         private void Awake()
         {
-            baseCollider = GetComponent<Collider>();
+            
+            // Disable collision between base and cannon
+            Physics.IgnoreCollision(baseCollider, cannonCollider);
 
             // Init the cooldown
             SetFireRate(fireRate);

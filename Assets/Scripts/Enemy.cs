@@ -12,6 +12,9 @@ namespace Zom.Pie
     {
         public UnityAction<Enemy, BlackHole> OnDead;
 
+        public static float Radius;
+        public static float SqrRadius;
+
         [SerializeField]
         Material greenMaterial, yellowMaterial, redMaterial;
 
@@ -39,6 +42,13 @@ namespace Zom.Pie
         private void Awake()
         {
             scaleDefault = transform.localScale;
+
+            if(Radius == 0)
+            {
+                Radius = GetComponent<SphereCollider>().radius;
+                SqrRadius = Radius * Radius;
+            }
+                
         }
 
         // Start is called before the first frame update

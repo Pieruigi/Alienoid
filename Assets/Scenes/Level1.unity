@@ -1449,25 +1449,5 @@ PrefabInstance:
       propertyPath: m_Name
       value: LevelManager
       objectReference: {fileID: 0}
-    - target: {fileID: 6323986850573183990, guid: 191440e392f61944cab9fd21968d8235,
-        type: 3}
-      propertyPath: redCount
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6323986850573183990, guid: 191440e392f61944cab9fd21968d8235,
-        type: 3}
-      propertyPath: greenCount
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 6323986850573183990, guid: 191440e392f61944cab9fd21968d8235,
-        type: 3}
-      propertyPath: yellowCount
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6323986850573183990, guid: 191440e392f61944cab9fd21968d8235,
-        type: 3}
-      propertyPath: maxEnemiesOnScreen
-      value: 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 191440e392f61944cab9fd21968d8235, type: 3}

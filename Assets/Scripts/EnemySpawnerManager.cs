@@ -93,8 +93,47 @@ namespace Zom.Pie
             }
             else
             {
-                // Get all the spawners except for the last used, if any
-                List<EnemySpawner> tmp = spawners.FindAll(s => spawners.IndexOf(s) != nextId);
+                // We want the enemy not to spawn too close to another enemy, so we first remove from the
+                // list the closer spawner.
+                // Since we only have two enemies on screen at the same time, this means that if we are 
+                // spawning then only one left on screen, so we simply get the first; we could change 
+                // this in case we would like to manage more than two enemies at the same time.
+
+                // Get all the spawners
+                List<EnemySpawner> tmp = spawners.GetRange(0, spawners.Count);
+
+                // If there is at least one enemy on screen then remove the closer spawner
+                if(LevelManager.Instance.CurrentEnemies.Count > 0)
+                {
+                    // Get the current enemy
+                    GameObject currentEnemy = LevelManager.Instance.CurrentEnemies[0];
+
+                    // Get the closer
+                    float sqrDist = 0;
+                    EnemySpawner closer = null;
+                    // The minimun distance at which the spawner is removed
+                    float minSqrDist = Mathf.Infinity;// Enemy.SqrRadius * 4; 
+                    foreach(EnemySpawner spawner in tmp)
+                    {
+                        float tmpDist = (spawner.transform.position - currentEnemy.transform.position).sqrMagnitude;
+                        if ( (closer == null && tmpDist < minSqrDist) || sqrDist > tmpDist)
+                        {
+                            sqrDist = tmpDist;
+                            closer = spawner;
+                        }
+                    }
+
+                    // Try remove
+                    if (closer)
+                    {
+                       // Debug.Log("Remove closer spawner:" + closer.gameObject);
+                        tmp.Remove(closer);
+                    }
+                        
+                }
+
+                // Remove the last used spawner
+                tmp = tmp.FindAll(s => spawners.IndexOf(s) != nextId);
 
                 // Get a random spawner from the temp list
                 ret = tmp[UnityEngine.Random.Range(0, tmp.Count)];

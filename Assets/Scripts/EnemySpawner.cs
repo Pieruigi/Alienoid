@@ -26,10 +26,14 @@ namespace Zom.Pie
             // Set position
             enemy.transform.position = transform.position;
 
-            // Add force
-            Vector3 dir = transform.up;
+           
+            // Little randomization on the spawn direction
+            Vector3 dir = Quaternion.AngleAxis(Random.Range(-5f, 5f), transform.forward) * transform.up;
+           
+            // Little randomization on the force
+            float force = spawnForce * Random.Range(0.9f, 1.1f);
 
-            enemy.GetComponent<Rigidbody>().AddForce(dir * spawnForce, ForceMode.VelocityChange);
+            enemy.GetComponent<Rigidbody>().AddForce(dir * force, ForceMode.VelocityChange);
         }
     }
 

@@ -24,7 +24,12 @@ namespace Zom.Pie
 
         //List<GameObject> redPool, yellowPool, greenPool;
         List<GameObject> pool = new List<GameObject>();
+
         List<GameObject> usedList = new List<GameObject>();
+        public IList<GameObject> CurrentEnemies
+        {
+            get { return usedList.AsReadOnly(); }
+        }
 
         // This list represent the actual number of enemies we must destroy
         List<EnemyType> enemies = new List<EnemyType>();
