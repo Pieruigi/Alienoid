@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36300fd7cf9a867498a93b9d3c290688, type: 3}
+  m_Name: 13
+  m_EditorClassIdentifier: 
+  numberOfGreenEnemies: 10
+  numberOfYellowEnemies: 5
+  numberOfRedEnemies: 5
+  blackHoleDataList:
+  - enemyType: 0
+    hasGate: 0
+  - enemyType: 2
+    hasGate: 0
+  - enemyType: 1
+    hasGate: 0
+  availableGroups: 0

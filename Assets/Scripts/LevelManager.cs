@@ -7,13 +7,13 @@ using Zom.Pie.Collection;
 
 namespace Zom.Pie
 {
-    [ExecuteInEditMode]
+    //[ExecuteInEditMode]
     public class LevelManager : MonoBehaviour
     {
 
         public static LevelManager Instance { get; private set; }
 
-        //[SerializeField]
+        [SerializeField]
         int greenCount, yellowCount, redCount;
 
         [SerializeField]
@@ -63,14 +63,14 @@ namespace Zom.Pie
             {
 
                 Instance = this;
-
+/*
 #if UNITY_EDITOR
                 if(Application.isPlaying)
                     Init(debug_levelData != null ? debug_levelData : GetConfigurationData(GameManager.Instance.CurrentLevelId));
 #else
                 Init(GetConfigurationData(GameManager.Instance.CurrentLevelId));
 #endif
-
+*/
                 // Create the enemy pool 
                 CreateEnemyPool();
 
@@ -96,8 +96,8 @@ namespace Zom.Pie
         void Update()
         {
 #if UNITY_EDITOR
-            if(!Application.isPlaying)
-                Init(debug_levelData);
+            //if(!Application.isPlaying)
+            //    Init(debug_levelData);
 #endif
 
             if (!running)

@@ -43,9 +43,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 531e266c5d3318d45a57636189d1329c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  greenCount: 20
+  greenCount: 10
   yellowCount: 5
-  redCount: 0
+  redCount: 5
   maxEnemiesOnScreen: 2
   enemyPrefab: {fileID: 6001564578340943021, guid: f0530fd9f9bd99b4a8c046e231af42ea,
     type: 3}
@@ -53,4 +53,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  debug_levelId: 1
+  groups:
+  - {fileID: 0}
+  debug_levelData: {fileID: 11400000, guid: dfab044fbadfebb4990518158799565e, type: 2}

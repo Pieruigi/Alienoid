@@ -52,8 +52,14 @@ namespace Zom.Pie.Collection
         
         public List<int> GetAvailableGroups()
         {
-            string[] s = availableGroups.Split(',');
             List<int> ret = new List<int>();
+            if (string.IsNullOrEmpty(availableGroups))
+                return ret;
+
+            availableGroups = availableGroups.Trim();
+
+            string[] s = availableGroups.Split(',');
+            
             if (s != null)
             {
                 for (int i = 0; i < s.Length; i++)
