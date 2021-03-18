@@ -7,6 +7,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: lambert1
+    second: {fileID: 2100000, guid: 54165719aedfc8746bf3a013d29e7dd6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: lavorare_qui_Ufo_Red
     second: {fileID: 2100000, guid: 209726dbe6c39ed4c9690d37b15a2434, type: 2}
   materials:
@@ -39,7 +44,7 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 1.35
+    globalScale: 1.4
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -90,7 +95,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.0135
+    globalScale: 1.4
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
