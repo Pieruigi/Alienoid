@@ -31,7 +31,7 @@ namespace Zom.Pie
         bool useGate = false;
 
         [SerializeField]
-        GameObject gate;
+        GameObject gateController;
 
         // We put here all the enemies collapsing inside the black hole in order to add to them a force
         List<Rigidbody> dyingEnemies = new List<Rigidbody>();
@@ -123,11 +123,11 @@ namespace Zom.Pie
         {
             if (!useGate)
             {
-                gate.SetActive(false);
+                gateController.SetActive(false);
             }
             else
             {
-                gate.SetActive(true);
+                gateController.SetActive(true);
             }
         }
 
