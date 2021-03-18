@@ -27,6 +27,12 @@ namespace Zom.Pie
         [SerializeField]
         Material redMaterial;
 
+        [SerializeField]
+        bool useGate = false;
+
+        [SerializeField]
+        GameObject gate;
+
         // We put here all the enemies collapsing inside the black hole in order to add to them a force
         List<Rigidbody> dyingEnemies = new List<Rigidbody>();
 
@@ -36,6 +42,7 @@ namespace Zom.Pie
         private void Awake()
         {
             Colorize();
+            CheckGate();
         }
 
         // Start is called before the first frame update
@@ -48,8 +55,12 @@ namespace Zom.Pie
         void Update()
         {
 #if UNITY_EDITOR
-            if(!Application.isPlaying)
+            if (!Application.isPlaying)
+            {
                 Colorize();
+                CheckGate();
+            }
+                
 #endif
         }
 
@@ -106,6 +117,18 @@ namespace Zom.Pie
             // Die
             enemy.GetComponent<Enemy>().Die(this);
 
+        }
+
+        void CheckGate()
+        {
+            if (!useGate)
+            {
+                gate.SetActive(false);
+            }
+            else
+            {
+                gate.SetActive(true);
+            }
         }
 
         void Colorize()
