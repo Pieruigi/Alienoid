@@ -692,7 +692,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8403119713064389794}
   m_Layer: 0
-  m_Name: LevelCommonGeometry
+  m_Name: BaseGeometry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

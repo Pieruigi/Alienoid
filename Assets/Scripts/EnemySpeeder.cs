@@ -7,19 +7,33 @@ namespace Zom.Pie
     public class EnemySpeeder : MonoBehaviour
     {
         [SerializeField]
-        float forceMagnitude = 3.5f;
+        float forceMagnitude = 0f;//8f;
 
-        List<Transform> directions = new List<Transform>();
+        // The up-transform is the force direction
+        [SerializeField]
+        Transform forceDirection;
 
-        
+        [SerializeField]
+        float impulseMagnitude = 0f;
+
+        [SerializeField]
+        Transform impulseDirection;
+
+        List<Rigidbody> rbs = new List<Rigidbody>();
+
+        Vector3 force;
+        Vector3 impulse;
+
+        private void Awake()
+        {
+            force = forceMagnitude * forceDirection.up;
+            impulse = impulseMagnitude * impulseDirection.up;
+        }
 
         // Start is called before the first frame update
         void Start()
         {
-            for(int i=0; i<transform.childCount; i++)
-            {
-                directions.Add(transform.GetChild(i));
-            }
+           
         }
 
         // Update is called once per frame
@@ -28,20 +42,38 @@ namespace Zom.Pie
 
         }
 
+        private void FixedUpdate()
+        {
+            foreach(Rigidbody rb in rbs)
+            {
+                float m = forceMagnitude * Random.Range(0.9f, 1.1f);
+                Vector3 d = Quaternion.AngleAxis(Random.Range(-5f, 5f), forceDirection.forward) * forceDirection.up;
 
+                rb.AddForce(m*d, ForceMode.Acceleration);
+            }
+        }
 
         private void OnTriggerEnter(Collider other)
         {
             if (Tag.Enemy.ToString().Equals(other.tag))
             {
-               
-                ConstantForce cf = other.GetComponent<ConstantForce>();
-                if (!cf)
+                Rigidbody rb = other.GetComponent<Rigidbody>();
+
+                // Try add the force
+                if (forceMagnitude != 0)
                 {
-                    cf = other.gameObject.AddComponent<ConstantForce>();
+                    if (!rbs.Contains(rb))
+                        rbs.Add(rb);
                 }
 
-                cf.force = directions[0].up * forceMagnitude;
+                // Try add the impulse
+                if(impulseMagnitude != 0)
+                {
+                    float m = impulseMagnitude * Random.Range(0.9f, 1.1f);
+                    Vector3 d = Quaternion.AngleAxis(Random.Range(-5f, 5f), impulseDirection.forward) * impulseDirection.up;
+                    rb.AddForce(m*d, ForceMode.VelocityChange);
+                }
+                    
             }
         }
 
@@ -49,21 +81,12 @@ namespace Zom.Pie
         {
             if (Tag.Enemy.ToString().Equals(other.tag))
             {
-                ConstantForce cf = other.GetComponent<ConstantForce>();
-                if (cf)
-                {
-                    Destroy(cf);
-                }
+                rbs.Remove(other.GetComponent<Rigidbody>());
 
             }
         }
 
-        IEnumerator DestroyConstantForce(ConstantForce cf)
-        {
-            yield return new WaitForSeconds(1.0f);
-            if (cf)
-                Destroy(cf);
-        }
+
     }
 
 }
