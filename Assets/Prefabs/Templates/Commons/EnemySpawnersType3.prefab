@@ -50,8 +50,6 @@ MonoBehaviour:
   spawners:
   - {fileID: 636346612169841131}
   - {fileID: 636346612655524549}
-  - {fileID: 636346612928574088}
-  - {fileID: 636346611965525959}
 --- !u!1 &636346611965525957
 GameObject:
   m_ObjectHideFlags: 0
@@ -68,7 +66,7 @@ GameObject:
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &636346611965525956
 Transform:
   m_ObjectHideFlags: 0
@@ -112,7 +110,7 @@ GameObject:
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &636346612928574089
 Transform:
   m_ObjectHideFlags: 0

@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &73536064
 Transform:
   m_ObjectHideFlags: 0
@@ -60,7 +60,7 @@ GameObject:
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1039736589
 Transform:
   m_ObjectHideFlags: 0
@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 1005124888987177570}
   - component: {fileID: 687593416212256369}
   m_Layer: 0
-  m_Name: EnemySpawner
+  m_Name: EnemySpawnersType1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -138,8 +138,6 @@ MonoBehaviour:
   spawners:
   - {fileID: 833321250}
   - {fileID: 345532940}
-  - {fileID: 73536065}
-  - {fileID: 1039736590}
 --- !u!1 &4404152364032778137
 GameObject:
   m_ObjectHideFlags: 0

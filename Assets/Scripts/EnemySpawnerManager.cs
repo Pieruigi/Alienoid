@@ -1,4 +1,5 @@
 #define RANDOM
+#define THE_CLOSER_ONLY
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -161,8 +162,10 @@ namespace Zom.Pie
 
                 }
 
-                // Remove the last used spawner
-                tmp = tmp.FindAll(s => spawners.IndexOf(s) != nextId);
+            // Remove the last used spawner
+#if REMOVE_LAST_USED
+            tmp = tmp.FindAll(s => spawners.IndexOf(s) != nextId);
+#endif
 
                 // Get a random spawner from the temp list
                 ret = tmp[UnityEngine.Random.Range(0, tmp.Count)];
@@ -170,7 +173,7 @@ namespace Zom.Pie
                 nextId = spawners.IndexOf(ret);
 #endif
 
-                return ret;
+            return ret;
         }
     }
 

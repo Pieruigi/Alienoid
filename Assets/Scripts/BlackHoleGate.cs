@@ -53,13 +53,14 @@ namespace Zom.Pie
             // Get collider
             coll = GetComponent<Collider>();
 
-            CheckState();
+            
         }
 
         // Start is called before the first frame update
         void Start()
         {
-
+            StartCoroutine(StartDelayed());
+            
         }
 
         // Update is called once per frame
@@ -112,6 +113,12 @@ namespace Zom.Pie
                     Open();
                 }
             }
+        }
+
+        IEnumerator StartDelayed()
+        {
+            yield return new WaitForSeconds(0.5f);
+            CheckState();
         }
     }
 

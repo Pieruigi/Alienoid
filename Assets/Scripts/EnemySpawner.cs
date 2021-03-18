@@ -33,7 +33,14 @@ namespace Zom.Pie
             // Little randomization on the force
             float force = spawnForce * Random.Range(0.9f, 1.1f);
 
-            enemy.GetComponent<Rigidbody>().AddForce(dir * force, ForceMode.VelocityChange);
+            Rigidbody rb = enemy.GetComponent<Rigidbody>();
+
+            rb.AddForce(dir * force, ForceMode.VelocityChange);
+
+            float torqueMag = Random.Range(-3.5f, 3.5f);
+            rb.AddTorque(torqueMag * Vector3.forward, ForceMode.VelocityChange);
+
+
         }
     }
 

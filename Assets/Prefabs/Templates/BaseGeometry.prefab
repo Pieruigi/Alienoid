@@ -13,11 +13,11 @@ GameObject:
   - component: {fileID: 3948484515800465471}
   - component: {fileID: 3948484515800465456}
   m_Layer: 0
-  m_Name: Wall
+  m_Name: WallLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 1
   m_IsActive: 1
 --- !u!4 &3948484515800465469
 Transform:
@@ -108,11 +108,11 @@ GameObject:
   - component: {fileID: 3948484515896025334}
   - component: {fileID: 3948484515896025335}
   m_Layer: 0
-  m_Name: Wall
+  m_Name: WallUp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 1
   m_IsActive: 1
 --- !u!4 &3948484515896025332
 Transform:
@@ -122,8 +122,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3948484515896025320}
   m_LocalRotation: {x: -0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 0, y: 5.5700006, z: 0.25999975}
-  m_LocalScale: {x: 0.50000024, y: 1.6352102, z: 20.726805}
+  m_LocalPosition: {x: -0, y: 5.7964, z: 0.25999975}
+  m_LocalScale: {x: 0.9528173, y: 1.6352102, z: 20.726805}
   m_Children: []
   m_Father: {fileID: 8403119713064389794}
   m_RootOrder: 2
@@ -304,7 +304,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 1
   m_IsActive: 1
 --- !u!4 &8403119711294334072
 Transform:
@@ -414,7 +414,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 1
   m_IsActive: 1
 --- !u!4 &8403119711715915893
 Transform:
@@ -600,11 +600,11 @@ GameObject:
   - component: {fileID: 8403119712133164258}
   - component: {fileID: 8403119712133164259}
   m_Layer: 0
-  m_Name: Wall
+  m_Name: WallRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 1
   m_IsActive: 1
 --- !u!4 &8403119712133164268
 Transform:
