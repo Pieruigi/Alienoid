@@ -26,13 +26,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 817115086}
-  m_LocalRotation: {x: -0, y: -0, z: 0.48679358, w: 0.873517}
-  m_LocalPosition: {x: -10.71, y: -1.74, z: 0}
+  m_LocalRotation: {x: -0.0019403944, y: 0.014962217, z: 0.41440526, w: 0.9099674}
+  m_LocalPosition: {x: -10.35, y: -2.06, z: -0}
   m_LocalScale: {x: 0.5, y: 2.6869261, z: 0.5}
   m_Children: []
   m_Father: {fileID: 175561986663752257}
   m_RootOrder: 13
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 58.26}
+  m_LocalEulerAnglesHint: {x: -0.913, y: 1.468, z: 48.958}
 --- !u!33 &817115090
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -122,13 +122,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1990414407}
-  m_LocalRotation: {x: 0, y: 0, z: -0.48679265, w: 0.8735176}
-  m_LocalPosition: {x: 10.71, y: -2.31, z: 0}
+  m_LocalRotation: {x: -0.012558558, y: 0.00835747, z: -0.41421962, w: 0.910052}
+  m_LocalPosition: {x: 10.35, y: -2.06, z: -0}
   m_LocalScale: {x: 0.5, y: 2.6869261, z: 0.5}
   m_Children: []
   m_Father: {fileID: 175561986663752257}
   m_RootOrder: 14
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -58.26}
+  m_LocalEulerAnglesHint: {x: -0.913, y: 1.468, z: -48.958}
 --- !u!33 &1990414411
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -650,7 +650,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e6b4885595ac8b4cb7949ce404aacb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceMagnitude: 8
+  forceMagnitude: 6
   forceDirection: {fileID: 175561985182854672}
   alignToForceDirection: 1
   alignToForceDirectionSpeed: 5
@@ -813,7 +813,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e6b4885595ac8b4cb7949ce404aacb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceMagnitude: 8
+  forceMagnitude: 6
   forceDirection: {fileID: 175561985958224482}
   alignToForceDirection: 1
   alignToForceDirectionSpeed: 5
@@ -968,13 +968,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1326235683048017479}
-  m_LocalRotation: {x: -0.0000000045401976, y: 6.9849193e-10, z: 0.9872108, w: 0.15942068}
+  m_LocalRotation: {x: 0, y: 0, z: 0.9524783, w: 0.30460665}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2318214600249411904}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 161.653}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 144.531}
 --- !u!1 &1624973314286478214
 GameObject:
   m_ObjectHideFlags: 0
@@ -1085,7 +1085,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e6b4885595ac8b4cb7949ce404aacb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceMagnitude: 8
+  forceMagnitude: 6
   forceDirection: {fileID: 3606689125918236303}
   alignToForceDirection: 1
   alignToForceDirectionSpeed: 5
@@ -1231,7 +1231,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e6b4885595ac8b4cb7949ce404aacb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceMagnitude: 8
+  forceMagnitude: 6
   forceDirection: {fileID: 6603637409974357377}
   alignToForceDirection: 1
   alignToForceDirectionSpeed: 5
@@ -1380,13 +1380,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3036925272127172223}
-  m_LocalRotation: {x: 0, y: 0, z: -0.98721015, w: 0.15942466}
+  m_LocalRotation: {x: 0, y: 0, z: -0.9524783, w: 0.30460665}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3694769010320909060}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -161.653}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -144.531}
 --- !u!1 &3121448715060539162
 GameObject:
   m_ObjectHideFlags: 0
@@ -1820,7 +1820,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e6b4885595ac8b4cb7949ce404aacb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceMagnitude: 8
+  forceMagnitude: 6
   forceDirection: {fileID: 298114829381847885}
   alignToForceDirection: 1
   alignToForceDirectionSpeed: 5
@@ -2284,7 +2284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e6b4885595ac8b4cb7949ce404aacb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceMagnitude: 8
+  forceMagnitude: 6
   forceDirection: {fileID: 4015421639131824313}
   alignToForceDirection: 1
   alignToForceDirectionSpeed: 5
