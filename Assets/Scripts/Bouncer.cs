@@ -11,9 +11,17 @@ namespace Zom.Pie
 		float bouncePower = 0;
 
 		float bounceMul = 2.75f;
+		float velBounceMul = 0.55f;
 
-		// Start is called before the first frame update
-		void Start()
+		float bounceMagnitude;
+
+        private void Awake()
+        {
+			bounceMagnitude = bouncePower * bounceMul;
+		}
+
+        // Start is called before the first frame update
+        void Start()
 		{
 
 		}
@@ -38,7 +46,8 @@ namespace Zom.Pie
 				// We don't care about multiple contact points
 				ContactPoint contactPoint = collision.contacts[0];
 
-				float forceMag = bounceMul * (bouncePower + collision.relativeVelocity.magnitude * 0.175f);
+				
+				float forceMag = bounceMagnitude + collision.relativeVelocity.magnitude * velBounceMul;
 
 				Vector3 forceDir = -contactPoint.normal;
 

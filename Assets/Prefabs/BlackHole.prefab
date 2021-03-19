@@ -555,9 +555,9 @@ MonoBehaviour:
   renderersToColorize:
   - {fileID: 6753124894043412689}
   - {fileID: 8177109321232617354}
-  greenMaterial: {fileID: 2100000, guid: c85a2c3da6a62504e9d2c09615c17856, type: 2}
-  yellowMaterial: {fileID: 2100000, guid: efd9cde5e9b83174a9d0adc9aa3ca0e7, type: 2}
-  redMaterial: {fileID: 2100000, guid: fd099b4d18715c44c9a1ba3daec8700d, type: 2}
+  greenMaterial: {fileID: 2100000, guid: 780447ae81cb09045a642d49f236787c, type: 2}
+  yellowMaterial: {fileID: 2100000, guid: 14c1a1fb71ab29742bcfa9a5345e04fe, type: 2}
+  redMaterial: {fileID: 2100000, guid: cd2e59e3badbba44f8a976bbcc653186, type: 2}
   useGate: 0
   gateController: {fileID: 232701783837332855}
 --- !u!136 &4105765588092424718
