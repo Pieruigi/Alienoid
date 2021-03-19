@@ -1,5 +1,7 @@
+// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
+
 // CartoonFX 3 Shader
-// (c) 2015, Jean Moreno
+// (c) 2013, Jean Moreno
 
 Shader "Cartoon FX/Particle Multiply Colored"
 {
@@ -46,25 +48,21 @@ Shader "Cartoon FX/Particle Multiply Colored"
 					float4 vertex : POSITION;
 					fixed4 color : COLOR;
 					float2 texcoord : TEXCOORD0;
-					UNITY_VERTEX_INPUT_INSTANCE_ID
 				};
 				
 				struct v2f
 				{
-					float4 vertex : SV_POSITION;
+					float4 vertex : POSITION;
 					fixed4 color : COLOR;
 					float2 texcoord : TEXCOORD0;
 					#ifdef SOFTPARTICLES_ON
 					float4 projPos : TEXCOORD1;
 					#endif
-					UNITY_VERTEX_OUTPUT_STEREO
 				};
 				
 				v2f vert (appdata_t v)
 				{
 					v2f o;
-					UNITY_SETUP_INSTANCE_ID(v);
-					UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 					o.vertex = UnityObjectToClipPos(v.vertex);
 					#ifdef SOFTPARTICLES_ON
 					o.projPos = ComputeScreenPos (o.vertex);
@@ -75,7 +73,7 @@ Shader "Cartoon FX/Particle Multiply Colored"
 					return o;
 				}
 				
-				fixed4 frag (v2f i) : SV_Target
+				fixed4 frag (v2f i) : COLOR
 				{
 					#ifdef SOFTPARTICLES_ON
 					float sceneZ = LinearEyeDepth (UNITY_SAMPLE_DEPTH(tex2Dproj(_CameraDepthTexture, UNITY_PROJ_COORD(i.projPos))));

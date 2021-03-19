@@ -1296,17 +1296,17 @@ PrefabInstance:
     - target: {fileID: 6323986850573183990, guid: 191440e392f61944cab9fd21968d8235,
         type: 3}
       propertyPath: redCount
-      value: 20
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6323986850573183990, guid: 191440e392f61944cab9fd21968d8235,
         type: 3}
       propertyPath: greenCount
-      value: 0
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6323986850573183990, guid: 191440e392f61944cab9fd21968d8235,
         type: 3}
       propertyPath: yellowCount
-      value: 0
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6323986850573183990, guid: 191440e392f61944cab9fd21968d8235,
         type: 3}
