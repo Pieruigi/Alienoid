@@ -364,6 +364,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forceMagnitude: 0
   forceDirection: {fileID: 8492747091882282866}
+  alignToForceDirection: 0
+  alignToForceDirectionSpeed: 0.5
   impulseMagnitude: 6
   impulseDirection: {fileID: 6505310369774735093}
 --- !u!1 &4403075995689587964
@@ -508,6 +510,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forceMagnitude: 0
   forceDirection: {fileID: 7652584697465076157}
+  alignToForceDirection: 0
+  alignToForceDirectionSpeed: 0.5
   impulseMagnitude: 6
   impulseDirection: {fileID: 1805718543932719871}
 --- !u!1 &5430997286732244153
@@ -689,13 +693,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7091166399427136056}
-  m_LocalRotation: {x: 0, y: 0, z: 0.79863554, w: 0.60181504}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7091166400831789482}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 106}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!1 &7091166399470892613
 GameObject:
   m_ObjectHideFlags: 0
@@ -911,13 +915,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7091166400264439374}
-  m_LocalRotation: {x: 0, y: 0, z: -0.79863554, w: 0.60181504}
+  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7091166401200542538}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -106}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
 --- !u!1 &7091166400631211631
 GameObject:
   m_ObjectHideFlags: 0
@@ -1069,6 +1073,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forceMagnitude: 8
   forceDirection: {fileID: 7091166399427136063}
+  alignToForceDirection: 1
+  alignToForceDirectionSpeed: 5
   impulseMagnitude: 0
   impulseDirection: {fileID: 464795858472814518}
 --- !u!1 &7091166401200542539
@@ -1183,6 +1189,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forceMagnitude: 8
   forceDirection: {fileID: 7091166400264439373}
+  alignToForceDirection: 1
+  alignToForceDirectionSpeed: 5
   impulseMagnitude: 0
   impulseDirection: {fileID: 4505025005041980878}
 --- !u!1 &8627135057404863234

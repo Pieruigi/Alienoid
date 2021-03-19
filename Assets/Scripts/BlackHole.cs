@@ -16,7 +16,7 @@ namespace Zom.Pie
         }
 
         [SerializeField]
-        MeshRenderer rendererToColorize;
+        List<MeshRenderer> renderersToColorize;
 
         [SerializeField]
         Material greenMaterial;
@@ -136,16 +136,26 @@ namespace Zom.Pie
             switch (enemyType)
             {
                 case EnemyType.Green:
-                    rendererToColorize.sharedMaterial = greenMaterial;
+                    
+                    ColorizeRenderers(greenMaterial);
                     break;
                 case EnemyType.Yellow:
-                    rendererToColorize.sharedMaterial = yellowMaterial;
+                    ColorizeRenderers(yellowMaterial);
                     break;
                 case EnemyType.Red:
-                    rendererToColorize.sharedMaterial = redMaterial;
+                    ColorizeRenderers(redMaterial);
                     break;
             }
         }
+
+        void ColorizeRenderers(Material mat)
+        {
+            foreach(Renderer r in renderersToColorize)
+            {
+                r.sharedMaterial = mat;
+            }
+        }
+
     }
 
 }
