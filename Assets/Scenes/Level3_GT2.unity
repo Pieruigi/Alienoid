@@ -782,6 +782,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4067533810586320196, guid: 5e1d31793cc81344385632cd40e3de01,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4067533810732863991, guid: 5e1d31793cc81344385632cd40e3de01,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4067533811630176758, guid: 5e1d31793cc81344385632cd40e3de01,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6163876081228545228, guid: 5e1d31793cc81344385632cd40e3de01,
         type: 3}
       propertyPath: useGate
@@ -857,11 +872,41 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6246710013118425151, guid: 5e1d31793cc81344385632cd40e3de01,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6246710013301113996, guid: 5e1d31793cc81344385632cd40e3de01,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6246710014351261758, guid: 5e1d31793cc81344385632cd40e3de01,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6631763836328377326, guid: 5e1d31793cc81344385632cd40e3de01,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: c85a2c3da6a62504e9d2c09615c17856, type: 2}
+    - target: {fileID: 7886049992178959348, guid: 5e1d31793cc81344385632cd40e3de01,
+        type: 3}
+      propertyPath: useGate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7886049992428777287, guid: 5e1d31793cc81344385632cd40e3de01,
+        type: 3}
+      propertyPath: useGate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7886049993259517766, guid: 5e1d31793cc81344385632cd40e3de01,
+        type: 3}
+      propertyPath: useGate
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7947263061551463348, guid: 5e1d31793cc81344385632cd40e3de01,
         type: 3}
       propertyPath: m_IsActive

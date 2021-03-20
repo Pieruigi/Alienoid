@@ -250,6 +250,11 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 232701783837332855, guid: 022a67288e11b094381b02480b497df7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 955082613047769797, guid: 022a67288e11b094381b02480b497df7,
         type: 3}
       propertyPath: m_LocalPosition.z
@@ -337,6 +342,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4105765588092424719, guid: 022a67288e11b094381b02480b497df7,
         type: 3}
+      propertyPath: useGate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4105765588092424719, guid: 022a67288e11b094381b02480b497df7,
+        type: 3}
       propertyPath: enemyType
       value: 0
       objectReference: {fileID: 0}
@@ -399,6 +409,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6253016899309700, guid: 022a67288e11b094381b02480b497df7, type: 3}
       propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 232701783837332855, guid: 022a67288e11b094381b02480b497df7,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 955082613047769797, guid: 022a67288e11b094381b02480b497df7,
@@ -485,6 +500,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BlackHoleLeft
+      objectReference: {fileID: 0}
+    - target: {fileID: 4105765588092424719, guid: 022a67288e11b094381b02480b497df7,
+        type: 3}
+      propertyPath: useGate
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4105765588092424719, guid: 022a67288e11b094381b02480b497df7,
         type: 3}
