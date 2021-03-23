@@ -653,7 +653,7 @@ MonoBehaviour:
   forceMagnitude: 6
   forceDirection: {fileID: 175561985182854672}
   alignToForceDirection: 1
-  alignToForceDirectionSpeed: 5
+  alignToForceDirectionSpeed: 7.5
   impulseMagnitude: 0
   impulseDirection: {fileID: 7382547309742056345}
 --- !u!1 &175561986663752256
@@ -816,7 +816,7 @@ MonoBehaviour:
   forceMagnitude: 6
   forceDirection: {fileID: 175561985958224482}
   alignToForceDirection: 1
-  alignToForceDirectionSpeed: 5
+  alignToForceDirectionSpeed: 7.5
   impulseMagnitude: 0
   impulseDirection: {fileID: 6810087674405138913}
 --- !u!1 &409479599406098242
@@ -1088,7 +1088,7 @@ MonoBehaviour:
   forceMagnitude: 6
   forceDirection: {fileID: 3606689125918236303}
   alignToForceDirection: 1
-  alignToForceDirectionSpeed: 5
+  alignToForceDirectionSpeed: 7.5
   impulseMagnitude: 0
   impulseDirection: {fileID: 6799318518423998409}
 --- !u!1 &1711059270470403885
@@ -1149,8 +1149,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1851557120348971434}
   m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 8.91, y: 1.0971, z: 0}
-  m_LocalScale: {x: 3.0481281, y: 1.2433995, z: 1}
+  m_LocalPosition: {x: 9.2503, y: 1.0971, z: 0}
+  m_LocalScale: {x: 3.0481281, y: 0.5627646, z: 1}
   m_Children:
   - {fileID: 6603637409974357377}
   - {fileID: 6104017536121188361}
@@ -1234,7 +1234,7 @@ MonoBehaviour:
   forceMagnitude: 6
   forceDirection: {fileID: 6603637409974357377}
   alignToForceDirection: 1
-  alignToForceDirectionSpeed: 5
+  alignToForceDirectionSpeed: 7.5
   impulseMagnitude: 0
   impulseDirection: {fileID: 6104017536121188361}
 --- !u!1 &1993614235176489097
@@ -1823,7 +1823,7 @@ MonoBehaviour:
   forceMagnitude: 6
   forceDirection: {fileID: 298114829381847885}
   alignToForceDirection: 1
-  alignToForceDirectionSpeed: 5
+  alignToForceDirectionSpeed: 7.5
   impulseMagnitude: 0
   impulseDirection: {fileID: 1047732104214423283}
 --- !u!1 &6709664967836578003
@@ -2202,8 +2202,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9059287102677366404}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -8.91, y: 1.0971, z: 0}
-  m_LocalScale: {x: 3.0481281, y: 1.2433995, z: 1}
+  m_LocalPosition: {x: -9.2503, y: 1.0971, z: 0}
+  m_LocalScale: {x: 3.0481281, y: 0.5627646, z: 1}
   m_Children:
   - {fileID: 4015421639131824313}
   - {fileID: 346063148952188401}
@@ -2287,7 +2287,7 @@ MonoBehaviour:
   forceMagnitude: 6
   forceDirection: {fileID: 4015421639131824313}
   alignToForceDirection: 1
-  alignToForceDirectionSpeed: 5
+  alignToForceDirectionSpeed: 7.5
   impulseMagnitude: 0
   impulseDirection: {fileID: 346063148952188401}
 --- !u!1 &9161154953516657306
