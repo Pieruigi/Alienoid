@@ -41,7 +41,8 @@ namespace Zom.Pie
 
         bool closed = false;
         float time = 0;
-  
+
+        float scaleDefault = 0;
 
         float zOpenPosition = -1.013f;
         float zClosedPosition = 0.1f;
@@ -54,6 +55,8 @@ namespace Zom.Pie
         private void Awake()
         {
             Init();
+
+            scaleDefault = gate.transform.localScale.x;
 
             // Get collider
             coll = GetComponent<Collider>();
@@ -151,15 +154,20 @@ namespace Zom.Pie
             if (!forced)
             {
                 busy = true;
-                Sequence seq = DOTween.Sequence();
-                seq.OnComplete(HandleOnOpened);
+                //Sequence seq = DOTween.Sequence();
+                //seq.OnComplete(HandleOnOpened);
 
-                seq.Append(leftGate.transform.DOShakeRotation(warningTime, Vector3.up * 15f, 10, 90, false));
-                seq.Join(rightGate.transform.DOShakeRotation(warningTime, Vector3.up * 15f, 10, 90, false));
-                seq.Append(leftGate.transform.DOLocalRotate(Vector3.zero, 0.2f, RotateMode.Fast));
-                seq.Join(rightGate.transform.DOLocalRotate(Vector3.zero, 0.2f, RotateMode.Fast));
-                seq.Append(leftGate.transform.DOLocalMoveZ(zOpenPosition, 0.2f, false).SetEase(Ease.OutElastic));
-                seq.Join(rightGate.transform.DOLocalMoveZ(zOpenPosition, 0.2f, false).SetEase(Ease.OutElastic));
+                //seq.Append(leftGate.transform.DOShakeRotation(warningTime, Vector3.up * 15f, 10, 90, false));
+                //seq.Join(rightGate.transform.DOShakeRotation(warningTime, Vector3.up * 15f, 10, 90, false));
+                //seq.Append(leftGate.transform.DOLocalRotate(Vector3.zero, 0.2f, RotateMode.Fast));
+                //seq.Join(rightGate.transform.DOLocalRotate(Vector3.zero, 0.2f, RotateMode.Fast));
+                //seq.Append(leftGate.transform.DOLocalMoveZ(zOpenPosition, 0.2f, false).SetEase(Ease.OutElastic));
+                //seq.Join(rightGate.transform.DOLocalMoveZ(zOpenPosition, 0.2f, false).SetEase(Ease.OutElastic));
+
+                // Open
+                coll.enabled = false;
+                closed = false;
+                gate.transform.DOScale(0, 0.25f); 
             }
             else
             {
@@ -183,16 +191,20 @@ namespace Zom.Pie
         {
             if (!forced)
             {
-                busy = true;
-                Sequence seq = DOTween.Sequence();
-                seq.OnComplete(HandleOnClosed);
+                //busy = true;
+                //Sequence seq = DOTween.Sequence();
+                //seq.OnComplete(HandleOnClosed);
 
-                seq.Append(leftGate.transform.DOShakePosition(warningTime, Vector3.forward * 0.2f, 10, 90, false, false));
-                seq.Join(rightGate.transform.DOShakePosition(warningTime, Vector3.forward * 0.2f, 10, 90, false, false));
-                seq.Append(leftGate.transform.DOLocalMoveZ(zClosedPosition, 0.2f, false));
-                seq.Join(rightGate.transform.DOLocalMoveZ(zClosedPosition, 0.2f, false));
-                seq.Append(leftGate.transform.DOLocalRotate(Vector3.up * 90.0f, 0.2f, RotateMode.Fast).SetEase(Ease.OutElastic));
-                seq.Join(rightGate.transform.DOLocalRotate(Vector3.up * -90.0f, 0.2f, RotateMode.Fast).SetEase(Ease.OutElastic));
+                //seq.Append(leftGate.transform.DOShakePosition(warningTime, Vector3.forward * 0.2f, 10, 90, false, false));
+                //seq.Join(rightGate.transform.DOShakePosition(warningTime, Vector3.forward * 0.2f, 10, 90, false, false));
+                //seq.Append(leftGate.transform.DOLocalMoveZ(zClosedPosition, 0.2f, false));
+                //seq.Join(rightGate.transform.DOLocalMoveZ(zClosedPosition, 0.2f, false));
+                //seq.Append(leftGate.transform.DOLocalRotate(Vector3.up * 90.0f, 0.2f, RotateMode.Fast).SetEase(Ease.OutElastic));
+                //seq.Join(rightGate.transform.DOLocalRotate(Vector3.up * -90.0f, 0.2f, RotateMode.Fast).SetEase(Ease.OutElastic));
+
+                coll.enabled = true;
+                closed = true;
+                gate.transform.DOScale(scaleDefault, 0.25f);
             }
             else
             {
