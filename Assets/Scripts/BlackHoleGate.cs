@@ -189,6 +189,11 @@ namespace Zom.Pie
 
             if (closed)
             {
+                // Check warning
+                if (time >= closeLengthScaled - WarningSystem.WarningTime)
+                    WarningSystem.Instance.Warn();
+
+                // Check state
                 if (time >= closeLengthScaled)
                 {
                     Open(forced);
@@ -198,6 +203,10 @@ namespace Zom.Pie
             }
             else
             {
+                // Check warning
+                if (time >= openLengthScaled - WarningSystem.WarningTime)
+                    WarningSystem.Instance.Warn();
+
                 if (time >= openLengthScaled)
                 {
                     Close(forced);
