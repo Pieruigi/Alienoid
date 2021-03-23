@@ -3,12 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.Events;
 
 namespace Zom.Pie
 {
     [ExecuteInEditMode]
     public class BlackHoleGate : MonoBehaviour
     {
+        public UnityAction<BlackHoleGate> OnGateOpen;
+        public UnityAction<BlackHoleGate> OnGateClosed;
+
         // How long the gate is open ( the gate will close in openLength seconds )
         [SerializeField]
         float openLength = 10f;
@@ -40,6 +44,10 @@ namespace Zom.Pie
         GameObject rightGate;
 
         bool closed = false;
+        public bool Closed
+        {
+            get { return closed; }
+        }
         float time = 0;
 
         float scaleDefault = 1;
@@ -161,8 +169,8 @@ namespace Zom.Pie
                 gate.transform.localScale = Vector3.zero;
                 
             }
-            
-            
+
+            OnGateOpen?.Invoke(this);
 
         }
 
@@ -182,6 +190,7 @@ namespace Zom.Pie
                
             }
 
+            OnGateClosed?.Invoke(this);
         }
 
         void CheckState(bool forced)

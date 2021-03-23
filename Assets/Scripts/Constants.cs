@@ -10,5 +10,6 @@ namespace Zom.Pie
     public class Constants
     {
         public static readonly float TimeScaleDefault = 1.5f;
+
     }
 }

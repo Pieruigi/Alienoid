@@ -33,6 +33,9 @@ namespace Zom.Pie
         [SerializeField]
         GameObject gateController;
 
+        [SerializeField]
+        ParticleSystem fx;
+
         // We put here all the enemies collapsing inside the black hole in order to add to them a force
         List<Rigidbody> dyingEnemies = new List<Rigidbody>();
 
@@ -41,6 +44,11 @@ namespace Zom.Pie
 
         private void Awake()
         {
+            // Set gate handles
+            BlackHoleGate bhg = gateController.GetComponent<BlackHoleGate>();
+            bhg.OnGateClosed += HandleOnGateClosed;
+            bhg.OnGateOpen += HandleOnGateOpen;
+
             Colorize();
             CheckGate();
         }
@@ -48,7 +56,10 @@ namespace Zom.Pie
         // Start is called before the first frame update
         void Start()
         {
-            
+            if (!useGate || !gateController.GetComponent<BlackHoleGate>().Closed)
+                fx.Play();
+            else
+                fx.Stop();
         }
 
         // Update is called once per frame
@@ -60,7 +71,6 @@ namespace Zom.Pie
                 Colorize();
                 CheckGate();
             }
-                
 #endif
         }
 
@@ -136,14 +146,16 @@ namespace Zom.Pie
             switch (enemyType)
             {
                 case EnemyType.Green:
-                    
                     ColorizeRenderers(greenMaterial);
+                    //ColorizeFX(Color.green);
                     break;
                 case EnemyType.Yellow:
                     ColorizeRenderers(yellowMaterial);
+                    //ColorizeFX(Color.yellow);
                     break;
                 case EnemyType.Red:
                     ColorizeRenderers(redMaterial);
+                    //ColorizeFX(Color.red);
                     break;
             }
         }
@@ -154,6 +166,29 @@ namespace Zom.Pie
             {
                 r.sharedMaterial = mat;
             }
+        }
+
+        void ColorizeFX(Color color)
+        {
+            ParticleSystem.MainModule mm = fx.main;
+            mm.startColor = color;
+            
+        }
+
+        void HandleOnGateOpen(BlackHoleGate gate)
+        {
+            if (fx.isPlaying)
+                return;
+
+            fx.Play();
+        }
+
+        void HandleOnGateClosed(BlackHoleGate gate)
+        {
+            if (!fx.isPlaying)
+                return;
+
+            fx.Stop();
         }
 
     }

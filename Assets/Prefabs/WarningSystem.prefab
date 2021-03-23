@@ -44,4 +44,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   warningMaterial: {fileID: 2100000, guid: c3a61effd0587b84db4531059a837f9f, type: 2}
-  warningIntensity: 8
+  warningIntensity: 12

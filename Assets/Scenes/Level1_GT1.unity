@@ -673,6 +673,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5363888065499482048, guid: 5ff535bed59e6464a8bd2f396fc90dda,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5363981372338313096, guid: 5ff535bed59e6464a8bd2f396fc90dda,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5364159993037825538, guid: 5ff535bed59e6464a8bd2f396fc90dda,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5ff535bed59e6464a8bd2f396fc90dda, type: 3}
 --- !u!1001 &5351394974011339557
@@ -895,6 +910,11 @@ PrefabInstance:
         type: 3}
       propertyPath: useGate
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6405373064575734511, guid: 3a6b00daa693b7647b2df196bdfe15ac,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7143924914160440727, guid: 3a6b00daa693b7647b2df196bdfe15ac,
         type: 3}

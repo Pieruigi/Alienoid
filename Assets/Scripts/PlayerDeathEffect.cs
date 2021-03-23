@@ -9,6 +9,15 @@ namespace Zom.Pie
         [SerializeField]
         GameObject cannon;
 
+        [SerializeField]
+        GameObject fxPrefab;
+
+        [SerializeField]
+        Transform fxPoint;
+
+        [SerializeField]
+        GameObject controlBase;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -34,6 +43,13 @@ namespace Zom.Pie
 
             // Add torque
             rb.AddRelativeTorque(Vector3.forward * 1.0f, ForceMode.VelocityChange);
+
+            // Create the particle system
+            GameObject fx = Instantiate(fxPrefab);
+            fx.transform.position = fxPoint.transform.position;
+            
+            // Destroy the control base
+            Destroy(controlBase, 0.2f);
         }
     }
 
