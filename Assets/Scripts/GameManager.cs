@@ -16,6 +16,12 @@ namespace Zom.Pie
             get { return currentLevelId; }
         }
 
+        Language language = Language.English;
+        public Language Language
+        {
+            get { return language; }
+        }
+
         private void Awake()
         {
             if (!Instance)
