@@ -119,6 +119,10 @@ namespace Zom.Pie
             SaveCache();
         }
         
+        public bool LevelHasBeenBeaten(int levelId)
+        {
+            return levels[levelId] > 0;
+        }
 
         void SaveCache()
         {
