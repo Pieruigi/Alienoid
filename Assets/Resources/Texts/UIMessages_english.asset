@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76dbbaef5b3b4a04aad98c855e2cf3ec, type: 3}
   m_Name: UIMessages_english
   m_EditorClassIdentifier: 
-  textList: []
+  textList:
+  - Quit the game?
+  - Back to menu?

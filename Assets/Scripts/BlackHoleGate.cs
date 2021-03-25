@@ -134,10 +134,10 @@ namespace Zom.Pie
             // Adust time
             if (scaledByTime)
             {
-                openLengthScaled = openLength * Constants.TimeScaleDefault;
-                closeLengthScaled = closeLength * Constants.TimeScaleDefault;
-                startTimeScaled = startTime * Constants.TimeScaleDefault;
-                warningTime *= Constants.TimeScaleDefault;
+                openLengthScaled = openLength * Constants.DefaultTimeScale;
+                closeLengthScaled = closeLength * Constants.DefaultTimeScale;
+                startTimeScaled = startTime * Constants.DefaultTimeScale;
+                warningTime *= Constants.DefaultTimeScale;
             }
             else
             {

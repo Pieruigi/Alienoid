@@ -1,9 +1,12 @@
-﻿using System.Collections;
+﻿#define TMP_PRO
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+#if TMP_PRO
 using TMPro;
+#endif
 
 namespace Zom.Pie.UI
 {
@@ -23,8 +26,13 @@ namespace Zom.Pie.UI
         [SerializeField]
         private Button noButton;
 
+#if TMP_PRO
+        [SerializeField]
+        private TMP_Text msgText;
+#else
         [SerializeField]
         private Text msgText;
+#endif
 
         [SerializeField]
         private Image panelImage;
@@ -53,7 +61,7 @@ namespace Zom.Pie.UI
             }
             else
             {
-                Destroy(this.gameObject);
+                Destroy(gameObject);
             }
         }
 

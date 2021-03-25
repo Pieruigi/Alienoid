@@ -15,3 +15,6 @@ MonoBehaviour:
   textList:
   - Play
   - Options
+  - Yes
+  - No
+  - Ok

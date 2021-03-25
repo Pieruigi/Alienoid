@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Zom.Pie.Collections
 {
     
-    public class TextResolver
+    public class TextFactory
     {
         public enum Type { UIMessage, UILabel }
 
@@ -13,21 +13,21 @@ namespace Zom.Pie.Collections
 
         Dictionary<Type, TextCollection> messages;
 
-        static TextResolver instance;
-        public static TextResolver Instance
+        static TextFactory instance;
+        public static TextFactory Instance
         {
             get
             {
                 if (instance == null)
                 {
-                    instance = new TextResolver();
+                    instance = new TextFactory();
                 }
 
                 return instance;
             }
         }
 
-        protected TextResolver()
+        protected TextFactory()
         {
             messages = new Dictionary<Type, TextCollection>();
 
@@ -69,8 +69,13 @@ namespace Zom.Pie.Collections
                     ret = "UILabels";
                     break;
             }
+            
+            if(Application.isPlaying)
+                ret += "_" + GameManager.Instance.Language.ToString();
+            else
+                ret += "_" + Constants.DefaultLanguage.ToString();
 
-            return ret + "_" + GameManager.Instance.Language.ToString();
+            return ret;
         }
     }
 

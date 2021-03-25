@@ -11,7 +11,9 @@ namespace Zom.Pie
 
     public class Constants
     {
-        public static readonly float TimeScaleDefault = 1.5f;
+        public static readonly float DefaultTimeScale = 1.5f;
+
+        public static readonly Language DefaultLanguage = Language.English;
 
     }
 }
