@@ -15,5 +15,7 @@ namespace Zom.Pie
 
         public static readonly Language DefaultLanguage = Language.English;
 
+        public static readonly int MaxLevelSpeed = 4;
+
     }
 }

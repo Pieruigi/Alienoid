@@ -5,20 +5,27 @@ using UnityEngine;
 namespace Zom.Pie
 {
     /// <summary>
-    /// Every time a level is completed a new character is appended to the cache data string ( this means
-    /// that the first time the game starts the string is empty ). For example if we have completed
-    /// the first 3 levels then the string length will be 3 and the last unlocked level is the level 4;
-    /// the character represents the speed at which we have played and completed the level:
-    /// 0: normal speed
-    /// 1: fast speed
-    /// 2: crazy speed 
-    /// 4: impossible speed ( and so on )
+    /// The cache string contains a charater for each level of the game ( characters are separed
+    /// by a blank space ); each character is an integer which tell us whether the level has been already
+    /// beaten or not: 0 means we've never beat the level, while every value > 0 means we've beaten the 
+    /// level at the corresponding speed. For example '2 3 1 1 0 0 0 0 0 0' means the game has ten levels
+    /// and we beat the first four levels; we can also see that different speed at which each level has
+    /// been beaten. Basically we can understand if a given level is unlocked by looking at the speed
+    /// of the previous level.
+    /// 1: normal speed
+    /// 2: fast speed
+    /// 3: crazy speed 
+    /// 4: impossible speed
+    /// ......
+    /// ......
+    /// n: how fast must be this game ?
     /// NB: characters are separated by space
     /// </summary>
     public class GameProgressManager
     {
+
         //string cacheData;
-        string cacheName;
+        string cacheName = "save";
 
         List<int> levels;
 
@@ -30,23 +37,25 @@ namespace Zom.Pie
 
         private GameProgressManager()
         {
+            // Create the level list
+            int[] tmp = new int[GameManager.Instance.GetNumberOfLevels()];
+            levels = new List<int>(tmp);
+
             // Load player pref
             string data = PlayerPrefs.GetString(cacheName);
-
-            // Create the level list
-            levels = new List<int>();
-
-            // Fill the level list if the cache is not empty
+            
+            
             if (!string.IsNullOrEmpty(data))
             {
+                // We must check for each level in cache and set the corresponding element in the list
                 string[] s = data.Split(' ');
-                for(int i=0; i<s.Length; i++)
+                for (int i = 0; i < s.Length; i++)
                 {
-                    levels.Add(int.Parse(s[i]));
+                    int speed = int.Parse(s[i]);
+                    levels[i] = speed;
                 }
             }
-            
-
+    
         }
 
         /// <summary>
@@ -55,43 +64,59 @@ namespace Zom.Pie
         /// <returns></returns>
         public int GetLastUnlockedLevel()
         {
-            return levels.Count + 1;
+            // We just need to loop until we find the first level having speed zero
+            for(int i=0; i<levels.Count; i++)
+            {
+                if(levels[i] == 0)
+                {
+                    return i + 1;
+                }
+            }
+
+            // Why ???
+            return -1;
         }
 
-        public void ReportLevelCompleted(int levelId, int speed)
+        /// <summary>
+        /// Returns true if the given level is unlocked ( that means this is the first level or the previous
+        /// one has bean beaten )
+        /// </summary>
+        /// <param name="levelId"></param>
+        /// <returns></returns>
+        public bool LevelIsUnlocked(int levelId)
         {
-            // If cache is empty we just completed the first level at normal speed
-            if(levels.Count == 0)
-            {
-                levels.Add(0);
-                SaveCache();
-                return;
-            }
-            
-            // If the speed is > 0 then we played a level already completed at normal speed, so we only
-            // try to update the speed if needed
-            if(speed > 0)
-            {
-                if (levels[levelId - 1] < speed)
-                    levels[levelId - 1] = speed;
+            // The first level is always unlocked
+            if (levelId == 1)
+                return true;
 
-                // Save cache and return
-                SaveCache();
-                return;
-            }
+            if (levels[levelId - 1] > 0)
+                return true;
 
-            // We just completed the last unlocked level for the first time, so we simply need to 
-            // unlock the next level if exists.
-            if (GetLastUnlockedLevel() == levelId && levelId < GameManager.Instance.GetNumberOfLevels())
-            {
-                // Unlock the next level
-                levels.Add(0);
-                // Store data
-                SaveCache();
-                return;
-            }
+            return false;
+        }
 
-            
+        /// <summary>
+        /// Returns the max speed at which we have beaten the level ( 0 means it's not been beaten yet )
+        /// </summary>
+        /// <param name="levelId"></param>
+        /// <returns></returns>
+        public int GetMaxBeatenSpeed(int levelId)
+        {
+            return levels[levelId-1];
+        }
+
+        /// <summary>
+        /// Simply update beaten speed if needed
+        /// </summary>
+        /// <param name="levelId"></param>
+        /// <param name="speed"></param>
+        public void SetLevelBeaten(int levelId, int speed)
+        {
+            // Update the corresponding level if needed
+            if (levels[levelId-1] < speed)
+                levels[levelId-1] = speed;
+
+            SaveCache();
         }
         
 
