@@ -89,7 +89,8 @@ namespace Zom.Pie
             if (levelId == 1)
                 return true;
 
-            if (levels[levelId - 1] > 0)
+            // Has the previous level been beaten?
+            if (levels[levelId - 2] > 0)
                 return true;
 
             return false;
@@ -122,6 +123,11 @@ namespace Zom.Pie
         public bool LevelHasBeenBeaten(int levelId)
         {
             return levels[levelId] > 0;
+        }
+
+        public bool AllLevelsBeaten()
+        {
+            return levels[levels.Count - 1] > 0;
         }
 
         void SaveCache()

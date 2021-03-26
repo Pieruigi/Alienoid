@@ -8,6 +8,11 @@ namespace Zom.Pie.UI
 {
     public class LevelMenu : MonoBehaviour
     {
+        // This is the last level we played ( if one ); this is usefull to not set always the last 
+        // unlocked level as selected when we load this scene, that would not be appropriate if
+        // the game has been completed
+        public static int lastPlayedLevelId = 0;
+
         [SerializeField]
         Transform container;
 
@@ -20,7 +25,7 @@ namespace Zom.Pie.UI
 
         int selectedLevelId = 0;
 
-        float selectionTime = 0.5f;
+        float selectionTime = 0.3f;
         System.DateTime lastSelection;
 
         int columns;
@@ -59,7 +64,18 @@ namespace Zom.Pie.UI
             levelTemplate.transform.parent = transform;
 
             // Now select the first available level
-            selectedLevelId = GameProgressManager.Instance.GetLastUnlockedLevel();
+            if(GameProgressManager.Instance.AllLevelsBeaten())
+            {
+                if (lastPlayedLevelId > 0)
+                    selectedLevelId = lastPlayedLevelId;
+                else
+                    selectedLevelId = 1;
+            }
+            else
+            {
+                selectedLevelId = GameProgressManager.Instance.GetLastUnlockedLevel();
+            }
+            
             Debug.LogFormat("SelectedLevelId:{0}", selectedLevelId);
             container.GetChild(selectedLevelId - 1).GetComponent<Level>().Select(true);
 
@@ -109,6 +125,7 @@ namespace Zom.Pie.UI
                 
             }
 #endif
+            Debug.LogFormat("TimeScale:{0}", Time.timeScale);
             // Check for level selection
             if (Input.GetMouseButtonDown(0))
             {
@@ -141,8 +158,8 @@ namespace Zom.Pie.UI
                         // Get the level id
                         int levelId = level.GetComponent<Level>().LevelId;
 
-                        // If this level isn't the current selected one we must switch selection 
-                        if(selectedLevelId != levelId)
+                        // The level must be not selected and unlocked
+                        if(selectedLevelId != levelId && GameProgressManager.Instance.LevelIsUnlocked(levelId))
                         {
                             // Deselect the selected level
                             container.GetChild(selectedLevelId - 1).GetComponent<Level>().Select(false);
@@ -172,6 +189,14 @@ namespace Zom.Pie.UI
             
         }
 
+        //public void PlaySelectedLevel()
+        //{
+        //    // Set the speed in the game manager
+        //    GameManager.Instance.SetGameSpeed(speedSelectors.FindIndex(s => s.GetComponent<Toggle>().isOn)+1);
+
+        //    // Start game
+        //    GameManager.Instance.LoadLevel(selectedLevelId);
+        //}
 
         void ResetSpeedSelectors()
         {

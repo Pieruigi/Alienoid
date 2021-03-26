@@ -203,6 +203,8 @@ namespace Zom.Pie
             if (!PlayerManager.Instance)
                 yield break;
 
+            PlayerManager.Instance.OnDead += HandleOnPlayerDied;
+
             // Disable player controller
             PlayerManager.Instance.EnableController(false);
 
@@ -295,6 +297,14 @@ namespace Zom.Pie
             // Decrease number of enemies
             enemiesOnScreen--;
 
+            // Check if the level is completed
+            if(enemiesOnScreen == 0 && enemies.Count == 0)
+            {
+                // Game completed
+                GameProgressManager.Instance.SetLevelBeaten(GameManager.Instance.GetCurrentLevelId(), GameManager.Instance.GameSpeed);
+
+                StartCoroutine(EndingLevel());
+            }
         }
 
         void CreateEnemyPool()
@@ -316,6 +326,18 @@ namespace Zom.Pie
                 AddToPool(EnemyType.Red);
                 AddToEnemies(EnemyType.Red, redCount);
             }
+        }
+
+        IEnumerator EndingLevel()
+        {
+            yield return new WaitForSeconds(3f);
+
+            GameManager.Instance.LoadLevelMenu();
+        }
+
+        void HandleOnPlayerDied()
+        {
+            StartCoroutine(EndingLevel());
         }
     }
 

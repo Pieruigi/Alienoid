@@ -41,6 +41,11 @@ namespace Zom.Pie.UI
             Debug.LogFormat("ValueChanged:{0}", value);
             label.color = (value ? selected : unselected);
             label.transform.DOScale(value ? 1.2f : 1.0f, 0.25f);
+
+            if (value)
+            {
+                GameManager.Instance.GameSpeed = int.Parse(this.name);
+            }
         }
     }
 

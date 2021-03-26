@@ -26,6 +26,15 @@ namespace Zom.Pie
         //    get { return currentLevelId; }
         //}
 
+        /// <summary>
+        /// 1: normal speed
+        /// </summary>
+        int gameSpeed = 1;
+        public int GameSpeed
+        {
+            get { return gameSpeed; }
+            set { gameSpeed = value; }
+        }
   
         Language language = Language.English;
         public Language Language
@@ -99,6 +108,8 @@ namespace Zom.Pie
             //}
         }
 
+
+
         public bool IsInGame()
         {
             return SceneManager.GetActiveScene().buildIndex >= levelStartingIndex;
@@ -114,10 +125,18 @@ namespace Zom.Pie
             return SceneManager.GetActiveScene().buildIndex == mainMenuSceneIndex;
         }
 
+        public int GetCurrentLevelId()
+        {
+            if (!IsInGame())
+                return -1;
+            
+            return SceneManager.GetActiveScene().buildIndex - levelStartingIndex + 1;
+        }
+
         public int GetNumberOfLevels()
         {
 #if UNITY_EDITOR
-            return 24;
+            return SceneManager.sceneCountInBuildSettings - levelStartingIndex;
 #else
             return SceneManager.sceneCountInBuildSettings - levelStartingIndex;
 #endif
@@ -162,8 +181,15 @@ namespace Zom.Pie
             // Loading completed
             loading = false;
 
-            
-
+            if(scene.buildIndex < levelStartingIndex)
+            {
+                // Reset the time scale
+                Time.timeScale = 1;
+            }
+            else
+            {
+                SetTimeScaleByGameSpeed();
+            }
         }
 
         void HandleYesOnExitAction()
@@ -174,6 +200,25 @@ namespace Zom.Pie
                 LoadMainMenu();
             else
                 Application.Quit();
+        }
+
+        void SetTimeScaleByGameSpeed()
+        {
+            switch (gameSpeed)
+            {
+                case 1:
+                    Time.timeScale = Constants.DefaultTimeScale;
+                    break;
+                case 2:
+                    Time.timeScale = Constants.DefaultTimeScale * 1.5f;
+                    break;
+                case 3:
+                    Time.timeScale = Constants.DefaultTimeScale * 2f;
+                    break;
+                case 4:
+                    Time.timeScale = Constants.DefaultTimeScale * 2.5f;
+                    break;
+            }
         }
     }
 
