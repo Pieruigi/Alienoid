@@ -26,11 +26,6 @@ namespace Zom.Pie.UI
         GameObject current;
 
         bool open = false;
-        //public bool IsOpen
-        //{
-        //    get { return open; }
-        //    protected set { open = value; }
-        //}
 
         public GameObject Current
         {
@@ -41,8 +36,7 @@ namespace Zom.Pie.UI
         // Start is called before the first frame update
         protected virtual void Start()
         {
-            //if (hideOnStart)
-            //    Close();
+
         }
 
         // Update is called once per frame

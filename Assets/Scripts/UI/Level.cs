@@ -12,7 +12,15 @@ namespace Zom.Pie.UI
         GameObject padlock;
 
         int levelId;
+        public int LevelId
+        {
+            get { return levelId; }
+        }
         int speed;
+        public int MaxBeatenSpeed
+        {
+            get { return speed; }
+        }
 
         bool selected;
 
