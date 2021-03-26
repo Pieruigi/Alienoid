@@ -8,6 +8,8 @@ namespace Zom.Pie.UI
 {
     public class LevelMenu : MonoBehaviour
     {
+        public static LevelMenu Instance { get; private set; }
+
         // This is the last level we played ( if one ); this is usefull to not set always the last 
         // unlocked level as selected when we load this scene, that would not be appropriate if
         // the game has been completed
@@ -24,6 +26,10 @@ namespace Zom.Pie.UI
         GameObject levelTemplate;
 
         int selectedLevelId = 0;
+        public int SelectedLevelId
+        {
+            get { return selectedLevelId; }
+        }
 
         float selectionTime = 0.3f;
         System.DateTime lastSelection;
@@ -37,9 +43,17 @@ namespace Zom.Pie.UI
           
         private void Awake()
         {
-            columns = container.GetComponent<GridLayoutGroup>().constraintCount;
+            if (!Instance)
+            {
+                Instance = this;
+                columns = container.GetComponent<GridLayoutGroup>().constraintCount;
 
-            raycaster = transform.root.GetComponent<GraphicRaycaster>();
+                raycaster = transform.root.GetComponent<GraphicRaycaster>();
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
 
         // Start is called before the first frame update

@@ -33,7 +33,10 @@ namespace Zom.Pie.UI
             if (GameManager.Instance.IsInMainMenu())
                 GameManager.Instance.LoadLevelMenu();
             else if (GameManager.Instance.IsInLevelMenu())
-                GameManager.Instance.LoadLevel(1);
+            {
+                GameManager.Instance.LoadLevel(LevelMenu.Instance.SelectedLevelId);
+            }
+                
          
         }
 
