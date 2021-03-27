@@ -24,7 +24,7 @@ namespace Zom.Pie.UI
 
         bool selected;
 
-        float selectionScale = 1.5f;
+        float selectionScale = 1.16f;
 
         // Start is called before the first frame update
         void Start()

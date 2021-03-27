@@ -36,7 +36,7 @@ namespace Zom.Pie.UI
 
         int columns;
 
-        int visibleRows = 2;
+        int visibleRows = 3;
 
         GraphicRaycaster raycaster;
 
