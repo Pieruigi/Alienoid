@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using Zom.Pie.Collections;
 using Zom.Pie.UI;
@@ -10,7 +11,7 @@ namespace Zom.Pie
     
     public class GameManager : MonoBehaviour
     {
-        
+        public UnityAction<int> OnGameSpeedChanged;
 
         public static GameManager Instance { get; private set; }
 
@@ -33,7 +34,7 @@ namespace Zom.Pie
         public int GameSpeed
         {
             get { return gameSpeed; }
-            set { gameSpeed = value; }
+            set { gameSpeed = value; OnGameSpeedChanged?.Invoke(gameSpeed); }
         }
   
         Language language = Language.English;

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -8,6 +9,8 @@ namespace Zom.Pie.UI
 {
     public class LevelMenu : MonoBehaviour
     {
+        public UnityAction<int> OnLevelSelected;
+
         public static LevelMenu Instance { get; private set; }
 
         // This is the last level we played ( if one ); this is usefull to not set always the last 
@@ -93,6 +96,8 @@ namespace Zom.Pie.UI
             Debug.LogFormat("SelectedLevelId:{0}", selectedLevelId);
             container.GetChild(selectedLevelId - 1).GetComponent<Level>().Select(true);
 
+            OnLevelSelected?.Invoke(selectedLevelId);
+
             // Reset speed toggles
             ResetSpeedSelectors();
 
@@ -139,7 +144,7 @@ namespace Zom.Pie.UI
                 
             }
 #endif
-            Debug.LogFormat("TimeScale:{0}", Time.timeScale);
+            
             // Check for level selection
             if (Input.GetMouseButtonDown(0))
             {
@@ -183,6 +188,8 @@ namespace Zom.Pie.UI
 
                             // Select the new level
                             container.GetChild(selectedLevelId - 1).GetComponent<Level>().Select(true);
+
+                            OnLevelSelected?.Invoke(selectedLevelId);
 
                             // Reset the speed toggles
                             ResetSpeedSelectors();

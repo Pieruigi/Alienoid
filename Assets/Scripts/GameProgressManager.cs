@@ -37,25 +37,7 @@ namespace Zom.Pie
 
         private GameProgressManager()
         {
-            // Create the level list
-            int[] tmp = new int[GameManager.Instance.GetNumberOfLevels()];
-            levels = new List<int>(tmp);
-
-            // Load player pref
-            string data = PlayerPrefs.GetString(cacheName);
-            
-            
-            if (!string.IsNullOrEmpty(data))
-            {
-                // We must check for each level in cache and set the corresponding element in the list
-                string[] s = data.Split(' ');
-                for (int i = 0; i < s.Length; i++)
-                {
-                    int speed = int.Parse(s[i]);
-                    levels[i] = speed;
-                }
-            }
-    
+            Init();
         }
 
         /// <summary>
@@ -96,6 +78,19 @@ namespace Zom.Pie
             return false;
         }
 
+        public bool IsGameSpeedAvailable(int levelId, int gameSpeed)
+        {
+            // Get the max available speed for the current level
+            int beatenSpeed = GetMaxBeatenSpeed(levelId);
+
+            // We have beaten the level at all the speeds
+            if (beatenSpeed == Constants.MaxLevelSpeed || gameSpeed <= beatenSpeed + 1)
+                return true;
+
+            return false;
+
+        }
+
         /// <summary>
         /// Returns the max speed at which we have beaten the level ( 0 means it's not been beaten yet )
         /// </summary>
@@ -128,6 +123,35 @@ namespace Zom.Pie
         public bool AllLevelsBeaten()
         {
             return levels[levels.Count - 1] > 0;
+        }
+
+        public void Reset()
+        {
+            PlayerPrefs.DeleteKey(cacheName);
+            Init();
+        }
+
+        void Init()
+        {
+            
+            // Create the level list
+            int[] tmp = new int[GameManager.Instance.GetNumberOfLevels()];
+            levels = new List<int>(tmp);
+
+            // Load player pref
+            string data = PlayerPrefs.GetString(cacheName);
+
+
+            if (!string.IsNullOrEmpty(data))
+            {
+                // We must check for each level in cache and set the corresponding element in the list
+                string[] s = data.Split(' ');
+                for (int i = 0; i < s.Length; i++)
+                {
+                    int speed = int.Parse(s[i]);
+                    levels[i] = speed;
+                }
+            }
         }
 
         void SaveCache()

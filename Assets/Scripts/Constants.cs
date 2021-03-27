@@ -15,7 +15,11 @@ namespace Zom.Pie
 
         public static readonly Language DefaultLanguage = Language.English;
 
-        public static readonly int MaxLevelSpeed = 4;
+        public static readonly int MaxLevelSpeed = 3;
+
+        // UI
+        public static readonly Color EnabledColor = Color.white;
+        public static readonly Color DisabledColor = new Color32(80, 80, 80, 127);
 
     }
 }
