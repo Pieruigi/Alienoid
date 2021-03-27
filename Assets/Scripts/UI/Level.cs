@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Zom.Pie.UI
 {
@@ -65,6 +66,14 @@ namespace Zom.Pie.UI
 
                     // Update the speed panel
                     UpdateSpeedPanel();
+                }
+                else
+                {
+                    // Change color alpha
+                    Image img = GetComponent<Image>();
+                    Color c = img.color * 0.6f;
+                    c.a = 1;
+                    img.color = c;
                 }
             }
             
