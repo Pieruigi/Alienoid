@@ -22,16 +22,7 @@ namespace Zom.Pie
         Material material;
 
         //[SerializeField]
-        //Material greenMaterial;
-
-        //[SerializeField]
-        //Material yellowMaterial;
-
-        //[SerializeField]
-        //Material redMaterial;
-
-        [SerializeField]
-        bool useGate = false;
+        //bool useGate = false;
 
         [SerializeField]
         GameObject gateController;
@@ -62,16 +53,17 @@ namespace Zom.Pie
                 rend.sharedMaterial = mat;
 
             Colorize();
-            CheckGate();
+            fx.Play();
+            //CheckGate();
         }
 
         // Start is called before the first frame update
         void Start()
         {
-            if (!useGate || !gateController.GetComponent<BlackHoleGate>().Closed)
-                fx.Play();
-            else
-                fx.Stop();
+            //if (!useGate || !gateController.GetComponent<BlackHoleGate>().Closed)
+            //    fx.Play();
+            //else
+            //    fx.Stop();
         }
 
         // Update is called once per frame
@@ -81,21 +73,19 @@ namespace Zom.Pie
             if (!Application.isPlaying)
             {
                Colorize();
-               CheckGate();
+               //CheckGate();
                 return;
             }
 
-            Debug.Log("TimeScale: " + Time.timeScale);
 #endif
         }
 
         private void FixedUpdate()
         {
-            Debug.Log("FixedUpdate");
+            
             foreach (Rigidbody enemy in dyingEnemies)
             {
-                Debug.Log("Att enemy " + enemy);
-
+            
                 // Compute the force direction
                 Vector3 dir = transform.position - enemy.position;
                 dir.z = 0;
@@ -169,7 +159,6 @@ namespace Zom.Pie
 
             yield return enemy.transform.DOScale(Vector3.zero, 0.5f).WaitForCompletion();
 
-            Debug.Log("Remove from list");
             // Remove fro the list
             dyingEnemies.Remove(enemyRB);
 
@@ -178,17 +167,17 @@ namespace Zom.Pie
 
         }
 
-        void CheckGate()
-        {
-            if (!useGate)
-            {
-                gateController.SetActive(false);
-            }
-            else
-            {
-                gateController.SetActive(true);
-            }
-        }
+        //void CheckGate()
+        //{
+        //    if (!useGate)
+        //    {
+        //        gateController.SetActive(false);
+        //    }
+        //    else
+        //    {
+        //        gateController.SetActive(true);
+        //    }
+        //}
 
         void Colorize()
         {

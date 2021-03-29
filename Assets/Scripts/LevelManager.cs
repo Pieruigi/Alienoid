@@ -284,7 +284,6 @@ namespace Zom.Pie
 
         void HandleOnDead(Enemy enemy, BlackHole blackHole)
         {
-            Debug.Log("EnemyDead:" + enemy.gameObject);
 
             // Put the enemy back in the pool
             MoveEnemyToPool(enemy.gameObject);

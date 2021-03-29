@@ -76,12 +76,12 @@ namespace Zom.Pie.UI
                 // Set level data
                 l.GetComponent<Level>().Init(i + 1);
             }
-
+           
             // Move the template out
             levelTemplate.transform.parent = transform;
-
+            
             // Now select the first available level
-            if(GameProgressManager.Instance.AllLevelsBeaten())
+            if (GameProgressManager.Instance.AllLevelsBeaten())
             {
                 if (lastPlayedLevelId > 0)
                     selectedLevelId = lastPlayedLevelId;
@@ -95,12 +95,12 @@ namespace Zom.Pie.UI
             
             Debug.LogFormat("SelectedLevelId:{0}", selectedLevelId);
             container.GetChild(selectedLevelId - 1).GetComponent<Level>().Select(true);
-
+            
             OnLevelSelected?.Invoke(selectedLevelId);
-
+            
             // Reset speed toggles
             ResetSpeedSelectors();
-
+            
             // Scroll down until the selected element is in the first row that we can see
             ScrollRect sr = container.parent.parent.GetComponent<ScrollRect>();
             // The line containing selected element
@@ -225,12 +225,12 @@ namespace Zom.Pie.UI
             // Get the current level
             Level level = container.GetChild(selectedLevelId-1).GetComponent<Level>();
 
-            Debug.LogFormat("Resetting speed toggles for level {0}", level.LevelId);
+            
 
             // Set all speed toggles
             for (int i=0; i<speedSelectors.Count; i++)
             {
-                Debug.LogFormat("Checking for speed {0}", i);
+                
                 if (i > level.MaxBeatenSpeed)
                     speedSelectors[i].interactable = false;
                 else

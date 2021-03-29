@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Bullet
   - Enemy
+  - FxTemporaire
+  - Fire
   layers:
   - Default
   - TransparentFX
@@ -18,7 +20,7 @@ TagManager:
   - BulletCollider
   - EnemyCollider
   - BlackHole
-  - 
+  - Floor
   - 
   - 
   - 

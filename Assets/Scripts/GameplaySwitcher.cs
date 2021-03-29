@@ -4,43 +4,34 @@ using UnityEngine;
 
 namespace Zom.Pie
 {
-    [ExecuteInEditMode]
-    public class BlackHoleSwitcher : MonoBehaviour
+    public abstract class GameplaySwitcher : MonoBehaviour
     {
-        [System.Serializable]
-        public class Data
-        {
-            public BlackHole blackHole;
-            public List<EnemyType> steps;
-            public int currentStep = 0;
-        }
-
         [SerializeField]
         float switchTime = 0;
 
         [SerializeField]
         float startingTime = 0;
 
-        [SerializeField]
-        List<Data> dataList;
-
         float elapsed = 0;
         bool warning = false;
 
-        private void Awake()
+        protected abstract void Init();
+
+        protected abstract void Switch();
+
+        protected virtual void Awake()
         {
             elapsed = startingTime;
         }
 
         // Start is called before the first frame update
-        void Start()
+        protected virtual void Start()
         {
-            // Initialize
             Init();
         }
 
         // Update is called once per frame
-        void Update()
+        protected virtual void Update()
         {
 #if UNITY_EDITOR
             if (!Application.isPlaying)
@@ -49,7 +40,6 @@ namespace Zom.Pie
                 return;
             }
 #endif
-
             if (!LevelManager.Instance.Running)
                 return;
 
@@ -57,14 +47,14 @@ namespace Zom.Pie
             elapsed += Time.deltaTime;
 
             // Check the warning time
-            if(switchTime - elapsed <= 3.0f && !warning)
+            if (switchTime - elapsed <= 3.0f && !warning)
             {
                 warning = true;
                 WarningSystem.Instance.Play();
             }
-                
 
-            if(elapsed >= switchTime)
+
+            if (elapsed >= switchTime)
             {
                 // Switch
                 Switch();
@@ -73,30 +63,6 @@ namespace Zom.Pie
                 elapsed %= switchTime;
                 warning = false;
                 Debug.LogFormat("Elapsed: {0}", elapsed);
-            }   
-        }
-
-        void Switch()
-        {
-            Debug.LogFormat("Switch");
-            foreach(Data data in dataList)
-            {
-                // Update step
-                data.currentStep++;
-                if (data.currentStep >= data.steps.Count)
-                    data.currentStep = 0;
-
-                data.blackHole.SwitchEnemyType(data.steps[data.currentStep]);
-
-                
-            }
-        }
-
-        void Init()
-        {
-            foreach (Data data in dataList)
-            {
-                data.blackHole.SetEnemyType(data.steps[data.currentStep]);
             }
         }
     }
