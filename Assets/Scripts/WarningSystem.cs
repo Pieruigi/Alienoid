@@ -61,7 +61,7 @@ namespace Zom.Pie
         {
 #if UNITY_EDITOR
             if (Input.GetKeyDown(KeyCode.A))
-                Warn();
+                Play();
 #endif
         }
 
@@ -70,7 +70,7 @@ namespace Zom.Pie
             warningMaterial.SetColor("_EmissionColor", colorDefault);
         }
 
-        public void Warn()
+        public void Play()
         {
             if (playing)
                 return;

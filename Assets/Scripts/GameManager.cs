@@ -134,6 +134,8 @@ namespace Zom.Pie
             return SceneManager.GetActiveScene().buildIndex - levelStartingIndex + 1;
         }
 
+
+
         public int GetNumberOfLevels()
         {
 #if UNITY_EDITOR
@@ -189,7 +191,8 @@ namespace Zom.Pie
             }
             else
             {
-                SetTimeScaleByGameSpeed();
+                // Set the actual time scale
+                Time.timeScale = GetActualGameSpeed();
             }
         }
 
@@ -203,24 +206,29 @@ namespace Zom.Pie
                 Application.Quit();
         }
 
-        void SetTimeScaleByGameSpeed()
+
+        float GetActualGameSpeed()
         {
+            float ret = 1;
             switch (gameSpeed)
             {
                 case 1:
-                    Time.timeScale = Constants.DefaultTimeScale;
+                    ret = Constants.DefaultTimeScale;
                     break;
                 case 2:
-                    Time.timeScale = Constants.DefaultTimeScale * 1.5f;
+                    ret = Constants.DefaultTimeScale * 1.5f;
                     break;
                 case 3:
-                    Time.timeScale = Constants.DefaultTimeScale * 2f;
+                    ret = Constants.DefaultTimeScale * 2f;
                     break;
                 case 4:
-                    Time.timeScale = Constants.DefaultTimeScale * 2.5f;
+                    ret = Constants.DefaultTimeScale * 2.5f;
                     break;
             }
+
+            return ret;
         }
+
     }
 
 }

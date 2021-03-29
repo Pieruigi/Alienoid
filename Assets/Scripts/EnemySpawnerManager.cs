@@ -18,7 +18,8 @@ namespace Zom.Pie
         // the last used spawner id 
         int nextId = 0;
 
-        DateTime lastSpawnTime;
+        //DateTime lastSpawnTime;
+        float spawnElapsed = 0;
         float spawnTime = 1f;
 
         List<GameObject> spawnList = new List<GameObject>();
@@ -32,6 +33,7 @@ namespace Zom.Pie
 
                 // Randomize first ( both for random and round spawner )
                 nextId = UnityEngine.Random.Range(0, spawners.Count);
+
             }
             else
             {
@@ -45,6 +47,9 @@ namespace Zom.Pie
         void Start()
         {
 
+            // Adjust the spawning time
+            spawnTime *= Constants.DefaultTimeScale / Time.timeScale;
+            Debug.LogFormat("SpawnTime: {0}", spawnTime);
         }
 
         // Update is called once per frame
@@ -53,7 +58,8 @@ namespace Zom.Pie
             if (spawnList.Count == 0)
                 return;
 
-            if ((DateTime.UtcNow - lastSpawnTime).TotalSeconds < spawnTime)
+            spawnElapsed += Time.deltaTime;
+            if (spawnElapsed < spawnTime)
                 return;
 
             // Spawn first enemy in the list
@@ -68,7 +74,7 @@ namespace Zom.Pie
             GetSpawner().Spawn(enemy);
 
 
-            lastSpawnTime = DateTime.UtcNow;
+            spawnElapsed = 0;
         }
 
         /// <summary>

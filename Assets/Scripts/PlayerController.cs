@@ -38,14 +38,14 @@ namespace Zom.Pie
             // Disable collision between base and cannon
             Physics.IgnoreCollision(baseCollider, cannonCollider);
 
-            // Init the cooldown
-            SetFireRate(fireRate);
+
         }
 
         // Start is called before the first frame update
         void Start()
         {
-
+            // Init the cooldown
+            SetFireRate(fireRate);
         }
 
         private void Update()
@@ -108,6 +108,7 @@ namespace Zom.Pie
         {
             fireRate = value;
             fireCooldown = 1f / fireRate;
+            fireCooldown *= Constants.DefaultTimeScale / Time.timeScale;
         }
     }
 

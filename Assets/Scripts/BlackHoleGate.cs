@@ -62,7 +62,7 @@ namespace Zom.Pie
         {
             //scaleDefault = gate.transform.localScale.x;
 
-            Init();
+            
 
             // Get collider
             coll = GetComponent<Collider>();
@@ -73,6 +73,8 @@ namespace Zom.Pie
         // Start is called before the first frame update
         void Start()
         {
+            Init();
+
             StartCoroutine(StartDelayed());
             
         }
@@ -138,6 +140,7 @@ namespace Zom.Pie
                 closeLengthScaled = closeLength * Constants.DefaultTimeScale;
                 startTimeScaled = startTime * Constants.DefaultTimeScale;
                 warningTime *= Constants.DefaultTimeScale;
+                
             }
             else
             {
@@ -200,7 +203,7 @@ namespace Zom.Pie
             {
                 // Check warning
                 if (time >= closeLengthScaled - WarningSystem.WarningTime)
-                    WarningSystem.Instance.Warn();
+                    WarningSystem.Instance.Play();
 
                 // Check state
                 if (time >= closeLengthScaled)
@@ -214,7 +217,7 @@ namespace Zom.Pie
             {
                 // Check warning
                 if (time >= openLengthScaled - WarningSystem.WarningTime)
-                    WarningSystem.Instance.Warn();
+                    WarningSystem.Instance.Play();
 
                 if (time >= openLengthScaled)
                 {

@@ -19,13 +19,16 @@ namespace Zom.Pie
         List<MeshRenderer> renderersToColorize;
 
         [SerializeField]
-        Material greenMaterial;
+        Material material;
 
-        [SerializeField]
-        Material yellowMaterial;
+        //[SerializeField]
+        //Material greenMaterial;
 
-        [SerializeField]
-        Material redMaterial;
+        //[SerializeField]
+        //Material yellowMaterial;
+
+        //[SerializeField]
+        //Material redMaterial;
 
         [SerializeField]
         bool useGate = false;
@@ -41,6 +44,8 @@ namespace Zom.Pie
 
         float forceMagnitude = 80f;
 
+        Material mat;
+        Color fxColor;
 
         private void Awake()
         {
@@ -48,6 +53,13 @@ namespace Zom.Pie
             BlackHoleGate bhg = gateController.GetComponent<BlackHoleGate>();
             bhg.OnGateClosed += HandleOnGateClosed;
             bhg.OnGateOpen += HandleOnGateOpen;
+
+            // Create new material
+            //mat = new Material(renderersToColorize[0].material);
+            mat = new Material(material);
+            // Set the new material to each renderer
+            foreach (Renderer rend in renderersToColorize)
+                rend.sharedMaterial = mat;
 
             Colorize();
             CheckGate();
@@ -68,16 +80,22 @@ namespace Zom.Pie
 #if UNITY_EDITOR
             if (!Application.isPlaying)
             {
-                Colorize();
-                CheckGate();
+               Colorize();
+               CheckGate();
+                return;
             }
+
+            Debug.Log("TimeScale: " + Time.timeScale);
 #endif
         }
 
         private void FixedUpdate()
         {
-            foreach(Rigidbody enemy in dyingEnemies)
+            Debug.Log("FixedUpdate");
+            foreach (Rigidbody enemy in dyingEnemies)
             {
+                Debug.Log("Att enemy " + enemy);
+
                 // Compute the force direction
                 Vector3 dir = transform.position - enemy.position;
                 dir.z = 0;
@@ -98,6 +116,29 @@ namespace Zom.Pie
             Colorize();
         }
 
+        /// <summary>
+        /// This method is similar to set enemy type, but simply fade from the old to the new color
+        /// </summary>
+        /// <param name="type"></param>
+        public void SwitchEnemyType(EnemyType type)
+        {
+            float time = 1.5f;
+            Color color = GetActualColor(type);
+            foreach (Renderer rend in renderersToColorize)
+            {
+                rend.material.DOColor(color, time);
+            }
+
+            color.a = 0.5f;
+            ParticleSystem.MainModule mm = fx.main;
+
+            fxColor = mm.startColor.color;
+            DOTween.To(() => fxColor, HandleOnFXColorChanged, color, time);
+           
+
+            enemyType = type;
+        }
+
         private void OnTriggerEnter(Collider other)
         {
             if (Tag.Enemy.ToString().Equals(other.tag))
@@ -112,6 +153,13 @@ namespace Zom.Pie
             }
         }
 
+        void HandleOnFXColorChanged(Color color)
+        {
+            fxColor = color;
+            ParticleSystem.MainModule mm = fx.main;
+            mm.startColor = fxColor;
+        }
+
         IEnumerator DestroyEnemy(GameObject enemy)
         {
             
@@ -121,6 +169,7 @@ namespace Zom.Pie
 
             yield return enemy.transform.DOScale(Vector3.zero, 0.5f).WaitForCompletion();
 
+            Debug.Log("Remove from list");
             // Remove fro the list
             dyingEnemies.Remove(enemyRB);
 
@@ -146,30 +195,50 @@ namespace Zom.Pie
             switch (enemyType)
             {
                 case EnemyType.Green:
-                    ColorizeRenderers(greenMaterial);
-                    //ColorizeFX(Color.green);
+                    ColorizeRenderers(Color.green);
+                    ColorizeFX(Color.green);
                     break;
                 case EnemyType.Yellow:
-                    ColorizeRenderers(yellowMaterial);
-                    //ColorizeFX(Color.yellow);
+                    ColorizeRenderers(Color.yellow);
+                    ColorizeFX(Color.yellow);
                     break;
                 case EnemyType.Red:
-                    ColorizeRenderers(redMaterial);
-                    //ColorizeFX(Color.red);
+                    ColorizeRenderers(Color.red);
+                    ColorizeFX(Color.red);
                     break;
             }
         }
 
-        void ColorizeRenderers(Material mat)
+        Color GetActualColor(EnemyType enemyType)
         {
-            foreach(Renderer r in renderersToColorize)
+            Color ret = Color.white;
+            switch (enemyType)
             {
-                r.sharedMaterial = mat;
+                case EnemyType.Green:
+                    ret =  Color.green;
+                    break;
+                case EnemyType.Yellow:
+                    ret = Color.yellow;
+                    break;
+                case EnemyType.Red:
+                    ret = Color.red;
+                    break;
+            }
+            return ret;
+        }
+
+        void ColorizeRenderers(Color color)
+        {
+            foreach (Renderer r in renderersToColorize)
+            {
+                r.sharedMaterial.color = color;
+                
             }
         }
 
         void ColorizeFX(Color color)
         {
+            color.a = 0.5f;
             ParticleSystem.MainModule mm = fx.main;
             mm.startColor = color;
             

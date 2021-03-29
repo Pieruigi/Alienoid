@@ -559,9 +559,7 @@ MonoBehaviour:
   renderersToColorize:
   - {fileID: 6753124894043412689}
   - {fileID: 8177109321232617354}
-  greenMaterial: {fileID: 2100000, guid: 780447ae81cb09045a642d49f236787c, type: 2}
-  yellowMaterial: {fileID: 2100000, guid: 14c1a1fb71ab29742bcfa9a5345e04fe, type: 2}
-  redMaterial: {fileID: 2100000, guid: cd2e59e3badbba44f8a976bbcc653186, type: 2}
+  material: {fileID: 2100000, guid: 1c8dea099b7b8c64e98567bbd0274738, type: 2}
   useGate: 1
   gateController: {fileID: 232701783837332855}
   fx: {fileID: 5312559564254333720}
@@ -1285,6 +1283,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7194402716352607199, guid: fb578435aac332142814a791ba4e3649,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.a
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fb578435aac332142814a791ba4e3649, type: 3}
 --- !u!4 &5312559564234935896 stripped
@@ -1380,7 +1383,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 780447ae81cb09045a642d49f236787c, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 8d5eefbcc93c298449fab210194ea9fa,
         type: 3}
       propertyPath: m_Name
@@ -1390,7 +1393,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 780447ae81cb09045a642d49f236787c, type: 2}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d5eefbcc93c298449fab210194ea9fa, type: 3}
 --- !u!4 &5401951761582438463 stripped

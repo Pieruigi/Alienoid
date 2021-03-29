@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9eacb12ec4e83c4798625feca151642, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bouncePower: 0.8
+  bouncePower: 0.4
 --- !u!1 &6619878281812346624
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,7 +217,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9eacb12ec4e83c4798625feca151642, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bouncePower: 0.8
+  bouncePower: 0.4
 --- !u!1 &6619878282332157931
 GameObject:
   m_ObjectHideFlags: 0
