@@ -1,15 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Zom.Pie
 {
 	public class Bouncer : MonoBehaviour
 	{
+		public UnityAction<Bouncer> OnBounce;
+
 		[SerializeField]
 		[Range(0f,1f)]
 		float bouncePower = 0;
 
+		
 		float bounceMul = 2.75f;
 		float velBounceMul = 0.55f;
 
@@ -53,9 +57,11 @@ namespace Zom.Pie
 
 
 				collision.gameObject.GetComponent<Rigidbody>().AddForce(forceMag * forceDir, ForceMode.Impulse);
+
+				
 			}
 
-			
+			OnBounce?.Invoke(this);
 
 
 		}
