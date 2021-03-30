@@ -10,24 +10,28 @@ namespace Zom.Pie
         [SerializeField]
         Bouncer bouncer;
 
-        [SerializeField]
-        Material baseMaterial;
+        Material mat;
 
         Color colorDefault;
-        Renderer rend;
+        //Renderer rend;
         bool playing = false;
 
-        float intensity;
-        int dir = 1;
-        float intensityTime = 10;
+        Color targetColor;
+        float intensity = 50;
+        float time = 0.25f;
 
         private void Awake()
         {
             bouncer.OnBounce += HandleOnBounce;
-            rend = GetComponent<Renderer>();
-            rend.sharedMaterial = baseMaterial;
-            colorDefault = baseMaterial.GetColor("_EmissionColor");
-            Debug.Log("ColorDefault:" + colorDefault);
+            Renderer rend = GetComponent<Renderer>();
+
+            // Create a new material
+            mat = new Material(rend.sharedMaterial);
+            rend.sharedMaterial = mat;
+
+            colorDefault = mat.GetColor("_EmissionColor");
+
+  
         }
 
         // Start is called before the first frame update
@@ -47,37 +51,29 @@ namespace Zom.Pie
 
         void HandleOnBounce(Bouncer bouncer)
         {
-            //if (playing)
+            //if (!"bouncertop".Equals(transform.parent.name.ToLower()))
             //    return;
 
+            if (playing)
+                return;
+
             playing = true;
-            intensity = 0;
-            float targetIntensity = 10f;
-            float time = 0.5f;
-            
-          
 
-            dir = -1;
+            Debug.Log("Setting color");
+            //mat.SetColor("_EmissionColor", Color.red * 10);
 
-            //DOTween.To(()=>currentColor, )
+            targetColor = Color.red * intensity;
 
-
-            //DOTween.To(() => intensity, (x) => { intensity = x; rend.material.SetColor("_EmissionColor", colorDefault * intensity); }, targetIntensity, intensityTime).OnComplete(HandleOnComplete);
+            DOTween.To(() => mat.GetColor("_EmissionColor"), (x) => mat.SetColor("_EmissionColor", x), targetColor, time)
+                .OnComplete(() => { DOTween.To(() => mat.GetColor("_EmissionColor"), (x) => mat.SetColor("_EmissionColor", x), colorDefault, time)
+                                    .OnComplete(() => { playing = false; }); ; });
                 
-          
-            //rend.material.DOColor(c, time).OnComplete(() => rend.material.DOColor(colorDefault, time).OnComplete(() => playing = false)); ;
         }
 
-        void HandleOnComplete()
-        {
-            return;
-            //Debug.Log("Completed - CurrentColor:" + currentColor);
-            rend.material.SetColor("_EmissionColor", colorDefault);
+       
 
-            if(dir == -1)
-                DOTween.To(() => intensity, (x) => { intensity = x; rend.material.SetColor("_EmissionColor", colorDefault * intensity); }, 0, intensityTime);
 
-        }
+      
     }
 
 }
