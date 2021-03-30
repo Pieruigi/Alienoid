@@ -17,12 +17,17 @@ namespace Zom.Pie
         Renderer rend;
         bool playing = false;
 
+        float intensity;
+        int dir = 1;
+        float intensityTime = 10;
+
         private void Awake()
         {
             bouncer.OnBounce += HandleOnBounce;
             rend = GetComponent<Renderer>();
             rend.sharedMaterial = baseMaterial;
-            colorDefault = baseMaterial.color;
+            colorDefault = baseMaterial.GetColor("_EmissionColor");
+            Debug.Log("ColorDefault:" + colorDefault);
         }
 
         // Start is called before the first frame update
@@ -42,16 +47,37 @@ namespace Zom.Pie
 
         void HandleOnBounce(Bouncer bouncer)
         {
-            if (playing)
-                return;
+            //if (playing)
+            //    return;
 
             playing = true;
-            Color c = colorDefault * 3;
+            intensity = 0;
+            float targetIntensity = 10f;
             float time = 0.5f;
-            rend.material.DOColor(c, time).OnComplete(() => rend.material.DOColor(colorDefault, time).OnComplete(() => playing = false)); ;
+            
+          
+
+            dir = -1;
+
+            //DOTween.To(()=>currentColor, )
+
+
+            //DOTween.To(() => intensity, (x) => { intensity = x; rend.material.SetColor("_EmissionColor", colorDefault * intensity); }, targetIntensity, intensityTime).OnComplete(HandleOnComplete);
+                
+          
+            //rend.material.DOColor(c, time).OnComplete(() => rend.material.DOColor(colorDefault, time).OnComplete(() => playing = false)); ;
         }
 
-        
+        void HandleOnComplete()
+        {
+            return;
+            //Debug.Log("Completed - CurrentColor:" + currentColor);
+            rend.material.SetColor("_EmissionColor", colorDefault);
+
+            if(dir == -1)
+                DOTween.To(() => intensity, (x) => { intensity = x; rend.material.SetColor("_EmissionColor", colorDefault * intensity); }, 0, intensityTime);
+
+        }
     }
 
 }

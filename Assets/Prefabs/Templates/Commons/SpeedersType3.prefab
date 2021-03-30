@@ -1479,10 +1479,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e6b4885595ac8b4cb7949ce404aacb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceMagnitude: 6
+  forceMagnitude: 8
   forceDirection: {fileID: 7091166399427136063}
   alignToForceDirection: 1
-  alignToForceDirectionSpeed: 7.5
+  alignToForceDirectionSpeed: 30
   impulseMagnitude: 0
   impulseDirection: {fileID: 464795858472814518}
 --- !u!1 &7091166401200542539
@@ -1595,10 +1595,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e6b4885595ac8b4cb7949ce404aacb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceMagnitude: 6
+  forceMagnitude: 8
   forceDirection: {fileID: 7091166400264439373}
   alignToForceDirection: 1
-  alignToForceDirectionSpeed: 7.5
+  alignToForceDirectionSpeed: 30
   impulseMagnitude: 0
   impulseDirection: {fileID: 4505025005041980878}
 --- !u!1 &8627135057404863234

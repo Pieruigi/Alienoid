@@ -216,14 +216,14 @@ namespace Zom.Pie
                     ret = Constants.DefaultTimeScale;
                     break;
                 case 2:
-                    ret = Constants.DefaultTimeScale * 1.5f;
-                    break;
-                case 3:
                     ret = Constants.DefaultTimeScale * 2f;
                     break;
-                case 4:
-                    ret = Constants.DefaultTimeScale * 2.5f;
-                    break;
+                //case 3:
+                //    ret = Constants.DefaultTimeScale * 2f;
+                //    break;
+                //case 4:
+                //    ret = Constants.DefaultTimeScale * 2.5f;
+                //    break;
             }
 
             return ret;

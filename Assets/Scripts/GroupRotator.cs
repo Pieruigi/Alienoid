@@ -33,7 +33,7 @@ namespace Zom.Pie
         // Start is called before the first frame update
         void Start()
         {
-            CreateSequence();
+            Loop();
         }
 
         // Update is called once per frame
@@ -43,26 +43,16 @@ namespace Zom.Pie
                 return;
         }
 
-        void CreateSequence()
+        void Loop()
         {
-            Sequence seq = DOTween.Sequence();
-
-            // Add to the sequence a time wait if needed
-            if (freezeTime > 0)
-            {
-                seq.PrependInterval(freezeTime);
-            }
-
             // Compute rotation angle
-            Vector3 end = transform.eulerAngles;
-            end.z = dir * angle;
+            Vector3 target = transform.eulerAngles;
+            target.z = dir * angle;
 
-            // Update direction
-            dir *= -1; 
+            dir *= -1;
 
-            seq.Append(transform.DORotate(end, duration));
-            seq.onComplete += CreateSequence;
-            
+            // Rotate
+            transform.DORotate(target, duration).SetDelay(freezeTime).OnComplete(Loop);
         }
 
         void Initialize()

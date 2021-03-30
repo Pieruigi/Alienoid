@@ -58,26 +58,16 @@ namespace Zom.Pie
             dir = inverse ? -1 : 1;
             
         }
-
         void Loop()
         {
-            Sequence seq = DOTween.Sequence();
-
-            // Add to the sequence a time wait if needed
-            if (freezeTime > 0)
-            {
-                seq.PrependInterval(freezeTime);
-            }
-
-            // Compute rotation angle
-            Vector3 targetPos = dir > 0 ? startPosition : endPosition;
-
-            // Update direction
+            Vector3 target = dir > 0 ? endPosition : startPosition;
             dir *= -1;
+               
+            transform.DOMove(target, time).SetDelay(freezeTime).OnComplete(Loop);
+            
 
-            seq.Append(transform.DOMove(endPosition, time).OnComplete(() => transform.DOMove(startPosition, time)).SetLoops(-1));
-            //seq.onComplete += CreateSequence;
         }
+        
     }
 
 }
