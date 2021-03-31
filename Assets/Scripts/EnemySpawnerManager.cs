@@ -20,9 +20,12 @@ namespace Zom.Pie
         //DateTime lastSpawnTime;
         float spawnElapsed = 0;
         float spawnTime = 1.5f;
+        float spawnMinDist = 3.5f;
+        
+        
 
         List<GameObject> spawnList = new List<GameObject>();
-
+        float spawnMinDistSqr;
 
         private void Awake()
         {
@@ -32,7 +35,7 @@ namespace Zom.Pie
 
                 // Randomize first ( both for random and round spawner )
                 nextId = UnityEngine.Random.Range(0, spawners.Count);
-
+                spawnMinDistSqr = spawnMinDist * spawnMinDist;
             }
             else
             {
@@ -112,15 +115,14 @@ namespace Zom.Pie
                 EnemySpawner closer = null;
                 float sqrDist = 0;
                 // The minimun distance at which the spawner is removed
-                float minSqrDist = 3;
-                minSqrDist *= minSqrDist;
+                
 
                 foreach (EnemySpawner spawner in tmp)
                 {
                     float tmpDist = (spawner.transform.position - currentEnemy.transform.position).sqrMagnitude;
 
                         // We remove only the closer spawner
-                    if ((closer == null && tmpDist < minSqrDist) || sqrDist > tmpDist) 
+                    if ((closer == null && tmpDist < spawnMinDistSqr) || sqrDist > tmpDist) 
                     {
                         sqrDist = tmpDist;
                         closer = spawner;
