@@ -131,7 +131,9 @@ namespace Zom.Pie
         private void Awake()
         {
             force = forceMagnitude * forceDirection.up;
-            impulse = impulseMagnitude * impulseDirection.up;
+            
+            if(impulseMagnitude != 0)
+                impulse = impulseMagnitude * impulseDirection.up;
         }
 
         // Start is called before the first frame update
