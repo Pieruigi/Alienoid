@@ -12,6 +12,8 @@ namespace Zom.Pie.UI
     /// </summary>
     public class PlayButton : MonoBehaviour
     {
+ 
+
         private void Awake()
         {
             GetComponent<Button>().onClick.AddListener(HandleOnClick);
@@ -25,7 +27,7 @@ namespace Zom.Pie.UI
 
             if (GameManager.Instance.IsInLevelMenu())
             {
-                GameManager.Instance.OnGameSpeedChanged += HandleOnGameSpeedChanged;
+                LevelMenu.Instance.OnGameSpeedSelected += HandleOnGameSpeedChanged;
                 //GetComponentInParent<LevelMenu>().OnLevelSelected += HandleOnLevelSelected;
             }
         }
@@ -38,7 +40,7 @@ namespace Zom.Pie.UI
 
         private void OnDestroy()
         {
-            GameManager.Instance.OnGameSpeedChanged -= HandleOnGameSpeedChanged;
+            //GameManager.Instance.OnGameSpeedChanged -= HandleOnGameSpeedChanged;
         }
 
         void HandleOnClick()
@@ -49,6 +51,8 @@ namespace Zom.Pie.UI
             }
             else if (GameManager.Instance.IsInLevelMenu())
             {
+                // Set game speed and load level
+                GameManager.Instance.GameSpeed = LevelMenu.Instance.SelectedSpeed;
                 GameManager.Instance.LoadLevel(LevelMenu.Instance.SelectedLevelId);
             }
                 
@@ -57,11 +61,12 @@ namespace Zom.Pie.UI
 
         void HandleOnGameSpeedChanged(int gameSpeed)
         {
+
             Debug.LogFormat("OnGameSpeedChanged: {0}", gameSpeed);
             // Get the selected level
-            int levelId = LevelMenu.Instance.SelectedLevelId;
+            //int levelId = LevelMenu.Instance.SelectedLevelId;
 
-            if (GameProgressManager.Instance.IsGameSpeedAvailable(levelId, gameSpeed))
+            if (GameProgressManager.Instance.IsSpeedUnlocked(gameSpeed))
             {
                 GetComponent<Button>().interactable = true;
                 GetComponentInChildren<TMP_Text>().color = Constants.EnabledColor;

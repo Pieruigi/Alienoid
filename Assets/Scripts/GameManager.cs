@@ -11,7 +11,7 @@ namespace Zom.Pie
     
     public class GameManager : MonoBehaviour
     {
-        public UnityAction<int> OnGameSpeedChanged;
+        //public UnityAction<int> OnGameSpeedChanged;
 
         public static GameManager Instance { get; private set; }
 
@@ -34,7 +34,7 @@ namespace Zom.Pie
         public int GameSpeed
         {
             get { return gameSpeed; }
-            set { gameSpeed = value; OnGameSpeedChanged?.Invoke(gameSpeed); }
+            set { gameSpeed = value; /*OnGameSpeedChanged?.Invoke(gameSpeed);*/ }
         }
   
         Language language = Language.English;
@@ -139,7 +139,7 @@ namespace Zom.Pie
         public int GetNumberOfLevels()
         {
 #if UNITY_EDITOR
-            return SceneManager.sceneCountInBuildSettings - levelStartingIndex;
+            return 20; // return SceneManager.sceneCountInBuildSettings - levelStartingIndex;
 #else
             return SceneManager.sceneCountInBuildSettings - levelStartingIndex;
 #endif

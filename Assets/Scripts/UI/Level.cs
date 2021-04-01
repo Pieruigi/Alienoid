@@ -39,43 +39,60 @@ namespace Zom.Pie.UI
 
         }
 
-        public void Init(int levelId)
+        public void Init(int levelId, int speed)
         {
+            
             // Set the current level id
             this.levelId = levelId;
 
             // Get the max speed the level has been beaten
-            speed = GameProgressManager.Instance.GetMaxBeatenSpeed(levelId);
+            //speed = GameProgressManager.Instance.GetMaxBeatenSpeed(levelId);
 
-            if (speed > 0)
+            if(GameProgressManager.Instance.LevelIsUnlocked(levelId, speed))
             {
-                // If speed > 0 the level is unlocked for sure
-                // so we hide the padlock...
                 padlock.SetActive(false);
-                //... and we update the speed panel
-                UpdateSpeedPanel();
+                GetComponent<Image>().color = Color.white;
             }
             else
             {
-                // Speed = 0 so level has not beaten yet, but it could still be unlocked if the previous
-                // one has been beaten
-                if(levelId == GameProgressManager.Instance.GetLastUnlockedLevel())
-                {
-                    // Unlock 
-                    padlock.SetActive(false);
+                padlock.SetActive(true);
 
-                    // Update the speed panel
-                    UpdateSpeedPanel();
-                }
-                else
-                {
-                    // Change color alpha
-                    Image img = GetComponent<Image>();
-                    Color c = img.color * 0.6f;
-                    c.a = 1;
-                    img.color = c;
-                }
+                // Change color alpha
+                Image img = GetComponent<Image>();
+                Color c = Color.white * 0.6f;
+                c.a = 1;
+                img.color = c;
             }
+
+            //if (speed > 0)
+            //{
+            //    // If speed > 0 the level is unlocked for sure
+            //    // so we hide the padlock...
+            //    padlock.SetActive(false);
+            //    //... and we update the speed panel
+            //    UpdateSpeedPanel();
+            //}
+            //else
+            //{
+            //    // Speed = 0 so level has not beaten yet, but it could still be unlocked if the previous
+            //    // one has been beaten
+            //    if(levelId == GameProgressManager.Instance.GetLastUnlockedLevel())
+            //    {
+            //        // Unlock 
+            //        padlock.SetActive(false);
+
+            //        // Update the speed panel
+            //        UpdateSpeedPanel();
+            //    }
+            //    else
+            //    {
+            //        // Change color alpha
+            //        Image img = GetComponent<Image>();
+            //        Color c = img.color * 0.6f;
+            //        c.a = 1;
+            //        img.color = c;
+            //    }
+            //}
             
         }
 

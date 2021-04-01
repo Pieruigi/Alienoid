@@ -28,36 +28,23 @@ namespace Zom.Pie.UI
         void Start()
         {
            
-            int levelId = GetComponentInParent<Level>().LevelId;
-            //if (GameProgressManager.Instance.GetMaxBeatenSpeed(levelId) == Constants.MaxLevelSpeed)
+            //int levelId = GetComponentInParent<Level>().LevelId;
+
+
+
+            //int higher = GameProgressManager.Instance.GetHigherUnlockedSpeed();
+
+            //if (GameProgressManager.Instance.LevelIsUnlocked(levelId, ))
             //{
-            //    // Activate star
-            //    GetComponent<Image>().enabled = true;
+            //    for (int i = 0; i < Constants.MaxLevelSpeed; i++)
+            //    {
+            //        stars[i].SetActive(true);
+
+            //        if(i<maxBeaten)
+            //            stars[i].GetComponent<Image>().color = Color.white;
+            //    }
+
             //}
-            //else
-            //{
-            //    GetComponent<Image>().enabled = false;
-            //}
-
-           
-            
-
-            int maxBeaten = GameProgressManager.Instance.GetMaxBeatenSpeed(levelId);
-
-            if (GameProgressManager.Instance.LevelIsUnlocked(levelId))
-            {
-                for (int i = 0; i < Constants.MaxLevelSpeed; i++)
-                {
-                    stars[i].SetActive(true);
-
-                    if(i<maxBeaten)
-                        stars[i].GetComponent<Image>().color = Color.white;
-                }
-                //for (int i = 0; i < maxBeaten; i++)
-                //{
-                //    stars[i].GetComponent<Image>().color = Color.white;
-                //}
-            }
             
 
         }
