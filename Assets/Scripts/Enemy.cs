@@ -24,6 +24,9 @@ namespace Zom.Pie
         [SerializeField]
         int materialId;
 
+        [SerializeField]
+        GameObject explosionPrefab;
+
         EnemyType type;
         public EnemyType Type
         {
@@ -79,6 +82,13 @@ namespace Zom.Pie
             rb.angularVelocity = Vector3.zero;
 
             dying = false;
+
+            if (type == blackHole.EnemyType)
+            {
+                GameObject g = Instantiate(explosionPrefab);
+                g.transform.position = transform.position;
+            }
+                
 
             OnDead?.Invoke(this, blackHole);
         }

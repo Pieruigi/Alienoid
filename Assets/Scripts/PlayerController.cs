@@ -26,7 +26,8 @@ namespace Zom.Pie
         [SerializeField]
         Transform firePoint;
 
-        
+        [SerializeField]
+        ParticleSystem shotFX;
 
         float fireCooldown;
         DateTime lastShot;
@@ -90,6 +91,9 @@ namespace Zom.Pie
                     // Shoot the bullet
 
                     bullet.GetComponent<Bullet>().Shoot(firePower * firePoint.up);
+
+                    // Particles
+                    shotFX.Play();
 
                     // Reset cooldown
                     lastShot = DateTime.UtcNow;

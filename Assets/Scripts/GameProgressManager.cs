@@ -133,6 +133,10 @@ namespace Zom.Pie
             if (!IsSpeedUnlocked(speed))
                 return false;
 
+            // If the next speed has been unlocked then the level has been beaten
+            if (speed < Constants.MaxLevelSpeed && IsSpeedUnlocked(speed + 1))
+                return true;
+
             if (progress % GameManager.Instance.GetNumberOfLevels() < levelId)
                 return false;
 

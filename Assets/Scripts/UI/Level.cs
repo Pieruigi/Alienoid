@@ -12,6 +12,9 @@ namespace Zom.Pie.UI
         [SerializeField]
         GameObject padlock;
 
+        [SerializeField]
+        GameObject star;
+
         int levelId;
         public int LevelId
         {
@@ -52,6 +55,19 @@ namespace Zom.Pie.UI
             {
                 padlock.SetActive(false);
                 GetComponent<Image>().color = Color.white;
+
+                // Activate the star
+                star.SetActive(true);
+
+                if (GameProgressManager.Instance.LevelHasBeenBeaten(levelId, speed))
+                {
+                    // Level has been beaten at the given speed so colorize the star
+                    HighlightStar(true);
+                }
+                else
+                {
+                    HighlightStar(false);
+                }
             }
             else
             {
@@ -62,6 +78,9 @@ namespace Zom.Pie.UI
                 Color c = Color.white * 0.6f;
                 c.a = 1;
                 img.color = c;
+
+                // Deactivate the star
+                star.SetActive(false);
             }
 
             //if (speed > 0)
@@ -115,6 +134,21 @@ namespace Zom.Pie.UI
                 // Scale down
                 transform.DOScale(1, 0.25f).SetEase(Ease.OutElastic);
             }
+        }
+
+        void HighlightStar(bool value)
+        {
+            Color c = Color.white;
+            
+            if (!value)
+            {
+                // Set gray color
+                c *= 0.4f;
+                c.a = 1;
+                
+            }
+            
+            star.GetComponent<Image>().color = c;
         }
 
         void UpdateSpeedPanel()

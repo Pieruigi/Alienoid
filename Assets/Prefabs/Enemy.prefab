@@ -162,6 +162,7 @@ MonoBehaviour:
   redMaterial: {fileID: 2100000, guid: 209726dbe6c39ed4c9690d37b15a2434, type: 2}
   meshRenderer: {fileID: 3563258823485973773}
   materialId: 0
+  explosionPrefab: {fileID: 100018, guid: 91c90e14151f02d43bd26c5b1b127ad2, type: 3}
 --- !u!1001 &2788476544610924937
 PrefabInstance:
   m_ObjectHideFlags: 0

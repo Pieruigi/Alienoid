@@ -90,13 +90,22 @@ namespace Zom.Pie
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 string msg = "";
-                if (IsInMainMenu())
-                    msg = TextFactory.Instance.GetText(TextFactory.Type.UIMessage, 0);
+                if (IsInMainMenu() || IsInLevelMenu())
+                {
+                    if(IsInMainMenu())
+                        msg = TextFactory.Instance.GetText(TextFactory.Type.UIMessage, 0);
+                    else
+                        msg = TextFactory.Instance.GetText(TextFactory.Type.UIMessage, 1);
+                }
                 else
+                {
+                    Time.timeScale = 0;
                     msg = TextFactory.Instance.GetText(TextFactory.Type.UIMessage, 1);
+                }
+                    
 
 
-                MessageBox.Show(MessageBox.Type.YesNo, msg, HandleYesOnExitAction, null);
+                MessageBox.Show(MessageBox.Type.YesNo, msg, HandleYesOnExitAction, HandleNoOnExitAction);
             }
 
             //if (InGame)
@@ -206,6 +215,14 @@ namespace Zom.Pie
                 Application.Quit();
         }
 
+        void HandleNoOnExitAction()
+        {
+            if (IsInGame())
+            {
+                Time.timeScale = GetActualGameSpeed();
+            }
+
+        }
 
         float GetActualGameSpeed()
         {
@@ -216,14 +233,12 @@ namespace Zom.Pie
                     ret = Constants.DefaultTimeScale;
                     break;
                 case 2:
-                    ret = Constants.DefaultTimeScale * 2f;
+                    ret = Constants.DefaultTimeScale * 1.25f;
                     break;
-                //case 3:
-                //    ret = Constants.DefaultTimeScale * 2f;
-                //    break;
-                //case 4:
-                //    ret = Constants.DefaultTimeScale * 2.5f;
-                //    break;
+                case 3:
+                    ret = Constants.DefaultTimeScale * 1.5f;
+                    break;
+
             }
 
             return ret;
