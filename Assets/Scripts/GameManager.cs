@@ -148,7 +148,7 @@ namespace Zom.Pie
         public int GetNumberOfLevels()
         {
 #if UNITY_EDITOR
-            return 20; // return SceneManager.sceneCountInBuildSettings - levelStartingIndex;
+            return SceneManager.sceneCountInBuildSettings - levelStartingIndex;
 #else
             return SceneManager.sceneCountInBuildSettings - levelStartingIndex;
 #endif

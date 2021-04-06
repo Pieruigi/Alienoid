@@ -13,10 +13,11 @@ namespace Zom.Pie
 		[Range(0f,1f)]
 		float bouncePower = 0;
 
-		
-		float bounceMul = 2.75f;
+		[SerializeField]
+		[Range(0f, 1f)]
 		float velBounceMul = 0.55f;
 
+		float bounceMul = 2.75f;
 		float bounceMagnitude;
 
         private void Awake()
