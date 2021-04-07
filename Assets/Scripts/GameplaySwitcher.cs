@@ -40,7 +40,7 @@ namespace Zom.Pie
                 return;
             }
 #endif
-            if (!LevelManager.Instance.Running)
+            if (LevelManager.Instance && !LevelManager.Instance.Running)
                 return;
 
             // Update elapsed time
@@ -50,7 +50,7 @@ namespace Zom.Pie
             if (switchTime - elapsed <= 3.0f && !warning)
             {
                 warning = true;
-                WarningSystem.Instance.Play();
+                WarningSystem.Instance?.Play();
             }
 
 

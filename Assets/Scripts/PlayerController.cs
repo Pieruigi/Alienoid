@@ -39,6 +39,8 @@ namespace Zom.Pie
             // Disable collision between base and cannon
             Physics.IgnoreCollision(baseCollider, cannonCollider);
 
+            // Setting y
+            transform.position = Vector3.up * -5.0f;
 
         }
 

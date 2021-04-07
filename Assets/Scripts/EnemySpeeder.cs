@@ -125,15 +125,15 @@ namespace Zom.Pie
 
         List<Rigidbody> rbs = new List<Rigidbody>();
 
-        Vector3 force;
-        Vector3 impulse;
+        //Vector3 force;
+        //Vector3 impulse;
 
         private void Awake()
         {
-            force = forceMagnitude * forceDirection.up;
+            //force = forceMagnitude * forceDirection.up;
             
-            if(impulseMagnitude != 0)
-                impulse = impulseMagnitude * impulseDirection.up;
+            //if(impulseMagnitude != 0)
+            //    impulse = impulseMagnitude * impulseDirection.up;
         }
 
         // Start is called before the first frame update
@@ -161,12 +161,19 @@ namespace Zom.Pie
                 if (alignToForceDirection)
                 {
                     // Adjust velocity direction
-                    Vector3 newVelocity = forceDirection.up * rb.velocity.magnitude;
+                    Vector3 newVelocity = Mathf.Sign(forceMagnitude) * forceDirection.up * rb.velocity.magnitude;
                     rb.velocity = Vector3.MoveTowards(rb.velocity, newVelocity , alignToForceDirectionSpeed * Time.fixedDeltaTime);
                     
                 }
                 
             }
+        }
+
+        public void Reverse()
+        {
+            Debug.Log("Reverse speeder");
+            forceMagnitude *= -1;
+            impulseMagnitude *= -1;
         }
 
         private void OnTriggerEnter(Collider other)
