@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Rock_Ice
+  m_Name: Rock_Purple
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_ShaderKeywords: _EMISSION _NORMALMAP _SPECULAR_SETUP
   m_LightmapFlags: 2
@@ -34,11 +34,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 4158f091c42613041b70c927984d1836, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2081d3d309f86754a987bb82ba6fea90, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: 41b7bf4909fe07b46be6500c3d6b4ef0, type: 3}
+        m_Texture: {fileID: 2800000, guid: 5d86682ba18708f449e6df81f4ef5dcd, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -54,11 +54,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 2800000, guid: b431ac104b305834cacdb12bfa65e676, type: 3}
+        m_Texture: {fileID: 2800000, guid: 9ba07dfcc94188f40a0b78ce426e6f7e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 4158f091c42613041b70c927984d1836, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2081d3d309f86754a987bb82ba6fea90, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -119,6 +119,6 @@ Material:
     m_Colors:
     - _BaseColor: {r: 0.9056604, g: 0.9056604, b: 0.9056604, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 0.053495884, g: 0.85593414, b: 1.1353016, a: 256}
+    - _EmissionColor: {r: 0.9481664, g: 0, b: 1.0152441, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
