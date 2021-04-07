@@ -1715,6 +1715,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: MessageBoxUI
       objectReference: {fileID: 0}
+    - target: {fileID: 438176770700056433, guid: a179aea8fb83f4c40a5e44da2542621a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2620806883493794165, guid: a179aea8fb83f4c40a5e44da2542621a,
         type: 3}
       propertyPath: m_Pivot.x

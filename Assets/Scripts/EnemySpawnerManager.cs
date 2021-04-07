@@ -19,8 +19,8 @@ namespace Zom.Pie
 
         //DateTime lastSpawnTime;
         float spawnElapsed = 0;
-        float spawnTime = 2f; // 1.5f;
-        float spawnMinDist = 4f;
+        float spawnTime = 3f; // 1.5f;
+        float spawnMinDist = 3f;//4f;
         
         
 
