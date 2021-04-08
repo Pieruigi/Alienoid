@@ -64,6 +64,9 @@ namespace Zom.Pie
                 Instance = this;
                 SceneManager.sceneLoaded += HandleOnSceneLoaded;
 
+                // Initialize customization manager
+                CustomizationManager.Initialize();
+
                 DontDestroyOnLoad(gameObject);
             }
             else
