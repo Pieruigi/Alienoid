@@ -56,6 +56,10 @@ MonoBehaviour:
   - {fileID: 0}
   groups:
   - {fileID: 0}
+  inGameMenuPrefab: {fileID: 2502811666459716344, guid: 5ef79714276acb741b81e0ddcd5534fb,
+    type: 3}
+  endGameMenuPrefab: {fileID: 2502811666459716344, guid: c2d184571619f9745b3c463f7f4b5a9e,
+    type: 3}
   debug_levelData: {fileID: 11400000, guid: dfab044fbadfebb4990518158799565e, type: 2}
 --- !u!114 &-283948258833761537
 MonoBehaviour:

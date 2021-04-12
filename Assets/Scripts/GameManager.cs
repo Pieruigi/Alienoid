@@ -99,16 +99,18 @@ namespace Zom.Pie
                         msg = TextFactory.Instance.GetText(TextFactory.Type.UIMessage, 0);
                     else
                         msg = TextFactory.Instance.GetText(TextFactory.Type.UIMessage, 1);
+
+                    MessageBox.Show(MessageBox.Type.YesNo, msg, HandleYesOnExitAction, HandleNoOnExitAction);
                 }
-                else
-                {
-                    Time.timeScale = 0;
-                    msg = TextFactory.Instance.GetText(TextFactory.Type.UIMessage, 1);
-                }
+                //else
+                //{
+                //    Time.timeScale = 0;
+                //    msg = TextFactory.Instance.GetText(TextFactory.Type.UIMessage, 1);
+                //}
                     
 
 
-                MessageBox.Show(MessageBox.Type.YesNo, msg, HandleYesOnExitAction, HandleNoOnExitAction);
+                //MessageBox.Show(MessageBox.Type.YesNo, msg, HandleYesOnExitAction, HandleNoOnExitAction);
             }
 
             //if (InGame)
@@ -173,6 +175,33 @@ namespace Zom.Pie
         public void LoadLevel(int levelId)
         {
             LoadScene(levelId + levelStartingIndex - 1);
+        }
+
+        public void Pause(bool value)
+        {
+            if (!IsInGame())
+                return;
+
+            if (value)
+            {
+                Time.timeScale = 0;
+                if (PlayerManager.Instance != null)
+                    PlayerManager.Instance.EnableController(false);
+            }
+            else
+            {
+                Time.timeScale = GetActualGameSpeed();
+                if(PlayerManager.Instance != null)
+                    PlayerManager.Instance.EnableController(true);
+            }
+        }
+
+        public bool IsPaused()
+        {
+            if (IsInGame() && Time.timeScale == 0)
+                return true;
+            else
+                return false;
         }
 
         /// <summary>
@@ -240,6 +269,12 @@ namespace Zom.Pie
                     break;
                 case 3:
                     ret = Constants.DefaultTimeScale * 1.5f;
+                    break;
+                case 4:
+                    ret = Constants.DefaultTimeScale * 1.75f;
+                    break;
+                case 5:
+                    ret = Constants.DefaultTimeScale * 2f;
                     break;
 
             }

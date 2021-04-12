@@ -10,6 +10,8 @@ namespace Zom.Pie
     //[ExecuteInEditMode]
     public class LevelManager : MonoBehaviour
     {
+        public UnityAction OnLevelBeaten;
+        
 
         public static LevelManager Instance { get; private set; }
 
@@ -28,6 +30,14 @@ namespace Zom.Pie
         [SerializeField]
         List<GameObject> groups;
 
+        [SerializeField]
+        GameObject inGameMenuPrefab;
+
+        [SerializeField]
+        GameObject endGameMenuPrefab;
+
+
+
 #if UNITY_EDITOR
         [Header("****************** DEBUG ******************")]
         [SerializeField]
@@ -43,7 +53,7 @@ namespace Zom.Pie
         // This list represent the actual number of enemies we must destroy
         List<EnemyType> enemies = new List<EnemyType>();
 
-        float startDelay = 0f;
+        float startDelay = 3f;
         public float StartDelay
         {
             get { return startDelay; }
@@ -63,6 +73,11 @@ namespace Zom.Pie
             {
 
                 Instance = this;
+
+                // Create in-game menus
+                GameObject g = GameObject.Instantiate(inGameMenuPrefab);
+                g = GameObject.Instantiate(endGameMenuPrefab);
+
 /*
 #if UNITY_EDITOR
                 if(Application.isPlaying)
@@ -203,7 +218,7 @@ namespace Zom.Pie
             if (!PlayerManager.Instance)
                 yield break;
 
-            PlayerManager.Instance.OnDead += HandleOnPlayerDied;
+            //PlayerManager.Instance.OnDead += HandleOnPlayerDied;
 
             // Disable player controller
             PlayerManager.Instance.EnableController(false);
@@ -331,13 +346,15 @@ namespace Zom.Pie
         {
             yield return new WaitForSeconds(3f);
 
-            GameManager.Instance.LoadLevelMenu();
+            //GameManager.Instance.LoadLevelMenu();
+            // Open the end game menu
+            OnLevelBeaten?.Invoke();
         }
 
-        void HandleOnPlayerDied()
-        {
-            StartCoroutine(EndingLevel());
-        }
+        //void HandleOnPlayerDied()
+        //{
+        //    StartCoroutine(EndingLevel());
+        //}
     }
 
 }

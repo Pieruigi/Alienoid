@@ -12,7 +12,7 @@ namespace Zom.Pie.UI
         [SerializeField]
         TMP_Text label;
 
-        int[] labelIds = new int[] { 5, 6, 7 };
+        int[] labelIds = new int[] { 5, 6, 7, 8, 12 };
 
         int speed = 1;
         int speedCount = 3;
