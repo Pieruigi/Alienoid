@@ -24,8 +24,9 @@ namespace Zom.Pie
         [SerializeField]
         GameObject enemyPrefab;
 
-        [SerializeField]
-        List<BlackHole> blackHoles;
+
+        //[SerializeField]
+        //List<BlackHole> blackHoles;
 
         [SerializeField]
         List<GameObject> groups;
@@ -146,35 +147,35 @@ namespace Zom.Pie
             return data;
         }
 
-        void Init(LevelConfigurationData data)
-        {
+        //void Init(LevelConfigurationData data)
+        //{
             
 
-            greenCount = data.NumberOfGreenEnemies;
-            yellowCount = data.NumberOfYellowEnemies;
-            redCount = data.NumberOfRedEnemies;
+        //    greenCount = data.NumberOfGreenEnemies;
+        //    yellowCount = data.NumberOfYellowEnemies;
+        //    redCount = data.NumberOfRedEnemies;
 
            
-            // Setting black holes
-            for(int i=0; i<blackHoles.Count; i++)
-            {
-                blackHoles[i].SetEnemyType(data.BlackHoleDataList[i].EnemyType);
-            }
+        //    // Setting black holes
+        //    for(int i=0; i<blackHoles.Count; i++)
+        //    {
+        //        blackHoles[i].SetEnemyType(data.BlackHoleDataList[i].EnemyType);
+        //    }
 
-            // Reset all groups
-            for (int i = 0; i < groups.Count; i++)
-            {
-                groups[i].SetActive(false);
-            }
+        //    // Reset all groups
+        //    for (int i = 0; i < groups.Count; i++)
+        //    {
+        //        groups[i].SetActive(false);
+        //    }
 
-            // Setting available groups
-            List<int> g = data.GetAvailableGroups();
-            for(int i=0; i<g.Count; i++)
-            {
-                groups[g[i]].SetActive(true);
-            }
+        //    // Setting available groups
+        //    List<int> g = data.GetAvailableGroups();
+        //    for(int i=0; i<g.Count; i++)
+        //    {
+        //        groups[g[i]].SetActive(true);
+        //    }
             
-        }
+        //}
 
        
 
@@ -317,7 +318,8 @@ namespace Zom.Pie
                 // Game completed
                 GameProgressManager.Instance.SetLevelBeaten(GameManager.Instance.GetCurrentLevelId(), GameManager.Instance.GameSpeed);
 
-                StartCoroutine(EndingLevel());
+                //StartCoroutine(EndingLevel());
+                OnLevelBeaten?.Invoke();
             }
         }
 
@@ -342,14 +344,14 @@ namespace Zom.Pie
             }
         }
 
-        IEnumerator EndingLevel()
-        {
-            yield return new WaitForSeconds(3f);
+        //IEnumerator EndingLevel()
+        //{
+        //    yield return new WaitForSeconds(3f);
 
-            //GameManager.Instance.LoadLevelMenu();
-            // Open the end game menu
-            OnLevelBeaten?.Invoke();
-        }
+        //    //GameManager.Instance.LoadLevelMenu();
+        //    // Open the end game menu
+        //    OnLevelBeaten?.Invoke();
+        //}
 
         //void HandleOnPlayerDied()
         //{

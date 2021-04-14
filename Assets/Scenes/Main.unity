@@ -1369,7 +1369,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1546793840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1747,6 +1747,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: MessageBoxUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 438176770700056433, guid: a179aea8fb83f4c40a5e44da2542621a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2620806883493794165, guid: a179aea8fb83f4c40a5e44da2542621a,
         type: 3}
