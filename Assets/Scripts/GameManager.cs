@@ -89,6 +89,8 @@ namespace Zom.Pie
             if (loading)
                 return;
 
+            Debug.Log("TimeScale:" + Time.timeScale);
+
             // Handle device back button
             if (Input.GetKeyDown(KeyCode.Escape))
             {

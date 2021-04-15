@@ -10,6 +10,8 @@ namespace Zom.Pie
     //[ExecuteInEditMode]
     public class LevelManager : MonoBehaviour
     {
+        public UnityAction<Enemy> OnEnemyRemoved;
+
         public UnityAction OnLevelBeaten;
         
 
@@ -17,9 +19,22 @@ namespace Zom.Pie
 
         [SerializeField]
         int greenCount, yellowCount, redCount;
+        public int GreenCount
+        {
+            get { return greenCount; }
+        }
+        public int YellowCount
+        {
+            get { return yellowCount; }
+        }
+        public int RedCount
+        {
+            get { return redCount; }
+        }
 
-        [SerializeField]
-        int maxEnemiesOnScreen = 2;
+
+        //[SerializeField]
+        int maxEnemiesOnScreen = 1;
 
         [SerializeField]
         GameObject enemyPrefab;
@@ -37,6 +52,8 @@ namespace Zom.Pie
         [SerializeField]
         GameObject endGameMenuPrefab;
 
+        [SerializeField]
+        GameObject hudPrefab;
 
 
 #if UNITY_EDITOR
@@ -76,8 +93,10 @@ namespace Zom.Pie
                 Instance = this;
 
                 // Create in-game menus
-                GameObject g = GameObject.Instantiate(inGameMenuPrefab);
-                g = GameObject.Instantiate(endGameMenuPrefab);
+                GameObject.Instantiate(inGameMenuPrefab);
+                GameObject.Instantiate(endGameMenuPrefab);
+                // Create hud manager
+                GameObject.Instantiate(hudPrefab);
 
 /*
 #if UNITY_EDITOR
@@ -304,12 +323,18 @@ namespace Zom.Pie
             // Put the enemy back in the pool
             MoveEnemyToPool(enemy.gameObject);
 
-            // If the black hole and the enemy colors don't match we must put the enemy back in the 
-            // enemy list
+            // If the enemy color doesn't match the black hole colore we put the enemy back in the list 
             if (enemy.Type != blackHole.EnemyType)
+            {
                 enemies.Add(enemy.Type);
+            }
+            else
+            {
+                OnEnemyRemoved?.Invoke(enemy);
+            }    
+           
 
-            // Decrease number of enemies
+            // Decrease number of enemies on screen
             enemiesOnScreen--;
 
             // Check if the level is completed
