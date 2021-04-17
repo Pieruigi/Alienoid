@@ -40,7 +40,7 @@ namespace Zom.Pie
             float torqueMag = Random.Range(-3.5f, 3.5f);
             rb.AddTorque(torqueMag * Vector3.forward, ForceMode.VelocityChange);
 
-
+            
         }
     }
 

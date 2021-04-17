@@ -89,7 +89,7 @@ namespace Zom.Pie
             if (loading)
                 return;
 
-            Debug.Log("TimeScale:" + Time.timeScale);
+           // Debug.Log("TimeScale:" + Time.timeScale);
 
             // Handle device back button
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -260,28 +260,28 @@ namespace Zom.Pie
 
         float GetActualGameSpeed()
         {
-            float ret = 1;
-            switch (gameSpeed)
-            {
-                case 1:
-                    ret = Constants.DefaultTimeScale;
-                    break;
-                case 2:
-                    ret = Constants.DefaultTimeScale * 1.25f;
-                    break;
-                case 3:
-                    ret = Constants.DefaultTimeScale * 1.5f;
-                    break;
-                case 4:
-                    ret = Constants.DefaultTimeScale * 1.75f;
-                    break;
-                case 5:
-                    ret = Constants.DefaultTimeScale * 2f;
-                    break;
+            //float ret = 1;
+            //switch (gameSpeed)
+            //{
+            //    case 1:
+            //        ret = Constants.DefaultTimeScale;
+            //        break;
+            //    case 2:
+            //        ret = Constants.DefaultTimeScale * 1.25f;
+            //        break;
+            //    case 3:
+            //        ret = Constants.DefaultTimeScale * 1.5f;
+            //        break;
+            //    case 4:
+            //        ret = Constants.DefaultTimeScale * 1.75f;
+            //        break;
+            //    case 5:
+            //        ret = Constants.DefaultTimeScale * 2f;
+            //        break;
 
-            }
+            //}
 
-            return ret;
+            return Constants.DefaultTimeScale;
         }
 
     }

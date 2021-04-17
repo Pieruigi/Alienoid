@@ -6419,8 +6419,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9eacb12ec4e83c4798625feca151642, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bouncePower: 0.9
-  velBounceMul: 0.5
+  bouncePower: 1
+  velBounceMul: 0
 --- !u!1 &8403119711715915882
 GameObject:
   m_ObjectHideFlags: 0
@@ -6529,8 +6529,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9eacb12ec4e83c4798625feca151642, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bouncePower: 0.9
-  velBounceMul: 0.5
+  bouncePower: 1
+  velBounceMul: 0
 --- !u!1 &8403119711751527546
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,7 +11,7 @@ namespace Zom.Pie
     public class LevelManager : MonoBehaviour
     {
         public UnityAction<Enemy> OnEnemyRemoved;
-
+        
         public UnityAction OnLevelBeaten;
         
 
@@ -83,7 +83,27 @@ namespace Zom.Pie
         }
 
         int enemiesOnScreen = 0;
-        
+
+        EnemyType nextEnemyTypeToSpawn;
+        public EnemyType NextEnemyTypeToSpawn
+        {
+            get { return nextEnemyTypeToSpawn; }
+        }
+
+        bool hasNextEnemyToSpawn = false;
+        public bool HasNextEnemyToSpawn
+        {
+            get { return hasNextEnemyToSpawn; }
+        }
+
+        System.DateTime startingTime;
+        public System.DateTime StartingTime
+        {
+            get { return startingTime; }
+        }
+
+        System.DateTime stoppingTime;
+
 
         private void Awake()
         {
@@ -124,6 +144,9 @@ namespace Zom.Pie
         // Start is called before the first frame update
         void Start()
         {
+            // Set handles
+            PlayerManager.Instance.OnDead += HandleOnPlayerDead;
+
             StartCoroutine(StartLevel());
         }
 
@@ -135,8 +158,16 @@ namespace Zom.Pie
             //    Init(debug_levelData);
 #endif
 
+            // Get the next random enemy to spawn if needed
+            if (!hasNextEnemyToSpawn && enemies.Count > 0)
+            {
+                Debug.Log("Setting next enemy to spawn...");
+                SetNextEnemyTypeToSpawn();
+            }
+
             if (!running)
                 return;
+
 
             if (enemiesOnScreen >= maxEnemiesOnScreen)
                 return;
@@ -144,7 +175,10 @@ namespace Zom.Pie
             if (enemies.Count > 0)
             {
                 // Spawn a new enemy
-                SpawnRandomEnemy();
+                //SpawnRandomEnemy();
+                hasNextEnemyToSpawn = false;
+                SpawnEnemy(nextEnemyTypeToSpawn);
+                
             }
 
 
@@ -166,36 +200,13 @@ namespace Zom.Pie
             return data;
         }
 
-        //void Init(LevelConfigurationData data)
-        //{
-            
+    
+        void SetNextEnemyTypeToSpawn()
+        {
+            hasNextEnemyToSpawn = true;
+            nextEnemyTypeToSpawn = enemies[UnityEngine.Random.Range(0, enemies.Count)];
 
-        //    greenCount = data.NumberOfGreenEnemies;
-        //    yellowCount = data.NumberOfYellowEnemies;
-        //    redCount = data.NumberOfRedEnemies;
-
-           
-        //    // Setting black holes
-        //    for(int i=0; i<blackHoles.Count; i++)
-        //    {
-        //        blackHoles[i].SetEnemyType(data.BlackHoleDataList[i].EnemyType);
-        //    }
-
-        //    // Reset all groups
-        //    for (int i = 0; i < groups.Count; i++)
-        //    {
-        //        groups[i].SetActive(false);
-        //    }
-
-        //    // Setting available groups
-        //    List<int> g = data.GetAvailableGroups();
-        //    for(int i=0; i<g.Count; i++)
-        //    {
-        //        groups[g[i]].SetActive(true);
-        //    }
-            
-        //}
-
+        }
        
 
         /// <summary>
@@ -238,7 +249,9 @@ namespace Zom.Pie
             if (!PlayerManager.Instance)
                 yield break;
 
-            //PlayerManager.Instance.OnDead += HandleOnPlayerDied;
+
+            // Get the first enemy type to spawn
+            SetNextEnemyTypeToSpawn();
 
             // Disable player controller
             PlayerManager.Instance.EnableController(false);
@@ -257,10 +270,15 @@ namespace Zom.Pie
 
             yield return new WaitForSeconds(0.5f);
 
+            // Game started
             running = true;
+            startingTime = System.DateTime.UtcNow;
+
             for (int i=0; i<maxEnemiesOnScreen; i++)
             {
-                SpawnRandomEnemy();
+                //SpawnRandomEnemy();
+                hasNextEnemyToSpawn = false;
+                SpawnEnemy(nextEnemyTypeToSpawn);
             }
             
         }
@@ -282,6 +300,26 @@ namespace Zom.Pie
             // Increase number of enemies
             enemiesOnScreen++;
 
+        }
+
+        void SpawnEnemy(EnemyType enemyType)
+        {
+            hasNextEnemyToSpawn = false;
+
+            if (!enemies.Exists(e => e == enemyType))
+                return;
+
+            // Remove from the enemy list
+            enemies.Remove(enemyType);
+
+            // Get the actual enemy
+            GameObject enemy = GetRandomEnemy(enemyType);
+
+            // Spawn it
+            EnemySpawnerManager.Instance.Spawn(enemy);
+
+            // Increase number of enemies
+            enemiesOnScreen++;
         }
 
         /// <summary>
@@ -343,6 +381,12 @@ namespace Zom.Pie
                 // Game completed
                 GameProgressManager.Instance.SetLevelBeaten(GameManager.Instance.GetCurrentLevelId(), GameManager.Instance.GameSpeed);
 
+                // Stop running
+                running = false;
+
+                // Stop timer
+                stoppingTime = System.DateTime.UtcNow;
+
                 //StartCoroutine(EndingLevel());
                 OnLevelBeaten?.Invoke();
             }
@@ -369,19 +413,18 @@ namespace Zom.Pie
             }
         }
 
-        //IEnumerator EndingLevel()
-        //{
-        //    yield return new WaitForSeconds(3f);
+        /// <summary>
+        /// Stops the timer on player dead
+        /// </summary>
+        void HandleOnPlayerDead()
+        {
+            // Stop running
+            running = false;
 
-        //    //GameManager.Instance.LoadLevelMenu();
-        //    // Open the end game menu
-        //    OnLevelBeaten?.Invoke();
-        //}
+            stoppingTime = System.DateTime.UtcNow;
+        }
 
-        //void HandleOnPlayerDied()
-        //{
-        //    StartCoroutine(EndingLevel());
-        //}
+
     }
 
 }
