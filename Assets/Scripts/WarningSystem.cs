@@ -41,7 +41,7 @@ namespace Zom.Pie
                 //warningMaterial = sampleRenderer.sharedMaterial;
                 warningColorDefault = warningMaterial.GetColor("_EmissionColor");
                 warningColorMax = warningColorDefault * warningIntensity;
-                
+                speed *= Constants.DefaultTimeScale;
                 colorDefault = warningMaterial.GetColor("_EmissionColor");
             }
             else
@@ -78,7 +78,7 @@ namespace Zom.Pie
             // Init
             playing = true;
             warningColor = warningMaterial.color;
-            count = 2;
+            count = 5;
             dir = 1;
             
             // Start loop

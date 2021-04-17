@@ -14,6 +14,11 @@ namespace Zom.Pie
 
         float elapsed = 0;
         bool warning = false;
+        float warningTime = 4f;
+        float mul;
+
+        // Set true when game starts ( delay timer elapsed )
+        bool started = false; 
 
         protected abstract void Init();
 
@@ -27,6 +32,7 @@ namespace Zom.Pie
         // Start is called before the first frame update
         protected virtual void Start()
         {
+            
             Init();
         }
 
@@ -40,14 +46,19 @@ namespace Zom.Pie
                 return;
             }
 #endif
-            if (LevelManager.Instance && !LevelManager.Instance.Running)
+            // When player dies or beats the level LevelManager running field is set to false, but we 
+            // want things keep switching anmyway
+            if (!started && LevelManager.Instance && LevelManager.Instance.Running)
+                started = true;
+           
+            if (!started)
                 return;
 
             // Update elapsed time
-            elapsed += Time.deltaTime;
+            elapsed += Time.deltaTime / Constants.DefaultTimeScale;
 
             // Check the warning time
-            if (switchTime - elapsed <= 3.0f && !warning)
+            if (switchTime - elapsed <= warningTime && !warning)
             {
                 warning = true;
                 WarningSystem.Instance?.Play();
