@@ -6,6 +6,9 @@ namespace Zom.Pie
 {
     public class SpeederSwitcher : GameplaySwitcher
     {
+        //enum SpeederColor { Default, Green, Yellow, Red }
+
+
         [System.Serializable]
         class Data
         {
@@ -14,6 +17,12 @@ namespace Zom.Pie
 
             [SerializeField]
             public GameObject fx;
+
+            //[SerializeField]
+            //public bool fxKeepDirection = false;
+
+            //[SerializeField]
+            //public List<SpeederColor> colors;
 
             [SerializeField]
             public bool inverse;
@@ -30,7 +39,16 @@ namespace Zom.Pie
 
         bool fade = false;
         float fadeTime = 2f;
-        
+        //Color defaultColor;
+
+        protected override void Awake()
+        {
+            base.Awake();
+
+            // Set default color
+            //defaultColor = fx.GetComp
+        }
+
         protected override void Update()
         {
             base.Update();

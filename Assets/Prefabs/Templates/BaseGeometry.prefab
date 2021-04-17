@@ -6323,7 +6323,7 @@ GameObject:
   - component: {fileID: 8403119711294334021}
   - component: {fileID: 8403119711294334074}
   - component: {fileID: 8403119711294334075}
-  - component: {fileID: 8403119711294334020}
+  - component: {fileID: 3475874661430003064}
   m_Layer: 11
   m_Name: RightGround
   m_TagString: Untagged
@@ -6401,13 +6401,13 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8403119711294334073}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 5e13f25c97898bb4d938455eea91d115, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8403119711294334020
+--- !u!114 &3475874661430003064
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6420,6 +6420,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bouncePower: 1
+  minImpulse: 1.2
   velBounceMul: 0
 --- !u!1 &8403119711715915882
 GameObject:
@@ -6433,7 +6434,7 @@ GameObject:
   - component: {fileID: 8403119711715915894}
   - component: {fileID: 8403119711715915895}
   - component: {fileID: 8403119711715915892}
-  - component: {fileID: 8403119711715915889}
+  - component: {fileID: 7222155309529429932}
   m_Layer: 11
   m_Name: LeftGround
   m_TagString: Untagged
@@ -6511,13 +6512,13 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8403119711715915882}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 5e13f25c97898bb4d938455eea91d115, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8403119711715915889
+--- !u!114 &7222155309529429932
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6530,6 +6531,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bouncePower: 1
+  minImpulse: 1.2
   velBounceMul: 0
 --- !u!1 &8403119711751527546
 GameObject:

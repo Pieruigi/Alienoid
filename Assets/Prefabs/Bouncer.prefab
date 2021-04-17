@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bouncer: {fileID: 5169449010213770725}
-  baseMaterial: {fileID: 2100000, guid: 64e4c7c7a9cfc664ab990468a8ee355c, type: 2}
 --- !u!1 &8650302272526929794
 GameObject:
   m_ObjectHideFlags: 0
@@ -123,7 +122,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9eacb12ec4e83c4798625feca151642, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bouncePower: 0.4
+  bouncePower: 1
+  minImpulse: 0
 --- !u!1001 &151698665202887803
 PrefabInstance:
   m_ObjectHideFlags: 0

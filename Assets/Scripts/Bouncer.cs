@@ -14,8 +14,11 @@ namespace Zom.Pie
 		float bouncePower = 0;
 
 		[SerializeField]
-		[Range(0f, 1f)]
-		float velBounceMul = 0.55f;
+		float minImpulse = 0;
+
+		//[SerializeField]
+		//[Range(0f, 1f)]
+		//float velBounceMul = 0.55f;
 
 		float bounceMul = 2.75f;
 		float bounceMagnitude;
@@ -51,8 +54,18 @@ namespace Zom.Pie
 				// We don't care about multiple contact points
 				ContactPoint contactPoint = collision.contacts[0];
 
+				Debug.LogFormat("RelativeVel: {0}", collision.relativeVelocity.magnitude);
+				Debug.LogFormat("Impulse: {0}", collision.impulse.magnitude);
+
+				float forceMag = bounceMagnitude;// + collision.relativeVelocity.magnitude * velBounceMul;
+
 				
-				float forceMag = bounceMagnitude + collision.relativeVelocity.magnitude * velBounceMul;
+
+				if (minImpulse > 0)
+				{
+					if (collision.impulse.magnitude < minImpulse)
+						forceMag += 0.75f;
+				}
 
 				Vector3 forceDir = -contactPoint.normal;
 
