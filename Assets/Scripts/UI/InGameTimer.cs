@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,9 +11,13 @@ namespace Zom.Pie.UI
     {
         string stringFormat = "{0:00}:{1:00.00}";
         TMP_Text label;
+        float penaltyTime = 0;
         // Start is called before the first frame update
         void Start()
         {
+            // Setting handle
+            LevelManager.Instance.OnPenaltyTime += HandleOnPenaltyTime;
+
             label = GetComponentInChildren<TMP_Text>();
 
             label.text = string.Format(stringFormat, 0f, 0f, 0f);
@@ -28,11 +33,29 @@ namespace Zom.Pie.UI
             // Update timer
             double millis = (DateTime.UtcNow - LevelManager.Instance.StartingTime).TotalMilliseconds;
 
+            millis += (double)penaltyTime * 1000;
+
             millis /= 1000f;
             int min = (int)millis / 60;
             millis %= 60f;
 
             label.text = string.Format(stringFormat, min, millis);
+        }
+
+        void HandleOnPenaltyTime(float penaltyTime)
+        {
+            // Add penalty
+            this.penaltyTime += penaltyTime;
+
+            // Red flickering
+            float time = 0.5f;
+            Sequence seq = DOTween.Sequence();
+            seq.Append(label.DOColor(Color.red, time));
+            seq.Append(label.DOColor(Color.white, time));
+            seq.SetLoops(3);
+            seq.Play();
+
+
         }
     }
 

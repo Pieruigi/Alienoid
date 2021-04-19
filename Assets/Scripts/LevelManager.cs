@@ -13,6 +13,7 @@ namespace Zom.Pie
         public UnityAction<Enemy> OnEnemyRemoved;
         
         public UnityAction OnLevelBeaten;
+        public UnityAction<float> OnPenaltyTime;
         
 
         public static LevelManager Instance { get; private set; }
@@ -104,6 +105,8 @@ namespace Zom.Pie
 
         System.DateTime stoppingTime;
 
+        float wrongHolePenaltyTime = 5f;
+        float currentPenaltyTime = 0; 
 
         private void Awake()
         {
@@ -364,7 +367,13 @@ namespace Zom.Pie
             // If the enemy color doesn't match the black hole colore we put the enemy back in the list 
             if (enemy.Type != blackHole.EnemyType)
             {
+                // Send the enemy back to the enemy list
                 enemies.Add(enemy.Type);
+
+                // Add penalty time
+                currentPenaltyTime += wrongHolePenaltyTime;
+
+                OnPenaltyTime?.Invoke(wrongHolePenaltyTime);
             }
             else
             {
