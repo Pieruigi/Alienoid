@@ -7,6 +7,23 @@
       "dependencies": {},
       "url": "https://unityregistry-pa.googleapis.com"
     },
+    "com.google.firebase.app": {
+      "version": "7.1.0",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.google.external-dependency-manager": "1.2.164"
+      },
+      "url": "https://unityregistry-pa.googleapis.com"
+    },
+    "com.google.firebase.auth": {
+      "version": "file:C:/Users/Pierluigi/Downloads/com.google.firebase.auth-7.1.0.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {
+        "com.google.firebase.app": "7.1.0"
+      }
+    },
     "com.unity.collab-proxy": {
       "version": "1.3.9",
       "depth": 0,
