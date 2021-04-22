@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources tools:keep="@string/gcm_defaultSenderId,@string/google_storage_bucket,@string/project_id,@string/google_api_key,@string/google_crash_reporting_api_key,@string/google_app_id,@string/default_android_client_id,@string/default_web_client_id" xmlns:tools="http://schemas.android.com/tools">
+  <string name="gcm_defaultSenderId" translatable="false">472540864345</string>
+  <string name="google_storage_bucket" translatable="false">alienoid-7998c.appspot.com</string>
+  <string name="project_id" translatable="false">alienoid-7998c</string>
+  <string name="google_api_key" translatable="false">AIzaSyACtB6skxEXAnS-s4vg0rbKAtTb7iAZl_w</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyACtB6skxEXAnS-s4vg0rbKAtTb7iAZl_w</string>
+  <string name="google_app_id" translatable="false">1:472540864345:android:43d5b4c03c387f20577648</string>
+  <string name="default_android_client_id" translatable="false">472540864345-b7rksbeiebd25mc4jbe1usnl3sci8qie.apps.googleusercontent.com</string>
+  <string name="default_web_client_id" translatable="false">472540864345-mfb6oq77que0mp245r6g4nkqdv24f6aj.apps.googleusercontent.com</string>
+</resources>

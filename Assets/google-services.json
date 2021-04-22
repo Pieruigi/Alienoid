@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "472540864345",
+    "project_id": "alienoid-7998c",
+    "storage_bucket": "alienoid-7998c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:472540864345:android:43d5b4c03c387f20577648",
+        "android_client_info": {
+          "package_name": "com.upgradinglight.hawking"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "472540864345-b7rksbeiebd25mc4jbe1usnl3sci8qie.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.upgradinglight.hawking",
+            "certificate_hash": "50cf0395a236630bb40fb7c7db46bdcbe4d27cfa"
+          }
+        },
+        {
+          "client_id": "472540864345-mfb6oq77que0mp245r6g4nkqdv24f6aj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACtB6skxEXAnS-s4vg0rbKAtTb7iAZl_w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "472540864345-mfb6oq77que0mp245r6g4nkqdv24f6aj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
