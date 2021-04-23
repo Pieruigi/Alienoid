@@ -171,7 +171,7 @@ namespace Zom.Pie
 
         public void Reverse()
         {
-            Debug.Log("Reverse speeder");
+            Debug.Log("Reverse speeder:" + gameObject.name);
             forceMagnitude *= -1;
             impulseMagnitude *= -1;
         }

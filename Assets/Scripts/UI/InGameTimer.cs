@@ -11,7 +11,7 @@ namespace Zom.Pie.UI
     {
         string stringFormat = "{0:00}:{1:00.00}";
         TMP_Text label;
-        float penaltyTime = 0;
+        //float penaltyTime = 0;
         // Start is called before the first frame update
         void Start()
         {
@@ -31,21 +31,24 @@ namespace Zom.Pie.UI
                 return;
 
             // Update timer
-            double millis = (DateTime.UtcNow - LevelManager.Instance.StartingTime).TotalMilliseconds;
+            //double millis = (DateTime.UtcNow - LevelManager.Instance.StartingTime).TotalMilliseconds;
+            float millis = LevelManager.Instance.TimeScore * 1000f;
 
-            millis += (double)penaltyTime * 1000;
+            //millis += (double)penaltyTime * 1000;
 
             millis /= 1000f;
             int min = (int)millis / 60;
             millis %= 60f;
 
             label.text = string.Format(stringFormat, min, millis);
+
+
         }
 
         void HandleOnPenaltyTime(float penaltyTime)
         {
             // Add penalty
-            this.penaltyTime += penaltyTime;
+            //this.penaltyTime += penaltyTime;
 
             // Red flickering
             float time = 0.5f;

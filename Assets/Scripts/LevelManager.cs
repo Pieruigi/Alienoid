@@ -97,16 +97,14 @@ namespace Zom.Pie
             get { return hasNextEnemyToSpawn; }
         }
 
-        System.DateTime startingTime;
-        public System.DateTime StartingTime
+        float timeScore = 0;
+        public float TimeScore
         {
-            get { return startingTime; }
+            get { return timeScore; }
         }
 
-        System.DateTime stoppingTime;
-
-        float wrongHolePenaltyTime = 5f;
-        float currentPenaltyTime = 0; 
+        float penaltyTime = 5f;
+        
 
         private void Awake()
         {
@@ -171,6 +169,8 @@ namespace Zom.Pie
             if (!running)
                 return;
 
+            if (GameManager.Instance == null || !GameManager.Instance.IsPaused())
+                timeScore += Time.deltaTime / Time.timeScale;
 
             if (enemiesOnScreen >= maxEnemiesOnScreen)
                 return;
@@ -275,7 +275,8 @@ namespace Zom.Pie
 
             // Game started
             running = true;
-            startingTime = System.DateTime.UtcNow;
+            //startingTime = System.DateTime.UtcNow;
+            timeScore = 0;
 
             for (int i=0; i<maxEnemiesOnScreen; i++)
             {
@@ -371,9 +372,9 @@ namespace Zom.Pie
                 enemies.Add(enemy.Type);
 
                 // Add penalty time
-                currentPenaltyTime += wrongHolePenaltyTime;
+                timeScore += penaltyTime;
 
-                OnPenaltyTime?.Invoke(wrongHolePenaltyTime);
+                OnPenaltyTime?.Invoke(penaltyTime);
             }
             else
             {
@@ -394,7 +395,7 @@ namespace Zom.Pie
                 running = false;
 
                 // Stop timer
-                stoppingTime = System.DateTime.UtcNow;
+                //stoppingTime = System.DateTime.UtcNow;
 
                 //StartCoroutine(EndingLevel());
                 OnLevelBeaten?.Invoke();
@@ -430,7 +431,7 @@ namespace Zom.Pie
             // Stop running
             running = false;
 
-            stoppingTime = System.DateTime.UtcNow;
+            //stoppingTime = System.DateTime.UtcNow;
         }
 
 

@@ -130,6 +130,8 @@ namespace Zom.Pie
         
         IEnumerator DoSwitch(Data data)
         {
+            Debug.Log("Switch speeder:" + gameObject);
+
             // Stop fx
             data.fx.GetComponent<ParticleSystem>().Stop();
 
