@@ -17,7 +17,7 @@
       "url": "https://unityregistry-pa.googleapis.com"
     },
     "com.google.firebase.auth": {
-      "version": "file:C:/Users/Pierluigi/Downloads/com.google.firebase.auth-7.1.0.tgz",
+      "version": "file:com.google.firebase.auth-7.1.0.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {
