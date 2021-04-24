@@ -1,10 +1,10 @@
-using Firebase.Auth;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 
-namespace Zom.Pie
+namespace Zom.Pie.Services
 {
     public class AccountManager : MonoBehaviour
     {
@@ -42,17 +42,11 @@ namespace Zom.Pie
                 // Try log in
                 logging = true;
 
-                LogInWithGoogle();
+                FirebaseManager.Instance.LogInWithGoogle();
             }
         }
 
-        void LogInWithGoogle()
-        {
-            string idToken = "";
-            string accessToken = "";
-            Credential credential = GoogleAuthProvider.GetCredential(idToken, accessToken);
-            Debug.Log("idToken:" + idToken);
-        }
+       
     }
 
 }

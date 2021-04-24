@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Zom.Pie.Ads
+namespace Zom.Pie.Services
 {
     public class AdsManager : MonoBehaviour
     {
