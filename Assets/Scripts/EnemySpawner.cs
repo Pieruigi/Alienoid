@@ -28,10 +28,10 @@ namespace Zom.Pie
 
            
             // Little randomization on the spawn direction
-            Vector3 dir = Quaternion.AngleAxis(Random.Range(-5f, 5f), transform.forward) * transform.up;
+            Vector3 dir = Quaternion.AngleAxis(Random.Range(-1.5f, 1.5f), transform.forward) * transform.up;
            
             // Little randomization on the force
-            float force = spawnForce * Random.Range(0.9f, 1.1f);
+            float force = spawnForce * Random.Range(0.95f, 1.05f);
 
             Rigidbody rb = enemy.GetComponent<Rigidbody>();
 

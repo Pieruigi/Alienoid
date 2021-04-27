@@ -37,6 +37,7 @@ namespace Zom.Pie.Services
         // Update is called once per frame
         void Update()
         {
+            return;
             if (!Logged && !logging && FirebaseManager.Instance.Initialized)
             {
                 // Try log in

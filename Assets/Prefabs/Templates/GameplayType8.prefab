@@ -1579,7 +1579,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objects:
   - {fileID: 5139509812538921042}
-  duration: 16
+  duration: 8
   angle: 30
   inverse: 0
   freezeTime: 0

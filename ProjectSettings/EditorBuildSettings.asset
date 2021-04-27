@@ -5,133 +5,133 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/SignInSample/MainScene.unity
     guid: 4dbc020c6ee6d47e2a668e83cc5ee276
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Main.unity
     guid: 88d87f4540aafb8468858572829e608b
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/LevelMenu.unity
     guid: a6cbe4a30d57d7d4287bd32aadb1e41b
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level1_GT1.unity
     guid: 3a78c573193d6a241b9088bac9828418
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level3_GT2.unity
     guid: a84a464ec5a2a344581a7b9c63be7595
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level4_GT3.unity
     guid: 629d995754024ce41862887e930d3b16
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level5_GT1.unity
     guid: df7dbcc2676ad314aaaa96b2c4a8d811
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level6_GT4.unity
     guid: 290482d4e2266e944a4ee8cef243161c
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level7_GT5.unity
     guid: 63ef02571eede6443afe95d3784f641b
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level8_GT1.unity
     guid: 65619fdfe7ba0b5428927d7202eba0b7
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level9_GT2.unity
     guid: 78d56cf77a0b9984897dbdfb8883724d
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level10_GT5.unity
     guid: f531fb192d2d9e844b835c31b56b0b43
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level11_GT2.unity
     guid: aeedc9ed5221a804583c9ab20f49c2b3
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level12_GT4.unity
     guid: cf12cd76b3d12884db81a17d38876c04
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level15_GT5.unity
     guid: 7a79654efef5bea4aaab36101d1e4b31
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level16_GT3.unity
     guid: 3103336396b103c4cb8159f3ee74e749
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level20_GT1.unity
     guid: b1c3442e25ef0404d89b4d58d0945096
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level28_GT1.unity
     guid: 843f80f9f80742d4ea98995a4ab86045
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level29_GT2.unity
     guid: 918fc8a86e271d745b79c957b5da5478
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level31_GT6.unity
     guid: 867a16a8ebc8d6540ba4e28b9f87915a
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level32_GT7.unity
     guid: 544c9a31ce05f23418bbe0262760776e
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level34_GT9.unity
     guid: 366ce3159fd02da47a95e01df4a2f496
-  - enabled: 1
-    path: Assets/Scenes/Level35_GT11.unity
+  - enabled: 0
+    path: Assets/Scenes/__Level35_GT11.unity
     guid: 20de2bb37e9bae644af5070c6335f5ca
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level37_GT6.unity
     guid: a6df3014236af1a40aeed1d1c190a318
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level38_GT7.unity
     guid: 8f2ec3ceebc0a1c4fa79497201bf92d0
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level39_GT9.unity
     guid: ba120eb54e596ef49a3595834243a2de
-  - enabled: 1
-    path: Assets/Scenes/Level40_GT11.unity
+  - enabled: 0
+    path: Assets/Scenes/__Level40_GT11.unity
     guid: 540a40ce2b462564f8dec93f53b739dd
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level41_GT6.unity
     guid: af8d8acbeb4becc4480ad57a79c61980
-  - enabled: 1
-    path: Assets/Scenes/Level42_GT13.unity
+  - enabled: 0
+    path: Assets/Scenes/__Level42_GT13.unity
     guid: ffdc62b8025cfce439489c83375c37d5
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level43_GT8.unity
     guid: bd2eb49c688b77b4e856e565bc655294
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level46_GT6.unity
     guid: 8c1e606cfc241134ea8b88441ad5ce58
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level47_GT9.unity
     guid: c2ac230ca12c07848bd253af75902716
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level49_GT12.unity
     guid: 4b4528cda1e22454d8bbbdd2c3112e84
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level50_GT1.unity
     guid: 9fb2aa0c1d885f649a974e3dade39be1
-  - enabled: 1
-    path: Assets/Scenes/Level51_GT10.unity
+  - enabled: 0
+    path: Assets/Scenes/Level51_GT10_TO_MODIFY.unity
     guid: 132fbd93af295e94db4cde44c1983fcd
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level52_GT12.unity
     guid: d6c15ea243f92674086b64c48c5a6f20
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level53_GT1.unity
     guid: 6524fae6634c97342ba1621f11d99ad6
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level58_GT1.unity
     guid: e539dde955099954d814fbdb8a5c9e96
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level59_GT1.unity
     guid: 980b4449bc3117f46b3f4511d52521cd
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level60_GT14.unity
     guid: 8a9f18d05e619384e8855c1d13971341
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level65_GT14.unity
     guid: 114fdf95bffee4c4896556ab784f3e80
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level70_GT14.unity
     guid: 8ae63887bb8411a4b91f3d13d63aa8ff
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Level75_GT15.unity
     guid: dd2d1041c5674b645948d6ddb16b833c
   m_configObjects: {}

@@ -71,55 +71,45 @@ namespace Zom.Pie.Services
 
         public void LogInWithGoogle()
         {
-            Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
+            Debug.Log("FirebaseManager - logging with google...");
+            // Try first to log in silently
+            GoogleManager.Instance.SignIn(HandleOnGoogleSignIn, true);
+        }
 
-            Debug.Log("GoogleSignInConfiguration");
-            configuration = new GoogleSignInConfiguration
+        void HandleOnGoogleSignIn(bool succeeded, bool silently, GoogleSignInUser googleSignInUser)
+        {
+            Debug.Log("FirebaseManager - Sign in result:" + succeeded);
+
+            if (succeeded)
             {
-                WebClientId = webClientId,
-                RequestIdToken = true
-            };
-            Debug.Log("GoogleSignInConfiguration completed");
-
-            Task<GoogleSignInUser> signIn = GoogleSignIn.DefaultInstance.SignIn();
-            Debug.Log("Sign in task");
-            TaskCompletionSource<FirebaseUser> signInCompleted = new TaskCompletionSource<FirebaseUser>();
-            Debug.Log("Sign in competed task");
-            signIn.ContinueWith(task => {
-                if (task.IsCanceled)
+                Debug.Log("GoogleSignIn Token:" + googleSignInUser.IdToken);
+                Credential credential = Firebase.Auth.GoogleAuthProvider.GetCredential(googleSignInUser.IdToken, null);
+            }
+            else
+            {
+                if (silently)
                 {
-                    signInCompleted.SetCanceled();
-                }
-                else if (task.IsFaulted)
-                {
-                    Debug.Log("Task faulted");
-                    signInCompleted.SetException(task.Exception);
+                    // If silent log in fails, then try normal log in 
+                    GoogleManager.Instance.SignIn(HandleOnGoogleSignIn, false);
                 }
                 else
                 {
-                    Debug.Log("GoogleSignIn Success");
-
-                    Credential credential = Firebase.Auth.GoogleAuthProvider.GetCredential(((Task<GoogleSignInUser>)task).Result.IdToken, null);
-
-                    Debug.Log("GoogleSignIn Token:" + ((Task<GoogleSignInUser>)task).Result.IdToken);
-
-                    auth.SignInWithCredentialAsync(credential).ContinueWith(authTask => {
-                        if (authTask.IsCanceled)
-                        {
-                            signInCompleted.SetCanceled();
-                        }
-                        else if (authTask.IsFaulted)
-                        {
-                            signInCompleted.SetException(authTask.Exception);
-                        }
-                        else
-                        {
-                            signInCompleted.SetResult(((Task<FirebaseUser>)authTask).Result);
-                        }
-                    });
+                    /// Send back error
                 }
-            });
+            }
         }
+
+        //void HandleOnGoogleSignIn(bool succeeded, GoogleSignInUser googleSignInUser)
+        //{
+        //    Debug.Log("FirebaseManager - Sign in result:" + succeeded);
+
+        //    if (succeeded)
+        //    {
+        //        Debug.Log("GoogleSignIn Token:" + googleSignInUser.IdToken);
+        //        Credential credential = Firebase.Auth.GoogleAuthProvider.GetCredential(googleSignInUser.IdToken, null);
+        //    }
+            
+        //}
     }
 
 }
