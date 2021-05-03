@@ -30,6 +30,8 @@ namespace Zom.Pie.Services
                     WebClientId = webClientId,
                     RequestIdToken = true
                 };
+
+                DontDestroyOnLoad(gameObject);
             }
             else
             {
@@ -61,7 +63,7 @@ namespace Zom.Pie.Services
 
         public void SignIn(UnityAction<bool, bool, GoogleSignInUser> callback, bool silently)
         {
-            Debug.Log("GoogleManager - trying to sign in silently...");
+            Debug.Log("GoogleManager - trying to sign in - silently:" + silently);
 
             GoogleSignIn.Configuration = configuration;
             GoogleSignIn.Configuration.WebClientId = webClientId;
@@ -99,39 +101,6 @@ namespace Zom.Pie.Services
             });
         }
 
-        //public void SignIn(UnityAction<bool, GoogleSignInUser> callback)
-        //{
-        //    Debug.Log("GoogleManager - signing in...");
-
-
-        //    GoogleSignIn.Configuration = configuration;
-        //    GoogleSignIn.Configuration.WebClientId = webClientId;
-        //    GoogleSignIn.Configuration.RequestIdToken = true;
-
-        //    Debug.Log("GoogleManager - configuration set up");
-
-        //    GoogleSignIn.DefaultInstance.SignIn().ContinueWith(task => {
-        //        if (task.IsCanceled)
-        //        {
-        //            Debug.Log("GoogleSignIn canceled");
-
-        //            callback?.Invoke(false, null);
-        //        }
-        //        else if (task.IsFaulted)
-        //        {
-        //            Debug.Log("GoogleSignIn faulted");
-
-        //            callback?.Invoke(false, null);
-        //        }
-        //        else
-        //        {
-        //            Debug.Log("GoogleSignIn Succeeded");
-
-        //            callback?.Invoke(true, ((Task<GoogleSignInUser>)task).Result);
-
-        //        }
-        //    });
-        //}
        
     }
 

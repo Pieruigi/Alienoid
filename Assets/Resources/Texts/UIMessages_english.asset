@@ -15,3 +15,5 @@ MonoBehaviour:
   textList:
   - Quit the game?
   - Back to menu?
+  - By clicking the button you accept terms and conditions defined in the privacy
+    section.

@@ -1,8 +1,10 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Zom.Pie.Services;
 
 namespace Zom.Pie.UI
 {
@@ -15,12 +17,15 @@ namespace Zom.Pie.UI
         [SerializeField]
         GameObject star;
 
+        [SerializeField]
+        TMP_Text position;
+
         int levelId;
         public int LevelId
         {
             get { return levelId; }
         }
-        int speed;
+        int speed = 1;
         public int MaxBeatenSpeed
         {
             get { return speed; }
@@ -29,6 +34,11 @@ namespace Zom.Pie.UI
         bool selected;
 
         float selectionScale = 1.16f;
+
+        private void Awake()
+        {
+            
+        }
 
         // Start is called before the first frame update
         void Start()
@@ -42,6 +52,11 @@ namespace Zom.Pie.UI
 
         }
 
+        private void OnDestroy()
+        {
+            LeaderboardManager.Instance.OnLeaderboardLoaded -= HandleOnLeaderboardLoaded;
+        }
+
         public void Init(int levelId, int speed)
         {
             
@@ -51,26 +66,33 @@ namespace Zom.Pie.UI
             // Get the max speed the level has been beaten
             //speed = GameProgressManager.Instance.GetMaxBeatenSpeed(levelId);
 
-            if(GameProgressManager.Instance.LevelIsUnlocked(levelId, speed))
-            {
-                padlock.SetActive(false);
-                GetComponent<Image>().color = Color.white;
+            // Set handle
+            LeaderboardManager.Instance.OnLeaderboardLoaded += HandleOnLeaderboardLoaded;
 
-                // Activate the star
-                star.SetActive(true);
+            // Hide position label
+            position.gameObject.SetActive(false);
+            
+            // Deactivate the star
+            HighlightStar(false);
+            star.SetActive(false);
+
+            // Deactivate padlock
+            padlock.SetActive(false);
+
+            if (GameProgressManager.Instance.LevelIsUnlocked(levelId, speed))
+            {
+                GetComponent<Image>().color = Color.white;
 
                 if (GameProgressManager.Instance.LevelHasBeenBeaten(levelId, speed))
                 {
-                    // Level has been beaten at the given speed so colorize the star
-                    HighlightStar(true);
+                    // Show star 
+                    star.SetActive(true);
                 }
-                else
-                {
-                    HighlightStar(false);
-                }
+               
             }
             else
             {
+                // Show padlock
                 padlock.SetActive(true);
 
                 // Change color alpha
@@ -79,40 +101,10 @@ namespace Zom.Pie.UI
                 c.a = 1;
                 img.color = c;
 
-                // Deactivate the star
-                star.SetActive(false);
             }
 
-            //if (speed > 0)
-            //{
-            //    // If speed > 0 the level is unlocked for sure
-            //    // so we hide the padlock...
-            //    padlock.SetActive(false);
-            //    //... and we update the speed panel
-            //    UpdateSpeedPanel();
-            //}
-            //else
-            //{
-            //    // Speed = 0 so level has not beaten yet, but it could still be unlocked if the previous
-            //    // one has been beaten
-            //    if(levelId == GameProgressManager.Instance.GetLastUnlockedLevel())
-            //    {
-            //        // Unlock 
-            //        padlock.SetActive(false);
-
-            //        // Update the speed panel
-            //        UpdateSpeedPanel();
-            //    }
-            //    else
-            //    {
-            //        // Change color alpha
-            //        Image img = GetComponent<Image>();
-            //        Color c = img.color * 0.6f;
-            //        c.a = 1;
-            //        img.color = c;
-            //    }
-            //}
-            
+            // Load leaderboard
+            LeaderboardManager.Instance.LoadLeaderboard(levelId);
         }
 
         public void Select(bool value)
@@ -154,6 +146,67 @@ namespace Zom.Pie.UI
         void UpdateSpeedPanel()
         {
 
+        }
+
+        void HandleOnLeaderboardLoaded(int levelId)
+        {
+            if (this.levelId != levelId)
+                return;
+
+            if (!GameProgressManager.Instance.LevelIsUnlocked(levelId, speed))
+                return;
+
+            Debug.LogFormat("LevelUnlocked:({0},{1})", levelId, speed);
+
+            if (!GameProgressManager.Instance.LevelHasBeenBeaten(levelId, speed))
+                return;
+
+            Debug.LogFormat("HandleOnLeaderboardLoaded({0})", levelId);
+            
+
+            // Check if the player is ranked
+            if (LeaderboardManager.Instance.IsLocalPlayerInRankingByLevel(levelId))
+            {
+                int localPosition = LeaderboardManager.Instance.GetLocalPlayerPositionByLevel(levelId);
+                Debug.LogFormat("LocalPosition: {0}", localPosition);
+                // Check the player position for the given level ranking
+                if ( localPosition > Constants.CurrentTopPlayers)
+                {
+                    Debug.Log("Out of the top");
+                    // You are not in the top players ranking
+                    // Activate star but not highlited
+                    // We set some default value in case for some reason you are not 
+                    // able to retrieve online leadearboard
+                    star.SetActive(true);
+                    HighlightStar(false);
+
+                    // Hide position
+                    position.gameObject.SetActive(false);
+                }
+                else
+                {
+                    Debug.Log("In the top");
+
+                    // You are top
+                    if (localPosition > 3)
+                    {
+                        // Highlight star
+                        star.SetActive(true);
+                        HighlightStar(true);
+                        // Hide position
+                        position.gameObject.SetActive(false);
+                    }
+                    else
+                    {
+                        // Hide star
+                        star.SetActive(false);
+                        // Set position
+                        position.gameObject.SetActive(true);
+                        position.text = localPosition.ToString();
+                        Debug.LogFormat("You are in {0} position", localPosition);
+                    }
+                }
+            }
         }
     }
 

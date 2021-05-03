@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Zom.Pie.Services;
 
 namespace Zom.Pie.UI
 {
@@ -49,6 +50,9 @@ namespace Zom.Pie.UI
 
             GameManager.Instance.Pause(true);
             panel.SetActive(true);
+
+            // Save score if needed
+            LeaderboardManager.Instance.SaveLocalPlayerScoreByLevel(GameManager.Instance.GetCurrentLevelId(), LevelManager.Instance.TimeScore);
         }
 
         void HandleOnLevelBeaten()
