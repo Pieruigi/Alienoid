@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
+using Zom.Pie.Services;
 
 public class TestTasks : MonoBehaviour
 {
@@ -26,14 +27,22 @@ public class TestTasks : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //Test1("Pippo").ConfigureAwait(false);  
-        Test2("Pippo");
+        //Test1("Pippo").ConfigureAwait(false);
+        LeaderboardManager.Instance.GetLevelMenuScoreDataAsync(GetLevelMenuScoreDataAsyncCallback).ConfigureAwait(false);
+        Debug.Log("Main thread continue");
+        //Test2("Pippo");
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    void GetLevelMenuScoreDataAsyncCallback(LevelMenuScoreData data)
+    {
+        Debug.Log("Callback");
+        Debug.Log(data);
     }
 
     async Task Test1(string playerName) 

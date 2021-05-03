@@ -111,7 +111,14 @@ namespace Zom.Pie.Services
         // Start is called before the first frame update
         void Start()
         {
-            leaderboards = new LevelData[GameManager.Instance.GetNumberOfLevels()];
+#if UNITY_EDITOR
+            if(GameManager.Instance != null)
+                leaderboards = new LevelData[GameManager.Instance.GetNumberOfLevels()];
+            else
+                leaderboards = new LevelData[28];
+#else
+                leaderboards = new LevelData[GameManager.Instance.GetNumberOfLevels()];
+#endif
         }
 
         // Update is called once per frame
@@ -166,6 +173,80 @@ namespace Zom.Pie.Services
             });
 
             return 13;
+        }
+
+        //public async void GetLevelMenuScoreDataAsync(UnityAction<LevelMenuScoreData> callback)
+        //{
+        //    LevelMenuScoreData data = new LevelMenuScoreData();
+        //    await GetLevelMenuPlayerPositionTask(data);
+
+        //    callback?.Invoke(data);
+        //}
+
+        public async Task GetLevelMenuScoreDataAsync(UnityAction<LevelMenuScoreData> callback)
+        {
+            // Create new data
+            LevelMenuScoreData data = new LevelMenuScoreData();
+
+            // Init db
+            db = FirebaseFirestore.DefaultInstance;
+
+            // Get level collection
+            int month = DateTime.UtcNow.Month;
+            int year = DateTime.UtcNow.Year;
+            CollectionReference levels = db.Collection(leaderboardCollection).
+                    Document(string.Format(leaderboardDocument, month, year)).
+                    Collection(levelCollection);
+
+            // Await for task 
+            QuerySnapshot lQuery = await levels.GetSnapshotAsync();
+            // Loop through each level and get user score data
+            foreach(DocumentSnapshot level in lQuery.Documents)
+            {
+                int levelId = int.Parse(level.Id.Split('_')[1]);
+                Debug.Log("Doc.id:" + level.Id);
+                QuerySnapshot uQuery = await level.Reference.Collection(userCollection).OrderByDescending(scoreField).GetSnapshotAsync();
+                int count = 1;
+                foreach(DocumentSnapshot user in uQuery.Documents)
+                {
+                    // Save the monthly best score
+                    if (count == 1)
+                    {
+                        data.AddMonthlyRecord(levelId, float.Parse(user.ToDictionary()[scoreField].ToString()));
+                    }
+
+                    // Get player position and score
+                    string userId;
+#if !UNITY_EDITOR
+                    userId = AccountManager.Instance.GetUserId();
+                        
+#else
+                    if (AccountManager.Instance == null)
+                    {
+                        userId = "fake_local_user_id";
+                    }
+                    else
+                    {
+                        userId = AccountManager.Instance.GetUserId();
+                    }
+
+#endif
+                    if(userId == user.Id)
+                    {
+                        data.AddPlayerScore(levelId, float.Parse(user.ToDictionary()[scoreField].ToString()));
+                        data.AddPlayerPosition(levelId, count);
+                    }
+
+                    //Debug.Log("User:" + user.Id);
+                }
+            }
+
+            //Debug.Log(data);
+
+            // Callback
+            callback?.Invoke(data);
+
+
         }
 
         public void LoadLeaderboard(int levelId)
