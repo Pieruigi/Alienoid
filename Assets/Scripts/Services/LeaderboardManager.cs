@@ -81,14 +81,16 @@ namespace Zom.Pie.Services
         FirebaseFirestore db;
 
         string leaderboardCollection = "leaderboards";
-        string leaderboardDocument = "leaderboard_{0}_{1}";
+        string leaderboardDocumentFormat = "{0}_{1}";
         string allTimeDocument = "all_time";
         string levelCollection = "levels";
-        string levelDocument = "level_{0}";
+        //string levelDocument = "level_{0}";
         string userCollection = "users";
         string scoreField = "score";
 
-        
+#if UNITY_EDITOR
+        string fakeLocalUserId = "fake_local_user_id";
+#endif
 
         private void Awake()
         {
@@ -124,12 +126,19 @@ namespace Zom.Pie.Services
         // Update is called once per frame
         void Update()
         {
-            
+
             if (Input.GetKeyDown(KeyCode.A))
-                SaveLocalPlayerScoreByLevel(1, 122442);
+                SaveLocalPlayerScoreByLevel(1, 122442).ConfigureAwait(false);
+                //CreateMonthlyStructure().ConfigureAwait(false);
+
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                GetLevelMenuScoreDataAsync((LevelMenuScoreData data) => { Debug.Log(data); }).ConfigureAwait(false) ;
+            }    
         }
 
-        
+      
+
         public bool IsLocalPlayerInRankingByLevel(int levelId)
         {
             if (leaderboards[levelId-1] == null)
@@ -143,67 +152,80 @@ namespace Zom.Pie.Services
             return leaderboards[levelId-1].localPosition;
         }
 
-        public float GetLocalPlayerScoreByLevelAsync(int levelId, UnityAction<bool, float> callback)
+        /// <summary>
+        /// To avoid unquerable documents ( italic font document created by code are not readeable ) 
+        /// </summary>
+        /// <returns></returns>
+        public async Task CreateLeaderboardStructure()
         {
-            //return leaderboards[levelId-1].localScore;
             db = FirebaseFirestore.DefaultInstance;
+
+            // Monthly leaderboard
             int month = DateTime.UtcNow.Month;
             int year = DateTime.UtcNow.Year;
 
-            string userId = AccountManager.Instance.GetUserId();
+            DocumentSnapshot lead = await db.Collection(leaderboardCollection).
+                                         Document(string.Format(leaderboardDocumentFormat, month, year)).GetSnapshotAsync();
 
-#if UNITY_EDITOR
-            if (!AccountManager.Instance.Logged)
-                userId = "fake_local_user_id";
-#endif
-            DocumentReference doc = db.Collection(leaderboardCollection).Document(string.Format(leaderboardDocument, month, year)).
-                Collection(levelCollection).Document(string.Format(levelDocument, levelId)).
-                Collection(userCollection).Document(userId);
-
-            doc.GetSnapshotAsync().ContinueWith(task =>
+            if (!lead.Exists)
             {
-                if(!task.Result.Exists)
-                {
-                    callback?.Invoke(false, 0);
-                }
-                else
-                {
-                    callback?.Invoke(true, float.Parse( task.Result.ToDictionary()[scoreField].ToString()));
-                }
-            });
+                await lead.Reference.SetAsync(new Dictionary<string, object>());
+            }
 
-            return 13;
+            for (int i = 0; i < GameManager.Instance.GetNumberOfLevels(); i++)
+            {
+                DocumentSnapshot level = await lead.Reference.Collection(levelCollection).Document((i + 1).ToString()).GetSnapshotAsync();
+                if (!level.Exists)
+                {
+                    await level.Reference.SetAsync(new Dictionary<string, object>());
+                }
+                
+            }
+
+            // All time leadearboard
+            lead = await db.Collection(leaderboardCollection).
+                                         Document(allTimeDocument).GetSnapshotAsync();
+
+            if (!lead.Exists)
+            {
+                await lead.Reference.SetAsync(new Dictionary<string, object>());
+            }
+
+            for (int i = 0; i < GameManager.Instance.GetNumberOfLevels(); i++)
+            {
+                DocumentSnapshot level = await lead.Reference.Collection(levelCollection).Document((i + 1).ToString()).GetSnapshotAsync();
+                if (!level.Exists)
+                {
+                    await level.Reference.SetAsync(new Dictionary<string, object>());
+                }
+
+            }
         }
-
-        //public async void GetLevelMenuScoreDataAsync(UnityAction<LevelMenuScoreData> callback)
-        //{
-        //    LevelMenuScoreData data = new LevelMenuScoreData();
-        //    await GetLevelMenuPlayerPositionTask(data);
-
-        //    callback?.Invoke(data);
-        //}
 
         public async Task GetLevelMenuScoreDataAsync(UnityAction<LevelMenuScoreData> callback)
         {
-            // Create new data
-            LevelMenuScoreData data = new LevelMenuScoreData();
-
             // Init db
             db = FirebaseFirestore.DefaultInstance;
+
+            // Create new data
+            LevelMenuScoreData data = new LevelMenuScoreData();
+                        
 
             // Get level collection
             int month = DateTime.UtcNow.Month;
             int year = DateTime.UtcNow.Year;
-            CollectionReference levels = db.Collection(leaderboardCollection).
-                    Document(string.Format(leaderboardDocument, month, year)).
-                    Collection(levelCollection);
+
 
             // Await for task 
-            QuerySnapshot lQuery = await levels.GetSnapshotAsync();
+            QuerySnapshot lQuery = await db.Collection(leaderboardCollection).
+                    Document(string.Format(leaderboardDocumentFormat, month, year)).
+                    Collection(levelCollection).GetSnapshotAsync();
+
+
             // Loop through each level and get user score data
-            foreach(DocumentSnapshot level in lQuery.Documents)
+            foreach (DocumentSnapshot level in lQuery.Documents)
             {
-                int levelId = int.Parse(level.Id.Split('_')[1]);
+               
                 Debug.Log("Doc.id:" + level.Id);
                 QuerySnapshot uQuery = await level.Reference.Collection(userCollection).OrderByDescending(scoreField).GetSnapshotAsync();
                 int count = 1;
@@ -212,7 +234,7 @@ namespace Zom.Pie.Services
                     // Save the monthly best score
                     if (count == 1)
                     {
-                        data.AddMonthlyRecord(levelId, float.Parse(user.ToDictionary()[scoreField].ToString()));
+                        data.AddMonthlyRecord(int.Parse(level.Id), float.Parse(user.ToDictionary()[scoreField].ToString()));
                     }
 
                     // Get player position and score
@@ -221,9 +243,9 @@ namespace Zom.Pie.Services
                     userId = AccountManager.Instance.GetUserId();
                         
 #else
-                    if (AccountManager.Instance == null)
+                    if (AccountManager.Instance == null || !AccountManager.Instance.Logged)
                     {
-                        userId = "fake_local_user_id";
+                        userId = fakeLocalUserId;
                     }
                     else
                     {
@@ -233,12 +255,31 @@ namespace Zom.Pie.Services
 #endif
                     if(userId == user.Id)
                     {
-                        data.AddPlayerScore(levelId, float.Parse(user.ToDictionary()[scoreField].ToString()));
-                        data.AddPlayerPosition(levelId, count);
+                        data.AddPlayerScore(int.Parse(level.Id), float.Parse(user.ToDictionary()[scoreField].ToString()));
+                        data.AddPlayerPosition(int.Parse(level.Id), count);
                     }
 
                     //Debug.Log("User:" + user.Id);
                 }
+            }
+
+            // Now get all time record for each level
+            //levels = db.Collection(leaderboardCollection).Document(allTimeDocument).Collection(levelCollection);
+            // Await for task 
+            lQuery = await db.Collection(leaderboardCollection).Document(allTimeDocument).Collection(levelCollection).GetSnapshotAsync();
+            // Loop through each level and get user score data
+            foreach(DocumentSnapshot level in lQuery.Documents)
+            {
+                // Just get the lower score
+                QuerySnapshot uQuery = await level.Reference.Collection(userCollection).
+                                             OrderByDescending(scoreField).
+                                             Limit(1).GetSnapshotAsync();
+
+                if(uQuery.Count > 0)
+                {
+                    data.AddAllTimeRecord(int.Parse(level.Id), float.Parse(new List<DocumentSnapshot>(uQuery.Documents)[0].ToDictionary()[scoreField].ToString()));
+                }
+                
             }
 
             //Debug.Log(data);
@@ -249,185 +290,133 @@ namespace Zom.Pie.Services
 
         }
 
-        public void LoadLeaderboard(int levelId)
+
+        public async Task SaveLocalPlayerScoreByLevel(int levelId, float score)
         {
-            Debug.Log("Loading leaderboard...");
-            db = FirebaseFirestore.DefaultInstance;
 
-            // Get level 'i' leaderboard
-            // Create an element in the dictionary if needed
-            if (leaderboards[levelId-1] == null)
-            {
-                leaderboards[levelId-1] = new LevelData();
-            }
-
-            
-            if ((DateTime.UtcNow - leaderboards[levelId-1].timeStamp).TotalSeconds > expireTime)
-            {
-#if !FAKE_LEAD
-                // Get the current player score if any
-                int month = DateTime.UtcNow.Month;
-                int year = DateTime.UtcNow.Year;
-                // Leaderboard collection
-                CollectionReference leads = db.Collection(leaderboardCollection);
-
-                DocumentReference lead = leads.Document(string.Format(leaderboardDocument, month, year));
-                DocumentReference level = lead.Collection(levelCollection).Document(string.Format(levelDocument, levelId));
-                //DocumentReference user = level.Collection(userCollection).Document(userId);
-
-                // Query all the users in the current leaderboard
-                Query users = level.Collection(userCollection).OrderBy(scoreField);
-                
-                users.GetSnapshotAsync().ContinueWith(task => 
-                {
-                    LevelData ld = leaderboards[levelId - 1];
-        
-                    //List<DocumentSnapshot> docs = (List<DocumentSnapshot>)task.Result.Documents;
-                    QuerySnapshot query = task.Result;
-                    int count = 1;
-                    foreach (DocumentSnapshot doc in query)
-                    {
-                       
-                        Dictionary<string, object> data = doc.ToDictionary();
-                        float score = float.Parse(data[scoreField].ToString());
-                        ld.AddCurrentRank(new PlayerData(doc.Id, "", score));
-
-                        if(doc.Id == AccountManager.Instance.GetUserId())
-                        {
-                            ld.AddLocalScore(score);
-                            ld.AddLocalPosition(count);
-                        }
-                        count++;
-                    }
-                    ld.timeStamp = DateTime.UtcNow;
-                });
-
-#else
-                // Get the corresponding element from dictionary
-                LevelData ld = leaderboards[levelId-1];
-
-                // Fill element from firebase db
-                ld.AddAllTimeRank(new PlayerData("0001", "qui", 110000));
-                ld.AddAllTimeRank(new PlayerData("0002", "paperone", 120000));
-                ld.AddAllTimeRank(new PlayerData("0003", "paperino", 130000));
-
-                ld.AddCurrentRank(new PlayerData("0004", "minnie", 180000));
-                ld.AddCurrentRank(new PlayerData("0005", "quo", 190000));
-                ld.AddCurrentRank(new PlayerData("0002", "paperone", 195000));
-                ld.AddCurrentRank(new PlayerData("0006", "qua", 198000));
-
-                ld.AddLocalScore(21000);
-                ld.AddLocalPosition(3);
-
-                ld.timeStamp = DateTime.UtcNow;
-#endif
-            }
-
-            // Tell the others that this leaderboard is ready 
-            OnLeaderboardLoaded?.Invoke(levelId);
-        }
-
-        public void SaveLocalPlayerScoreByLevel(int levelId, float score)
-        {
 #if !UNITY_EDITOR
             if (!AccountManager.Instance.Logged)
                 return;
+            string userId = AccountManager.Instance.GetUserId();
+            
 #endif
             // Init db instance
             db = FirebaseFirestore.DefaultInstance;//; FirebaseFirestore.GetInstance(FirebaseApp.Create());
 
-            // Get local user id
-            string userId = AccountManager.Instance.GetUserId();
+            
+
 
 #if UNITY_EDITOR
             // Fake user id for editor ( we may not be logged )
+            string userId;
             if (!AccountManager.Instance.Logged)
-                userId = "fake_local_user_id";
+                userId = fakeLocalUserId;
+            else
+                userId = AccountManager.Instance.GetUserId();
 #endif
             //
             // Get the current player score if any
             int month = DateTime.UtcNow.Month;
             int year = DateTime.UtcNow.Year;
             // Leaderboard collection
-            CollectionReference leads = db.Collection(leaderboardCollection);
-            
-            DocumentReference lead = leads.Document(string.Format(leaderboardDocument, month, year));
-            DocumentReference level = lead.Collection(levelCollection).Document(string.Format(levelDocument, levelId));
-            DocumentReference user = level.Collection(userCollection).Document(userId);
 
-            user.GetSnapshotAsync().ContinueWith(task =>
-                TryUpdateScore(task, user, score)
-            );
-            
-            
-            
-            //Dictionary<string, object> data = new Dictionary<string, object>();
-            //data.Add(scoreField, score);
-            //user.SetAsync(data, SetOptions.MergeAll);
+            // Check structure
+            await CreateLeaderboardStructure();
 
-            
+            // Check for the monthly leaderboard
+            DocumentSnapshot doc = await db.Collection(leaderboardCollection).
+                                         Document(string.Format(leaderboardDocumentFormat, month, year)).
+                                         Collection(levelCollection).Document(levelId.ToString()).
+                                         Collection(userCollection).Document(userId.ToString()).GetSnapshotAsync();
 
-            //// Each leaderboard is a specific collection of levels
-            //int month = DateTime.UtcNow.Month;
-            //int year = DateTime.UtcNow.Year;
-            //CollectionReference lead = db.Collection(string.Format(leadCollection, month, year));
-            //CollectionReference users = lead.Document(string.Format(levelDocument, levelId)).Collection(userCollection);
-            //DocumentReference user = users.Document(userId);
-            //Dictionary<string, object> data = new Dictionary<string, object>();
-            //data.Add(scoreField, 100211);
-            //user.SetAsync(data, SetOptions.MergeAll);
-
-
-
-        }
-
-        void TryUpdateScore(Task<DocumentSnapshot> task, DocumentReference user, float score)
-        {
+            // If document exists check if an update is needed
+            Dictionary<string, object> userData = null;
+            bool toUpdate = false;
+           
+            if (doc.Exists)
             {
-                bool toUpdate = false;
-                Dictionary<string, object> userData = null;
-                DocumentSnapshot doc = task.Result;
-                if (doc.Exists)
+                Debug.Log("Document found");
+                // Document exists
+                // Check if the new score is better than the old one
+                // Get dictionary
+                userData = doc.ToDictionary();
+                Debug.Log("Saved Score:" + userData[scoreField]);
+                Debug.Log("Current Score:" + score);
+                bool higher = (float.Parse(userData[scoreField].ToString())) > score;
+                Debug.Log("higher:" + higher);
+                if (!userData.ContainsKey(scoreField) || (float.Parse(userData[scoreField].ToString())) > score)
                 {
-                    Debug.Log("Document found");
-                    // Document exists
-                    // Check if the new score better than the old one
-                    // Get dictionary
-                    userData = doc.ToDictionary();
-                    Debug.Log("Saved Score:" + userData[scoreField]);
-                    Debug.Log("Current Score:" + score);
-                    bool higher = (float.Parse(userData[scoreField].ToString())) > score;
-                    Debug.Log("higher:" + higher);
-                    if (!userData.ContainsKey(scoreField) || (float.Parse(userData[scoreField].ToString())) > score)
-                    {
-                        Debug.Log("Update field to " + score);
-                        // Set update flag
-                        toUpdate = true;
-
-                        // Update score
-                        if (userData.ContainsKey(scoreField))
-                            userData[scoreField] = score;
-                        else
-                            userData.Add(scoreField, score); // For safe
-                    }
-
-                }
-                else
-                {
-                    Debug.Log("Document not found");
-                    // Document doesn't exist, means user score has not been saved in this collection yet
+                    Debug.Log("Update field to " + score);
+                    // Set update flag
                     toUpdate = true;
-                    userData = new Dictionary<string, object>();
-                    userData.Add(scoreField, score);
-                }
 
-                // Check if we need to update db
-                if (toUpdate)
-                {
-                    user.SetAsync(userData, SetOptions.MergeAll);
+                    // Update score
+                    if (userData.ContainsKey(scoreField))
+                        userData[scoreField] = score;
+                    else
+                        userData.Add(scoreField, score); // For safe
                 }
             }
+            else // Document doesn't exist
+            {
+                Debug.Log("Document not found");
+                // Document doesn't exist, means user score has not been saved in this collection yet
+                toUpdate = true;
+                userData = new Dictionary<string, object>();
+                userData.Add(scoreField, score);
+            }
+
+            // Check if we need to update db
+            if (toUpdate)
+            {
+                await doc.Reference.SetAsync(userData, SetOptions.MergeAll);
+            }
+
+            // Check for all time record
+            toUpdate = false;
+            doc = await db.Collection(leaderboardCollection).Document(allTimeDocument).
+                        Collection(levelCollection).Document(levelId.ToString()).
+                        Collection(userCollection).Document(userId.ToString()).GetSnapshotAsync();
+
+            if (doc.Exists)
+            {
+                // Check if an update is needed
+                userData = doc.ToDictionary();
+                Debug.Log("Saved Score:" + userData[scoreField]);
+                Debug.Log("Current Score:" + score);
+                bool higher = (float.Parse(userData[scoreField].ToString())) > score;
+                Debug.Log("higher:" + higher);
+                if (!userData.ContainsKey(scoreField) || (float.Parse(userData[scoreField].ToString())) > score)
+                {
+                    Debug.Log("Update field to " + score);
+                    // Set update flag
+                    toUpdate = true;
+
+                    // Update score
+                    if (userData.ContainsKey(scoreField))
+                        userData[scoreField] = score;
+                    else
+                        userData.Add(scoreField, score); // For safe
+                }
+            }
+            else // Document doesn't exist
+            {
+                Debug.Log("Document not found");
+                // Document doesn't exist, means user score has not been saved in this collection yet
+                toUpdate = true;
+                userData = new Dictionary<string, object>();
+                userData.Add(scoreField, score);
+            }
+
+            // Check if we need to update db
+            if (toUpdate)
+            {
+                await doc.Reference.SetAsync(userData, SetOptions.MergeAll);
+            }
+
         }
+
+       
     }
 
 }

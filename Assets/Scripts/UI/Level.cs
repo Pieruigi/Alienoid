@@ -104,7 +104,7 @@ namespace Zom.Pie.UI
             }
 
             // Load leaderboard
-            LeaderboardManager.Instance.LoadLeaderboard(levelId);
+            //LeaderboardManager.Instance.LoadLeaderboard(levelId);
         }
 
         public void Select(bool value)

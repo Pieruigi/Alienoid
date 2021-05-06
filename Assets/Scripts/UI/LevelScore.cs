@@ -37,7 +37,7 @@ namespace Zom.Pie.UI
         void HandleOnLevelSelected(int levelId)
         {
             Debug.Log("OnLevelSelected:" + levelId);
-            LeaderboardManager.Instance.GetLocalPlayerScoreByLevelAsync(levelId, Callback);
+            //LeaderboardManager.Instance.GetLocalPlayerScoreByLevelAsync(levelId, Callback);
         }
 
         void Callback(bool found, float score)

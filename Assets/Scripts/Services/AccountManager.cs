@@ -1,8 +1,12 @@
 using Firebase.Auth;
+#if UNITY_ANDROID
+using GooglePlayGames;
+using GooglePlayGames.BasicApi;
+#endif
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -10,6 +14,8 @@ namespace Zom.Pie.Services
 {
     public class AccountManager : MonoBehaviour
     {
+        public static readonly string PlayerPrefsLoggedKey = "Logged";
+
         /// <summary>
         /// Params:
         /// - succeeded
@@ -22,14 +28,34 @@ namespace Zom.Pie.Services
         public bool Logged { get; private set; }
 
         bool logging = false;
-        bool trySilently = true;
-      
 
+        bool loginOnStart = false;
+
+     
         private void Awake()
         {
             if (!Instance)
             {
                 Instance = this;
+
+                // Get the player pref log flag
+                if (PlayerPrefs.HasKey(PlayerPrefsLoggedKey))
+                    loginOnStart = true;
+
+#if UNITY_ANDROID
+                // Init play games 
+                PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
+                     .RequestServerAuthCode(false /* Don't force refresh */)
+                     .Build();
+
+                PlayGamesPlatform.InitializeInstance(config);
+                PlayGamesPlatform.Activate();
+#endif
+
+#if UNITY_IOS
+
+#endif
+
 
                 DontDestroyOnLoad(gameObject);
             }
@@ -48,13 +74,13 @@ namespace Zom.Pie.Services
         // Update is called once per frame
         void Update()
         {
-            // We try to login silently as soos as the firebase framework is ready.
-            // Silently login works if you are already logged in ( you logged in
-            // in a previous game session )
-            if (trySilently && !Logged && !logging && FirebaseManager.Instance.Initialized)
+            if (!FirebaseManager.Instance.Initialized)
+                return;
+
+            if(loginOnStart)
             {
-                //FirebaseManager.Instance.LogInWithGoogle(true, HandleOnLogin);
-                LogIn(true);
+                loginOnStart = false;
+                LogIn();
             }
         }
 
@@ -63,11 +89,18 @@ namespace Zom.Pie.Services
         /// running platform.
         /// </summary>
         /// <param name="silently"></param>
-        public void LogIn(bool silently)
+        public void LogIn()
         {
-            if (Logged || logging)
+
+            if (Logged)
             {
                 Debug.LogWarning("Already logged in.");
+                return;
+            }
+
+            if (logging)
+            {
+                Debug.LogWarning("Already logging in....");
                 return;
             }
 
@@ -80,12 +113,28 @@ namespace Zom.Pie.Services
             logging = true;
 
 #if UNITY_ANDROID
-            FirebaseManager.Instance.LogInWithGoogle(silently, HandleOnLogin);
+            LoginWithPlayGames();
 #endif
 #if UNITY_IOS
-            LogInWithApple(silently);
+            LogInWithApple();
 #endif
 
+        }
+
+        public void LogOut()
+        {
+            PlayerPrefs.DeleteKey(PlayerPrefsLoggedKey);
+            PlayerPrefs.Save();
+            logging = false;
+            Logged = false;
+
+            Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
+            auth.SignOut();
+
+#if UNITY_ANDROID
+            PlayGamesPlatform.Instance.SignOut();
+           
+#endif
         }
 
         /// <summary>
@@ -94,55 +143,79 @@ namespace Zom.Pie.Services
         /// <returns></returns>
         public string GetDisplayName()
         {
-            if (FirebaseManager.Instance.User == null)
-                return "";
-
-            return FirebaseManager.Instance.User.DisplayName;
+            return FirebaseManager.Instance.GetCurrentUser().DisplayName;
         }
 
         public string GetUserId()
         {
-            if (FirebaseManager.Instance.User == null)
-                return "";
-
-            return FirebaseManager.Instance.User.UserId;
+            return FirebaseManager.Instance.GetCurrentUser().UserId;
         }
-       
-        void HandleOnLogin(bool succeeded)
+
+        #region private
+
+#if UNITY_ANDROID
+        void LoginWithPlayGames()
         {
-            // Reset flag
-            logging = false;
-
-            Logged = succeeded;
             
-
-            if (!Logged)
+            Social.localUser.Authenticate((bool success) =>
             {
-                if (trySilently)
-                { 
-                    // Automatic login failed, we must show some warning 
-                    Debug.Log("You shold be loggedin to improuve your game experience");
+                Debug.Log("success:" + success);
+
+                if (success)
+                {
+                    FirebaseSignInWithPlayGames();
                 }
                 else
                 {
-                    // Player tried to login but something goes wrong
-                    Debug.LogWarning("Something goes wrong, please try later");
+                    logging = false;
+                    Logged = false;
                 }
-            }
-            else
-            {
-                Debug.LogFormat("User {0} logged in", GetDisplayName());
 
-               
-                
-            }
-            
-            OnLogin?.Invoke(Logged, trySilently);
+            });
 
-            // We try silently on start only once
-            if(trySilently)
-                trySilently = false;
+           
         }
+
+        void FirebaseSignInWithPlayGames()
+        {
+            // Get credentials from play games
+            string authCode = PlayGamesPlatform.Instance.GetServerAuthCode();
+
+            // Get default instance
+            Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
+
+            // Create firebase credential from play games web server auth code
+            Firebase.Auth.Credential credential = Firebase.Auth.PlayGamesAuthProvider.GetCredential(authCode);
+
+            // Sign in
+            auth.SignInWithCredentialAsync(credential).ContinueWith(task => {
+                if (task.IsCanceled)
+                {
+                    Debug.LogError("SignInWithCredentialAsync was canceled.");
+                    logging = false;
+                    Logged = false;
+                    return;
+                }
+                if (task.IsFaulted)
+                {
+                    Debug.LogError("SignInWithCredentialAsync encountered an error: " + task.Exception);
+                    logging = false;
+                    Logged = false;
+                    return;
+                }
+
+                logging = false;
+                Logged = true;
+                PlayerPrefs.SetInt(PlayerPrefsLoggedKey, 0);
+                PlayerPrefs.Save();
+
+                Debug.Log("FirebaseUser.DisplayName:" + FirebaseManager.Instance.GetCurrentUser().DisplayName);
+            });
+        }
+
+#endif
+
+#endregion
     }
 
 }

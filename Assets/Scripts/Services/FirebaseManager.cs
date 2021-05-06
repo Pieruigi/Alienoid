@@ -16,14 +16,14 @@ namespace Zom.Pie.Services
         public bool Initialized { get; private set; } = false;
 
         FirebaseApp app;
-        private GoogleSignInConfiguration configuration;
-
+  
         private UnityAction<bool> LoginCallback;
         Firebase.Auth.FirebaseAuth auth;
 
         public Firebase.Auth.FirebaseUser User
         {
             get { return auth != null ? auth.CurrentUser : null; }
+            //get { if(Firebase.Auth == )}
         }
 
         private void Awake()
@@ -53,6 +53,14 @@ namespace Zom.Pie.Services
 
         }
 
+        public Firebase.Auth.FirebaseUser GetCurrentUser()
+        {
+            if (Firebase.Auth.FirebaseAuth.GetAuth(FirebaseApp.DefaultInstance) == null)
+                return null;
+
+            return Firebase.Auth.FirebaseAuth.GetAuth(FirebaseApp.DefaultInstance).CurrentUser;
+        }
+
         void Initialize()
         {
             Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => {
@@ -77,71 +85,9 @@ namespace Zom.Pie.Services
         }
 
 
-        public void LogInWithGoogle(bool silently, UnityAction<bool> callback)
-        {
-            // Save the callback 
-            LoginCallback = callback;
-            Debug.Log("FirebaseManager - logging with google - silently:" + silently);
-            // Try first to log in silently
-            GoogleManager.Instance.SignIn(HandleOnGoogleSignIn, silently);
-        }
+       
 
-        void HandleOnGoogleSignIn(bool succeeded, bool silently, GoogleSignInUser googleSignInUser)
-        {
-            Debug.Log("FirebaseManager - Sign in result:" + succeeded);
-
-            if (succeeded)
-            {
-                Debug.Log("GoogleSignIn Token:" + googleSignInUser.IdToken);
-                auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
-                Credential credential = Firebase.Auth.GoogleAuthProvider.GetCredential(googleSignInUser.IdToken, null);
-                Debug.Log("GetCredential() done");
-                // Sign in with credential
-                
-                Debug.Log("Firebase.Auth created; trying to sign in with credential");
-                auth.SignInWithCredentialAsync(credential).ContinueWith(task => {
-                    if (task.IsCanceled)
-                    {
-                        Debug.LogError("SignInWithCredentialAsync was canceled.");
-                        LoginCallback?.Invoke(false);
-                        return;
-                    }
-                    if (task.IsFaulted)
-                    {
-                        Debug.LogError("SignInWithCredentialAsync encountered an error: " + task.Exception);
-                        LoginCallback?.Invoke(false);
-                        return;
-                    }
-
-                    Debug.Log("Firebase - Login with google credential succeeded");
-
-                    // Create user
-                    Firebase.Auth.FirebaseUser user = auth.CurrentUser;
-                    if (user != null)
-                    {
-                        Debug.LogFormat("User signed in successfully: {0} ({1})",
-                        user.DisplayName, user.UserId);
-
-                        //string name = user.DisplayName;
-                        //string email = user.Email;
-                        //System.Uri photo_url = user.PhotoUrl;
-                        //// The user's Id, unique to the Firebase project.
-                        //// Do NOT use this value to authenticate with your backend server, if you
-                        //// have one; use User.TokenAsync() instead.
-                        //string uid = user.UserId;
-                    }
-
-                    LoginCallback?.Invoke(true);
-                });
-
-            }
-            else
-            {
-  
-                LoginCallback?.Invoke(false);
-            }
-        }
-
+       
       
     }
 

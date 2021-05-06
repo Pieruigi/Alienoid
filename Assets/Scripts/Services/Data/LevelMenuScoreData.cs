@@ -62,6 +62,12 @@ namespace Zom.Pie.Services
             d.monthlyScore = score;
         }
 
+        public void AddAllTimeRecord(int levelId, float score)
+        {
+            Data d = GetLevelData(levelId);
+            d.allTimeScore = score;
+        }
+
         Data GetLevelData(int levelId)
         {
             // Find or create data
