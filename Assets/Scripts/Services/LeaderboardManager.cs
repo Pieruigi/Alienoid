@@ -22,7 +22,7 @@ namespace Zom.Pie.Services
         {
             //int levelId;
             public List<PlayerData> allTimeRanks;
-            public List<PlayerData> currentRanks;
+            //public List<PlayerData> currentRanks;
 
             public float localScore;
             public int localPosition = 0;
@@ -34,7 +34,7 @@ namespace Zom.Pie.Services
             public LevelData()
             {
                 allTimeRanks = new List<PlayerData>();
-                currentRanks = new List<PlayerData>();
+                //currentRanks = new List<PlayerData>();
             }
 
 
@@ -43,10 +43,10 @@ namespace Zom.Pie.Services
                 allTimeRanks.Add(playerData);
             }
 
-            public void AddCurrentRank(PlayerData playerData)
-            {
-                currentRanks.Add(playerData);
-            }
+            //public void AddCurrentRank(PlayerData playerData)
+            //{
+            //    currentRanks.Add(playerData);
+            //}
 
             public void AddLocalScore(float value)
             {
@@ -126,15 +126,16 @@ namespace Zom.Pie.Services
         // Update is called once per frame
         void Update()
         {
-
+#if UNITY_EDITOR
             if (Input.GetKeyDown(KeyCode.A))
-                SaveLocalPlayerScoreByLevel(1, 122442).ConfigureAwait(false);
+                SaveLocalPlayerScoreByLevel(1, 122440).ConfigureAwait(false);
                 //CreateMonthlyStructure().ConfigureAwait(false);
 
             if (Input.GetKeyDown(KeyCode.S))
             {
                 GetLevelMenuScoreDataAsync((LevelMenuScoreData data) => { Debug.Log(data); }).ConfigureAwait(false) ;
-            }    
+            }
+#endif
         }
 
       
@@ -160,30 +161,30 @@ namespace Zom.Pie.Services
         {
             db = FirebaseFirestore.DefaultInstance;
 
-            // Monthly leaderboard
-            int month = DateTime.UtcNow.Month;
-            int year = DateTime.UtcNow.Year;
+            //// Monthly leaderboard
+            //int month = DateTime.UtcNow.Month;
+            //int year = DateTime.UtcNow.Year;
 
-            DocumentSnapshot lead = await db.Collection(leaderboardCollection).
-                                         Document(string.Format(leaderboardDocumentFormat, month, year)).GetSnapshotAsync();
+            //DocumentSnapshot lead = await db.Collection(leaderboardCollection).
+            //                             Document(string.Format(leaderboardDocumentFormat, month, year)).GetSnapshotAsync();
 
-            if (!lead.Exists)
-            {
-                await lead.Reference.SetAsync(new Dictionary<string, object>());
-            }
+            //if (!lead.Exists)
+            //{
+            //    await lead.Reference.SetAsync(new Dictionary<string, object>());
+            //}
 
-            for (int i = 0; i < GameManager.Instance.GetNumberOfLevels(); i++)
-            {
-                DocumentSnapshot level = await lead.Reference.Collection(levelCollection).Document((i + 1).ToString()).GetSnapshotAsync();
-                if (!level.Exists)
-                {
-                    await level.Reference.SetAsync(new Dictionary<string, object>());
-                }
-                
-            }
+            //for (int i = 0; i < GameManager.Instance.GetNumberOfLevels(); i++)
+            //{
+            //    DocumentSnapshot level = await lead.Reference.Collection(levelCollection).Document((i + 1).ToString()).GetSnapshotAsync();
+            //    if (!level.Exists)
+            //    {
+            //        await level.Reference.SetAsync(new Dictionary<string, object>());
+            //    }
+
+            //}
 
             // All time leadearboard
-            lead = await db.Collection(leaderboardCollection).
+            DocumentSnapshot lead = await db.Collection(leaderboardCollection).
                                          Document(allTimeDocument).GetSnapshotAsync();
 
             if (!lead.Exists)
@@ -211,14 +212,10 @@ namespace Zom.Pie.Services
             LevelMenuScoreData data = new LevelMenuScoreData();
                         
 
-            // Get level collection
-            int month = DateTime.UtcNow.Month;
-            int year = DateTime.UtcNow.Year;
-
 
             // Await for task 
             QuerySnapshot lQuery = await db.Collection(leaderboardCollection).
-                    Document(string.Format(leaderboardDocumentFormat, month, year)).
+                    Document(allTimeDocument).
                     Collection(levelCollection).GetSnapshotAsync();
 
 
@@ -234,7 +231,7 @@ namespace Zom.Pie.Services
                     // Save the monthly best score
                     if (count == 1)
                     {
-                        data.AddMonthlyRecord(int.Parse(level.Id), float.Parse(user.ToDictionary()[scoreField].ToString()));
+                        data.AddAllTimeRecord(int.Parse(level.Id), float.Parse(user.ToDictionary()[scoreField].ToString()));
                     }
 
                     // Get player position and score
@@ -263,25 +260,7 @@ namespace Zom.Pie.Services
                 }
             }
 
-            // Now get all time record for each level
-            //levels = db.Collection(leaderboardCollection).Document(allTimeDocument).Collection(levelCollection);
-            // Await for task 
-            lQuery = await db.Collection(leaderboardCollection).Document(allTimeDocument).Collection(levelCollection).GetSnapshotAsync();
-            // Loop through each level and get user score data
-            foreach(DocumentSnapshot level in lQuery.Documents)
-            {
-                // Just get the lower score
-                QuerySnapshot uQuery = await level.Reference.Collection(userCollection).
-                                             OrderByDescending(scoreField).
-                                             Limit(1).GetSnapshotAsync();
-
-                if(uQuery.Count > 0)
-                {
-                    data.AddAllTimeRecord(int.Parse(level.Id), float.Parse(new List<DocumentSnapshot>(uQuery.Documents)[0].ToDictionary()[scoreField].ToString()));
-                }
-                
-            }
-
+          
             //Debug.Log(data);
 
             // Callback
@@ -314,67 +293,18 @@ namespace Zom.Pie.Services
             else
                 userId = AccountManager.Instance.GetUserId();
 #endif
-            //
-            // Get the current player score if any
-            int month = DateTime.UtcNow.Month;
-            int year = DateTime.UtcNow.Year;
-            // Leaderboard collection
+       
 
             // Check structure
             await CreateLeaderboardStructure();
 
-            // Check for the monthly leaderboard
-            DocumentSnapshot doc = await db.Collection(leaderboardCollection).
-                                         Document(string.Format(leaderboardDocumentFormat, month, year)).
-                                         Collection(levelCollection).Document(levelId.ToString()).
-                                         Collection(userCollection).Document(userId.ToString()).GetSnapshotAsync();
-
             // If document exists check if an update is needed
             Dictionary<string, object> userData = null;
-            bool toUpdate = false;
-           
-            if (doc.Exists)
-            {
-                Debug.Log("Document found");
-                // Document exists
-                // Check if the new score is better than the old one
-                // Get dictionary
-                userData = doc.ToDictionary();
-                Debug.Log("Saved Score:" + userData[scoreField]);
-                Debug.Log("Current Score:" + score);
-                bool higher = (float.Parse(userData[scoreField].ToString())) > score;
-                Debug.Log("higher:" + higher);
-                if (!userData.ContainsKey(scoreField) || (float.Parse(userData[scoreField].ToString())) > score)
-                {
-                    Debug.Log("Update field to " + score);
-                    // Set update flag
-                    toUpdate = true;
-
-                    // Update score
-                    if (userData.ContainsKey(scoreField))
-                        userData[scoreField] = score;
-                    else
-                        userData.Add(scoreField, score); // For safe
-                }
-            }
-            else // Document doesn't exist
-            {
-                Debug.Log("Document not found");
-                // Document doesn't exist, means user score has not been saved in this collection yet
-                toUpdate = true;
-                userData = new Dictionary<string, object>();
-                userData.Add(scoreField, score);
-            }
-
-            // Check if we need to update db
-            if (toUpdate)
-            {
-                await doc.Reference.SetAsync(userData, SetOptions.MergeAll);
-            }
+     
 
             // Check for all time record
-            toUpdate = false;
-            doc = await db.Collection(leaderboardCollection).Document(allTimeDocument).
+            bool toUpdate = false;
+            DocumentSnapshot doc = await db.Collection(leaderboardCollection).Document(allTimeDocument).
                         Collection(levelCollection).Document(levelId.ToString()).
                         Collection(userCollection).Document(userId.ToString()).GetSnapshotAsync();
 

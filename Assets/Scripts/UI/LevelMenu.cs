@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Zom.Pie.Services;
 
 namespace Zom.Pie.UI
 {
@@ -67,6 +68,8 @@ namespace Zom.Pie.UI
                 selectedSpeed = GameProgressManager.Instance.GetHigherUnlockedSpeed();
                 selectedLevelId = GameProgressManager.Instance.GetLastUnlockedLevel(selectedSpeed);
 
+               
+
                 Debug.LogFormat("SelectedSpeed: {0}", selectedSpeed);
                 Debug.LogFormat("SelectedLevelId: {0}", selectedLevelId);
             }
@@ -99,7 +102,8 @@ namespace Zom.Pie.UI
 
             SetSpeed(selectedSpeed);
 
-
+            // Load leaderboard
+            LeaderboardManager.Instance.GetLevelMenuScoreDataAsync(HandleOnLeaderboardLoaded).ConfigureAwait(false);
         }
 
         // Update is called once per frame
@@ -243,6 +247,16 @@ namespace Zom.Pie.UI
 
             OnGameSpeedSelected?.Invoke(selectedSpeed);
 
+        }
+
+        void HandleOnLeaderboardLoaded(LevelMenuScoreData data)
+        {
+            // Set levels
+            for(int i=0; i<GameManager.Instance.GetNumberOfLevels(); i++)
+            {
+                Transform level = container.GetChild(i);
+                level.GetComponent<Level>().SetDataScore(data.GetPlayerPosition(i + 1));
+            }
         }
     }
 

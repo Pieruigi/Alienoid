@@ -127,7 +127,7 @@ namespace Zom.Pie.Services
             PlayerPrefs.Save();
             logging = false;
             Logged = false;
-
+            
             Firebase.Auth.FirebaseAuth auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
             auth.SignOut();
 

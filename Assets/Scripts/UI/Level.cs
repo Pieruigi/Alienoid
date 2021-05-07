@@ -54,7 +54,7 @@ namespace Zom.Pie.UI
 
         private void OnDestroy()
         {
-            LeaderboardManager.Instance.OnLeaderboardLoaded -= HandleOnLeaderboardLoaded;
+           // LeaderboardManager.Instance.OnLeaderboardLoaded -= HandleOnLeaderboardLoaded;
         }
 
         public void Init(int levelId, int speed)
@@ -67,7 +67,7 @@ namespace Zom.Pie.UI
             //speed = GameProgressManager.Instance.GetMaxBeatenSpeed(levelId);
 
             // Set handle
-            LeaderboardManager.Instance.OnLeaderboardLoaded += HandleOnLeaderboardLoaded;
+            //LeaderboardManager.Instance.OnLeaderboardLoaded += HandleOnLeaderboardLoaded;
 
             // Hide position label
             position.gameObject.SetActive(false);
@@ -128,6 +128,66 @@ namespace Zom.Pie.UI
             }
         }
 
+        public void SetDataScore(float playerPosition)
+        {
+
+            if (!GameProgressManager.Instance.LevelIsUnlocked(levelId, speed))
+                return;
+
+            Debug.LogFormat("LevelUnlocked:({0},{1})", levelId, speed);
+
+            if (!GameProgressManager.Instance.LevelHasBeenBeaten(levelId, speed))
+                return;
+
+            Debug.LogFormat("HandleOnLeaderboardLoaded({0})", levelId);
+
+
+            // Check if the player is ranked
+            //if (LeaderboardManager.Instance.IsLocalPlayerInRankingByLevel(levelId))
+            if (playerPosition > 0)
+            {
+                //int localPosition = LeaderboardManager.Instance.GetLocalPlayerPositionByLevel(levelId);
+                Debug.LogFormat("LocalPosition: {0}", playerPosition);
+                // Check the player position for the given level ranking
+                if (playerPosition > Constants.CurrentTopPlayers)
+                {
+                    Debug.Log("Out of the top");
+                    // You are not in the top players ranking
+                    // Activate star but not highlited
+                    // We set some default value in case for some reason you are not 
+                    // able to retrieve online leadearboard
+                    star.SetActive(true);
+                    HighlightStar(false);
+
+                    // Hide position
+                    position.gameObject.SetActive(false);
+                }
+                else
+                {
+                    Debug.Log("In the top");
+
+                    // You are top
+                    if (playerPosition > 3)
+                    {
+                        // Highlight star
+                        star.SetActive(true);
+                        HighlightStar(true);
+                        // Hide position
+                        position.gameObject.SetActive(false);
+                    }
+                    else
+                    {
+                        // Hide star
+                        star.SetActive(false);
+                        // Set position
+                        position.gameObject.SetActive(true);
+                        position.text = playerPosition.ToString();
+                        Debug.LogFormat("You are in {0} position", playerPosition);
+                    }
+                }
+            }
+        }
+
         void HighlightStar(bool value)
         {
             Color c = Color.white;
@@ -148,66 +208,7 @@ namespace Zom.Pie.UI
 
         }
 
-        void HandleOnLeaderboardLoaded(int levelId)
-        {
-            if (this.levelId != levelId)
-                return;
-
-            if (!GameProgressManager.Instance.LevelIsUnlocked(levelId, speed))
-                return;
-
-            Debug.LogFormat("LevelUnlocked:({0},{1})", levelId, speed);
-
-            if (!GameProgressManager.Instance.LevelHasBeenBeaten(levelId, speed))
-                return;
-
-            Debug.LogFormat("HandleOnLeaderboardLoaded({0})", levelId);
-            
-
-            // Check if the player is ranked
-            if (LeaderboardManager.Instance.IsLocalPlayerInRankingByLevel(levelId))
-            {
-                int localPosition = LeaderboardManager.Instance.GetLocalPlayerPositionByLevel(levelId);
-                Debug.LogFormat("LocalPosition: {0}", localPosition);
-                // Check the player position for the given level ranking
-                if ( localPosition > Constants.CurrentTopPlayers)
-                {
-                    Debug.Log("Out of the top");
-                    // You are not in the top players ranking
-                    // Activate star but not highlited
-                    // We set some default value in case for some reason you are not 
-                    // able to retrieve online leadearboard
-                    star.SetActive(true);
-                    HighlightStar(false);
-
-                    // Hide position
-                    position.gameObject.SetActive(false);
-                }
-                else
-                {
-                    Debug.Log("In the top");
-
-                    // You are top
-                    if (localPosition > 3)
-                    {
-                        // Highlight star
-                        star.SetActive(true);
-                        HighlightStar(true);
-                        // Hide position
-                        position.gameObject.SetActive(false);
-                    }
-                    else
-                    {
-                        // Hide star
-                        star.SetActive(false);
-                        // Set position
-                        position.gameObject.SetActive(true);
-                        position.text = localPosition.ToString();
-                        Debug.LogFormat("You are in {0} position", localPosition);
-                    }
-                }
-            }
-        }
+       
     }
 
 }

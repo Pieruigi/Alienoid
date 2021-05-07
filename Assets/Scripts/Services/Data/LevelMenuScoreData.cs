@@ -11,7 +11,7 @@ namespace Zom.Pie.Services
             public int levelId;
             public float playerScore;
             public float allTimeScore;
-            public float monthlyScore;
+            //public float monthlyScore;
             public int playerPosition;
 
             public Data()
@@ -19,12 +19,11 @@ namespace Zom.Pie.Services
 
             }
 
-            public Data(int levelId, float playerScore, float allTimeScore, float monthlyScore, int playerPosition)
+            public Data(int levelId, float playerScore, float allTimeScore, int playerPosition)
             {
                 this.levelId = levelId;
                 this.playerPosition = playerPosition;
                 this.playerScore = playerScore;
-                this.monthlyScore = monthlyScore;
                 this.allTimeScore = allTimeScore;
             }
 
@@ -36,6 +35,7 @@ namespace Zom.Pie.Services
         }
 
         List<Data> data;
+
 
         public LevelMenuScoreData()
         {
@@ -49,19 +49,28 @@ namespace Zom.Pie.Services
             d.playerScore = score;
         }
 
+        public float GetPlayerScore(int levelId)
+        {
+            return data.Find(l => l.levelId == levelId).playerScore;
+        }
+
+        public float GetAllTimeRecord(int levelId)
+        {
+            return data.Find(l => l.levelId == levelId).allTimeScore;
+        }
+
+        public float GetPlayerPosition(int levelId)
+        {
+            return data.Find(l => l.levelId == levelId).playerPosition;
+        }
+
         public void AddPlayerPosition(int levelId, int position)
         {
             Data d = GetLevelData(levelId);
             d.playerPosition = position;
         }
 
-        public void AddMonthlyRecord(int levelId, float score)
-        {
-            Data d = GetLevelData(levelId);
-
-            d.monthlyScore = score;
-        }
-
+    
         public void AddAllTimeRecord(int levelId, float score)
         {
             Data d = GetLevelData(levelId);
