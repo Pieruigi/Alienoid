@@ -51,17 +51,28 @@ namespace Zom.Pie.Services
 
         public float GetPlayerScore(int levelId)
         {
-            return data.Find(l => l.levelId == levelId).playerScore;
+            Data d = data.Find(l => l.levelId == levelId);
+            if (d == null)
+                return 0;
+            
+            return d.playerScore;
         }
 
         public float GetAllTimeRecord(int levelId)
         {
-            return data.Find(l => l.levelId == levelId).allTimeScore;
+            Data d = data.Find(l => l.levelId == levelId);
+            if (d == null)
+                return 0;
+
+            return d.allTimeScore;
         }
 
         public float GetPlayerPosition(int levelId)
         {
-            return data.Find(l => l.levelId == levelId).playerPosition;
+            Data d = data.Find(l => l.levelId == levelId);
+            if (d == null)
+                return 0;
+            return d.playerPosition;
         }
 
         public void AddPlayerPosition(int levelId, int position)

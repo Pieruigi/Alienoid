@@ -53,6 +53,11 @@ namespace Zom.Pie.UI
 
         GraphicRaycaster raycaster;
 
+        LevelMenuScoreData scoreData;
+        public LevelMenuScoreData ScoreData
+        {
+            get { return scoreData; }
+        }
 
         private void Awake()
         {
@@ -251,6 +256,8 @@ namespace Zom.Pie.UI
 
         void HandleOnLeaderboardLoaded(LevelMenuScoreData data)
         {
+            scoreData = data;
+
             // Set levels
             for(int i=0; i<GameManager.Instance.GetNumberOfLevels(); i++)
             {

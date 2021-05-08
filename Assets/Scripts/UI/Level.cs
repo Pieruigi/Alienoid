@@ -149,7 +149,7 @@ namespace Zom.Pie.UI
                 //int localPosition = LeaderboardManager.Instance.GetLocalPlayerPositionByLevel(levelId);
                 Debug.LogFormat("LocalPosition: {0}", playerPosition);
                 // Check the player position for the given level ranking
-                if (playerPosition > Constants.CurrentTopPlayers)
+                if (playerPosition > Constants.TopPlayers)
                 {
                     Debug.Log("Out of the top");
                     // You are not in the top players ranking

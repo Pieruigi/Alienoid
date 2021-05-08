@@ -31,17 +31,15 @@ namespace Zom.Pie.UI
                 return;
 
             // Update timer
-            //double millis = (DateTime.UtcNow - LevelManager.Instance.StartingTime).TotalMilliseconds;
-            float millis = LevelManager.Instance.TimeScore * 1000f;
+            //float millis = LevelManager.Instance.TimeScore * 1000f;
 
-            //millis += (double)penaltyTime * 1000;
+            //millis /= 1000f;
+            //int min = (int)millis / 60;
+            //millis %= 60f;
 
-            millis /= 1000f;
-            int min = (int)millis / 60;
-            millis %= 60f;
+            //label.text = string.Format(stringFormat, min, millis);
 
-            label.text = string.Format(stringFormat, min, millis);
-
+            label.text = GeneralUtility.FormatTime(LevelManager.Instance.TimeScore);
 
         }
 

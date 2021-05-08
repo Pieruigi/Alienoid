@@ -17,65 +17,9 @@ namespace Zom.Pie.Services
         /// </summary>
         public UnityAction<int> OnLeaderboardLoaded;
 
-        
-        class LevelData
-        {
-            //int levelId;
-            public List<PlayerData> allTimeRanks;
-            //public List<PlayerData> currentRanks;
-
-            public float localScore;
-            public int localPosition = 0;
-            
-
-            // Internal use for refresh
-            public DateTime timeStamp;
-
-            public LevelData()
-            {
-                allTimeRanks = new List<PlayerData>();
-                //currentRanks = new List<PlayerData>();
-            }
-
-
-            public void AddAllTimeRank(PlayerData playerData)
-            {
-                allTimeRanks.Add(playerData);
-            }
-
-            //public void AddCurrentRank(PlayerData playerData)
-            //{
-            //    currentRanks.Add(playerData);
-            //}
-
-            public void AddLocalScore(float value)
-            {
-                localScore = value;
-            }
-
-            public void AddLocalPosition(int value)
-            {
-                localPosition = value;
-            }
-        }
-
-        public class PlayerData
-        {
-            string userId;
-            string playerName;
-            float score;
-
-            public PlayerData(string userId, string playerName, float score)
-            {
-                this.userId = userId;
-                this.playerName = playerName;
-                this.score = score;
-            }
-        }
-
         public static LeaderboardManager Instance { get; private set; }
 
-        LevelData[] leaderboards;
+        //LevelData[] leaderboards;
 
         float expireTime = 10;
         FirebaseFirestore db;
@@ -87,6 +31,7 @@ namespace Zom.Pie.Services
         //string levelDocument = "level_{0}";
         string userCollection = "users";
         string scoreField = "score";
+        string timestampField = "timestamp";
 
 #if UNITY_EDITOR
         string fakeLocalUserId = "fake_local_user_id";
@@ -113,14 +58,14 @@ namespace Zom.Pie.Services
         // Start is called before the first frame update
         void Start()
         {
-#if UNITY_EDITOR
-            if(GameManager.Instance != null)
-                leaderboards = new LevelData[GameManager.Instance.GetNumberOfLevels()];
-            else
-                leaderboards = new LevelData[28];
-#else
-                leaderboards = new LevelData[GameManager.Instance.GetNumberOfLevels()];
-#endif
+//#if UNITY_EDITOR
+//            if(GameManager.Instance != null)
+//                leaderboards = new LevelData[GameManager.Instance.GetNumberOfLevels()];
+//            else
+//                leaderboards = new LevelData[28];
+//#else
+//                leaderboards = new LevelData[GameManager.Instance.GetNumberOfLevels()];
+//#endif
         }
 
         // Update is called once per frame
@@ -138,50 +83,14 @@ namespace Zom.Pie.Services
 #endif
         }
 
-      
-
-        public bool IsLocalPlayerInRankingByLevel(int levelId)
-        {
-            if (leaderboards[levelId-1] == null)
-                return false;
-
-            return leaderboards[levelId-1].localPosition > 0;
-        }
-
-        public int GetLocalPlayerPositionByLevel(int levelId)
-        {
-            return leaderboards[levelId-1].localPosition;
-        }
-
+     
         /// <summary>
         /// To avoid unquerable documents ( italic font document created by code are not readeable ) 
         /// </summary>
         /// <returns></returns>
-        public async Task CreateLeaderboardStructure()
+        public async Task CheckLeaderboardStructure()
         {
             db = FirebaseFirestore.DefaultInstance;
-
-            //// Monthly leaderboard
-            //int month = DateTime.UtcNow.Month;
-            //int year = DateTime.UtcNow.Year;
-
-            //DocumentSnapshot lead = await db.Collection(leaderboardCollection).
-            //                             Document(string.Format(leaderboardDocumentFormat, month, year)).GetSnapshotAsync();
-
-            //if (!lead.Exists)
-            //{
-            //    await lead.Reference.SetAsync(new Dictionary<string, object>());
-            //}
-
-            //for (int i = 0; i < GameManager.Instance.GetNumberOfLevels(); i++)
-            //{
-            //    DocumentSnapshot level = await lead.Reference.Collection(levelCollection).Document((i + 1).ToString()).GetSnapshotAsync();
-            //    if (!level.Exists)
-            //    {
-            //        await level.Reference.SetAsync(new Dictionary<string, object>());
-            //    }
-
-            //}
 
             // All time leadearboard
             DocumentSnapshot lead = await db.Collection(leaderboardCollection).
@@ -203,6 +112,81 @@ namespace Zom.Pie.Services
             }
         }
 
+        public async Task GetLeaderboardDataAsync(UnityAction<LeaderboardData> callback)
+        {
+            await CheckLeaderboardStructure();
+
+            // Init db
+            db = FirebaseFirestore.DefaultInstance;
+
+            // Create new data
+            LeaderboardData data = new LeaderboardData();
+
+            // Get level collection
+            QuerySnapshot lQuery = await db.Collection(leaderboardCollection).
+                    Document(allTimeDocument).
+                    Collection(levelCollection).GetSnapshotAsync();
+
+            // For each level get the top players
+            foreach (DocumentSnapshot level in lQuery.Documents)
+            {
+                // Create a new level data
+                LeaderboardData.LevelData levelData = new LeaderboardData.LevelData();
+                data.AddLevelData(levelData);
+
+                // Order players by score               
+                QuerySnapshot users = await level.Reference.Collection(userCollection).OrderByDescending(scoreField).Limit(Constants.TopPlayers).GetSnapshotAsync();
+
+                // Loop through the top players
+                bool localFound = false;
+                string localUserId = null;
+                foreach (DocumentSnapshot user in users.Documents)
+                {
+                    // Create a new player data
+                    float score = float.Parse(user.ToDictionary()[scoreField].ToString());
+                    LeaderboardData.PlayerData playerData = new LeaderboardData.PlayerData(user.Id, score);
+
+                    // Add player to the corresponding level
+                    levelData.AddPlayerData(playerData);                    
+              
+                   
+                    
+#if !UNITY_EDITOR
+                    userId = AccountManager.Instance.GetUserId();
+                        
+#else
+                    if (AccountManager.Instance == null || !AccountManager.Instance.Logged)
+                    {
+                        localUserId = fakeLocalUserId;
+                    }
+                    else
+                    {
+                        localUserId = AccountManager.Instance.GetUserId();
+                    }
+
+#endif
+                    // Check if this player is the local player
+                    if (localUserId == user.Id)
+                    {
+                        localFound = true;
+                        levelData.SetLocalScore(score);
+                    }
+
+                }
+
+                if (!localFound)
+                {
+                    // We must look for local player in the entire db because he's not a top player
+                    DocumentSnapshot localUser = await level.Reference.Collection(userCollection).Document(localUserId).GetSnapshotAsync();
+                    if (localUser.Exists)
+                    {
+                        levelData.SetLocalScore(float.Parse(localUser.ToDictionary()[scoreField].ToString()));
+                    }
+                }
+            }
+
+        }
+
         public async Task GetLevelMenuScoreDataAsync(UnityAction<LevelMenuScoreData> callback)
         {
             // Init db
@@ -213,7 +197,7 @@ namespace Zom.Pie.Services
                         
 
 
-            // Await for task 
+            // Get level collection
             QuerySnapshot lQuery = await db.Collection(leaderboardCollection).
                     Document(allTimeDocument).
                     Collection(levelCollection).GetSnapshotAsync();
@@ -296,7 +280,7 @@ namespace Zom.Pie.Services
        
 
             // Check structure
-            await CreateLeaderboardStructure();
+            await CheckLeaderboardStructure();
 
             // If document exists check if an update is needed
             Dictionary<string, object> userData = null;
@@ -341,7 +325,11 @@ namespace Zom.Pie.Services
             // Check if we need to update db
             if (toUpdate)
             {
-                await doc.Reference.SetAsync(userData, SetOptions.MergeAll);
+                await doc.Reference.SetAsync(userData, SetOptions.MergeAll).ContinueWith(task=>
+                {
+                    doc.Reference.UpdateAsync(timestampField, FieldValue.ServerTimestamp);
+                });
+                
             }
 
         }
