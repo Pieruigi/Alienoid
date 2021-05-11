@@ -10,6 +10,9 @@ namespace Zom.Pie.UI
         [SerializeField]
         TMP_Text levelLabel;
 
+        [SerializeField]
+        LeaderboardLocalPlayer localPlayer;
+
         string levelStringFormat = "Level {0}";
 
         // Start is called before the first frame update
@@ -27,6 +30,11 @@ namespace Zom.Pie.UI
         public void SetLevelLabel(int levelId)
         {
             levelLabel.text = string.Format(levelStringFormat, levelId);
+        }
+
+        public void SetLocalPlayerScore(float score)
+        {
+            localPlayer.SetScore(score);
         }
     }
 
