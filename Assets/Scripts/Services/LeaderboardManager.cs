@@ -107,14 +107,23 @@ namespace Zom.Pie.Services
                 if (!level.Exists)
                 {
                     await level.Reference.SetAsync(new Dictionary<string, object>());
+                    
                 }
-
+                //Dictionary<string, string> fake = new Dictionary<string, string>();
+                //fake.Add("_fake_", "");
+                //await level.Reference.Collection(userCollection).Document("_fake_").SetAsync(new Dictionary<string, string>());
+                //await level.Reference.Collection(userCollection).Document("_fake_").DeleteAsync();
+                //DocumentReference doc = level.Reference.Collection(userCollection).Document("_fake_");
+                //await doc.DeleteAsync();
+                //await level.Reference.Collection(userCollection).AddAsync(new Dictionary<string, object>());
             }
         }
 
-        public async Task GetLeaderboardDataAsync(UnityAction<LeaderboardData> callback)
+        public async Task<LeaderboardData> GetLeaderboardDataAsync(UnityAction<LeaderboardData> callback = null)
         {
             await CheckLeaderboardStructure();
+
+            int testIter = 0;
 
             // Init db
             db = FirebaseFirestore.DefaultInstance;
@@ -122,10 +131,14 @@ namespace Zom.Pie.Services
             // Create new data
             LeaderboardData data = new LeaderboardData();
 
+            
+
             // Get level collection
             QuerySnapshot lQuery = await db.Collection(leaderboardCollection).
                     Document(allTimeDocument).
                     Collection(levelCollection).GetSnapshotAsync();
+
+           
 
             // For each level get the top players
             foreach (DocumentSnapshot level in lQuery.Documents)
@@ -134,8 +147,27 @@ namespace Zom.Pie.Services
                 LeaderboardData.LevelData levelData = new LeaderboardData.LevelData();
                 data.AddLevelData(levelData);
 
+                //await level.Reference.Collection(userCollection).OrderByDescending(scoreField).Limit(Constants.TopPlayers).GetSnapshotAsync().ContinueWith(task =>
+                //{
+                //    if (task.IsCompleted)
+                //    {
+                        
+                //        Debug.Log("Completed:" + new List<DocumentSnapshot>(task.Result.Documents).Count);
+                //        if(new List<DocumentSnapshot>(task.Result.Documents).Count > 0)
+                //            users = task.Result;
+                //    }
+
+                //});
+
+               
+                //return data;
                 // Order players by score               
-                QuerySnapshot users = await level.Reference.Collection(userCollection).OrderByDescending(scoreField).Limit(Constants.TopPlayers).GetSnapshotAsync();
+                QuerySnapshot users = await level.Reference.Collection(userCollection).OrderByDescending(scoreField).Limit(Constants.TopPlayers).GetSnapshotAsync().ConfigureAwait(true);
+               
+                // User list is empty, so skip to the next level
+                if (new List<DocumentSnapshot>(users.Documents).Count == 0)
+                    continue;
+
 
                 // Loop through the top players
                 bool localFound = false;
@@ -146,11 +178,13 @@ namespace Zom.Pie.Services
                     float score = float.Parse(user.ToDictionary()[scoreField].ToString());
                     LeaderboardData.PlayerData playerData = new LeaderboardData.PlayerData(user.Id, score);
 
+                
                     // Add player to the corresponding level
-                    levelData.AddPlayerData(playerData);                    
-              
-                   
+                    levelData.AddPlayerData(playerData);
+
+
                     
+
 #if !UNITY_EDITOR
                     userId = AccountManager.Instance.GetUserId();
                         
@@ -173,7 +207,7 @@ namespace Zom.Pie.Services
                     }
 
                 }
-
+                
                 if (!localFound)
                 {
                     // We must look for local player in the entire db because he's not a top player
@@ -183,8 +217,12 @@ namespace Zom.Pie.Services
                         levelData.SetLocalScore(float.Parse(localUser.ToDictionary()[scoreField].ToString()));
                     }
                 }
+
+                testIter++;
             }
 
+
+            return data;
         }
 
         public async Task GetLevelMenuScoreDataAsync(UnityAction<LevelMenuScoreData> callback)

@@ -10,6 +10,10 @@ namespace Zom.Pie.Services
         {
             
             List<PlayerData> players;
+            public IList<PlayerData> Players
+            {
+                get { return players.AsReadOnly(); }
+            }
 
             float localScore;
             public float LocalScore
