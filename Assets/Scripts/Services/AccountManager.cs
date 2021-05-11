@@ -209,6 +209,12 @@ namespace Zom.Pie.Services
                 PlayerPrefs.SetInt(PlayerPrefsLoggedKey, 0);
                 PlayerPrefs.Save();
 
+                // Save data on firestore
+                string userId = FirebaseManager.Instance.GetCurrentUser().UserId;
+                string displayName = FirebaseManager.Instance.GetCurrentUser().DisplayName;
+                string avatarUrl = FirebaseManager.Instance.GetCurrentUser().PhotoUrl.ToString();
+                FirebaseManager.Instance.SaveUserDetail(userId, displayName, avatarUrl).ConfigureAwait(false);
+
                 Debug.Log("FirebaseUser.DisplayName:" + FirebaseManager.Instance.GetCurrentUser().DisplayName);
             });
         }

@@ -40,7 +40,15 @@ namespace Zom.Pie.Services
         public class PlayerData
         {
             string userId;
+            public string UserId
+            {
+                get { return userId; }
+            }
             float score;
+            public float Score
+            {
+                get { return score; }
+            }
 
             public PlayerData(string userId, float score)
             {

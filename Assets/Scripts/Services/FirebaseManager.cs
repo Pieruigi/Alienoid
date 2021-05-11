@@ -1,5 +1,6 @@
 using Firebase;
 using Firebase.Auth;
+using Firebase.Firestore;
 using Google;
 using System.Collections;
 using System.Collections.Generic;
@@ -19,6 +20,12 @@ namespace Zom.Pie.Services
   
         private UnityAction<bool> LoginCallback;
         Firebase.Auth.FirebaseAuth auth;
+
+        string userCollection = "users";
+        string displayNameKey = "displayName";
+        string avatarUrlKey = "avatarUrl";
+
+        //FirebaseFirestore db;
 
         public Firebase.Auth.FirebaseUser User
         {
@@ -60,6 +67,22 @@ namespace Zom.Pie.Services
 
             return Firebase.Auth.FirebaseAuth.GetAuth(FirebaseApp.DefaultInstance).CurrentUser;
         }
+
+        public async Task SaveUserDetail(string userId, string displayName, string avatarUrl)
+        {
+            db = FirebaseFirestore.DefaultInstance;
+
+            Dictionary<string, object> data = new Dictionary<string, object>();
+            data.Add(displayNameKey, displayName);
+            data.Add(avatarUrlKey, avatarUrl);
+
+            await db.Collection(userCollection).Document(userId).SetAsync(data, SetOptions.MergeAll);
+        }
+
+        //public RemoteUserDetail GetRemoteUserDetail(string userId)
+        //{
+        //    db.Collection(userCollection).Document(userId).GetSnapshotAsync
+        //}
 
         void Initialize()
         {

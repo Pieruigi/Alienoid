@@ -138,8 +138,9 @@ namespace Zom.Pie.UI
                     // Set UI
                     levelUI.SetLocalPlayerScore(level.LocalScore);
                 }
-                // Players
 
+                // Show remote players
+                levelUI.SetOtherPlayers(level.Players);
             }
         }
 

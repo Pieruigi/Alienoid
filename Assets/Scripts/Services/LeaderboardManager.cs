@@ -121,9 +121,8 @@ namespace Zom.Pie.Services
 
         public async Task<LeaderboardData> GetLeaderboardDataAsync(UnityAction<LeaderboardData> callback = null)
         {
-            await CheckLeaderboardStructure();
+            //await CheckLeaderboardStructure();
 
-            int testIter = 0;
 
             // Init db
             db = FirebaseFirestore.DefaultInstance;
@@ -147,22 +146,12 @@ namespace Zom.Pie.Services
                 LeaderboardData.LevelData levelData = new LeaderboardData.LevelData();
                 data.AddLevelData(levelData);
 
-                //await level.Reference.Collection(userCollection).OrderByDescending(scoreField).Limit(Constants.TopPlayers).GetSnapshotAsync().ContinueWith(task =>
-                //{
-                //    if (task.IsCompleted)
-                //    {
-                        
-                //        Debug.Log("Completed:" + new List<DocumentSnapshot>(task.Result.Documents).Count);
-                //        if(new List<DocumentSnapshot>(task.Result.Documents).Count > 0)
-                //            users = task.Result;
-                //    }
-
-                //});
+             
 
                
                 //return data;
                 // Order players by score               
-                QuerySnapshot users = await level.Reference.Collection(userCollection).OrderByDescending(scoreField).Limit(Constants.TopPlayers).GetSnapshotAsync().ConfigureAwait(true);
+                QuerySnapshot users = await level.Reference.Collection(userCollection).OrderBy(scoreField).Limit(Constants.TopPlayers).GetSnapshotAsync().ConfigureAwait(true);
                
                 // User list is empty, so skip to the next level
                 if (new List<DocumentSnapshot>(users.Documents).Count == 0)
@@ -183,10 +172,10 @@ namespace Zom.Pie.Services
                     levelData.AddPlayerData(playerData);
 
 
-                    
+
 
 #if !UNITY_EDITOR
-                    userId = AccountManager.Instance.GetUserId();
+                    localUserId = AccountManager.Instance.GetUserId();
                         
 #else
                     if (AccountManager.Instance == null || !AccountManager.Instance.Logged)
@@ -218,7 +207,7 @@ namespace Zom.Pie.Services
                     }
                 }
 
-                testIter++;
+               
             }
 
 
@@ -246,7 +235,7 @@ namespace Zom.Pie.Services
             {
                
                 Debug.Log("Doc.id:" + level.Id);
-                QuerySnapshot uQuery = await level.Reference.Collection(userCollection).OrderByDescending(scoreField).GetSnapshotAsync();
+                QuerySnapshot uQuery = await level.Reference.Collection(userCollection).OrderBy(scoreField).GetSnapshotAsync();
                 int count = 1;
                 foreach(DocumentSnapshot user in uQuery.Documents)
                 {
