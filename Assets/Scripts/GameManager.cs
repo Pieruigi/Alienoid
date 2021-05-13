@@ -56,6 +56,8 @@ namespace Zom.Pie
             get { return loading; }
         }
 
+        bool noEscape = false;
+        
         
         private void Awake()
         {
@@ -92,7 +94,7 @@ namespace Zom.Pie
            // Debug.Log("TimeScale:" + Time.timeScale);
 
             // Handle device back button
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape) && !noEscape)
             {
                 string msg = "";
                 if (IsInMainMenu() || IsInLevelMenu())
@@ -125,7 +127,10 @@ namespace Zom.Pie
             //}
         }
 
-
+        public void SetEscapeActive(bool value)
+        {
+            noEscape = !value;
+        }
 
         public bool IsInGame()
         {

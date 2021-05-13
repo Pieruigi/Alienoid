@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
+using Zom.Pie.Collections;
 
 namespace Zom.Pie.Services
 {
@@ -119,7 +120,7 @@ namespace Zom.Pie.Services
             }
         }
 
-        public async Task<LeaderboardData> GetLeaderboardDataAsync(UnityAction<LeaderboardData> callback = null)
+        public async Task<LeaderboardData> GetLeaderboardDataAsync()
         {
             //await CheckLeaderboardStructure();
 
@@ -165,9 +166,25 @@ namespace Zom.Pie.Services
                 {
                     // Create a new player data
                     float score = float.Parse(user.ToDictionary()[scoreField].ToString());
-                    LeaderboardData.PlayerData playerData = new LeaderboardData.PlayerData(user.Id, score);
+                    
 
-                
+                    // Get user detail
+                    DocumentSnapshot userDetail = await db.Collection(FirebaseManager.UserCollection).Document(user.Id).GetSnapshotAsync();
+                    string displayName, avatarUrl;
+                    if (userDetail.Exists)
+                    {
+                        // Set user detail
+                        displayName = (string)userDetail.ToDictionary()[FirebaseManager.DisplayNameKey];
+                        avatarUrl = (string)userDetail.ToDictionary()[FirebaseManager.AvatarUrlKey];
+                    }
+                    else
+                    {
+                        displayName = TextFactory.Instance.GetText(TextFactory.Type.UILabel, 21);
+                        avatarUrl = null;
+                    }
+
+                    LeaderboardData.PlayerData playerData = new LeaderboardData.PlayerData(user.Id, score, displayName, avatarUrl);
+
                     // Add player to the corresponding level
                     levelData.AddPlayerData(playerData);
 

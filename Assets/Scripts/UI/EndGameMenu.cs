@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Zom.Pie.Collections;
 using Zom.Pie.Services;
 
 namespace Zom.Pie.UI
@@ -51,8 +52,16 @@ namespace Zom.Pie.UI
             GameManager.Instance.Pause(true);
             panel.SetActive(true);
 
-            // Save score if needed
-            LeaderboardManager.Instance.SaveLocalPlayerScoreByLevel(GameManager.Instance.GetCurrentLevelId(), LevelManager.Instance.TimeScore);
+            if (AccountManager.Instance.Logged)
+            {
+                // Save score if needed
+                LeaderboardManager.Instance.SaveLocalPlayerScoreByLevel(GameManager.Instance.GetCurrentLevelId(), LevelManager.Instance.TimeScore).ConfigureAwait(false);
+            }
+            else
+            {
+                // Not logged in
+                MessageBox.Show(MessageBox.Type.Ok, TextFactory.Instance.GetText(TextFactory.Type.UIMessage, 4));
+            }
         }
 
         void HandleOnLevelBeaten()

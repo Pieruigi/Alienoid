@@ -25,9 +25,11 @@ namespace Zom.Pie.UI
         [SerializeField]
         List<Color> colors;
 
+        Sprite dummySprite;
+
         private void Awake()
         {
-            
+            dummySprite = avatar.sprite;
         }
 
         // Start is called before the first frame update
@@ -42,7 +44,7 @@ namespace Zom.Pie.UI
 
         }
 
-        public void Init(string userId, float score, int position)
+        public void Init(string userId, float score, int position, string displayName, string avatarUrl)
         {
             // Set the score
             playerScore.text = GeneralUtility.FormatTime(score);
@@ -51,7 +53,7 @@ namespace Zom.Pie.UI
             playerPosition.text = position.ToString();
 
             // Set name 
-            playerName.text = userId;
+            playerName.text = displayName;
 
             Image image = GetComponent<Image>();
             if(position < 4)
@@ -62,9 +64,22 @@ namespace Zom.Pie.UI
             {
                 image.color = colors[3];
             }
+
+            // Get texture
+            if(string.IsNullOrEmpty(avatarUrl))
+                avatar.sprite = dummySprite;
+            else
+                StartCoroutine(GeneralUtility.GetTextureFromUrlAsync(avatarUrl, HandleOnGetTexture));
         }
 
-
+        void HandleOnGetTexture(bool success, Texture texture)
+        {
+            Debug.Log("Success:" + success);
+            if (success)
+                avatar.sprite = Sprite.Create((Texture2D)texture, dummySprite.rect, Vector2.zero);
+            else
+                avatar.sprite = dummySprite;
+        }
         
     }
 

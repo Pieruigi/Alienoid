@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using Zom.Pie.Collections;
 using Zom.Pie.Services;
 using static Zom.Pie.Services.LeaderboardData;
 
@@ -21,6 +22,8 @@ namespace Zom.Pie.UI
 
         int levelsPerPage = 4;
         LeaderboardData data;
+
+       
 
         
         private void Awake()
@@ -57,7 +60,22 @@ namespace Zom.Pie.UI
 
         private void OnEnable()
         {
+            GameManager.Instance.SetEscapeActive(false);
             LoadLeaderboardAsync().ConfigureAwait(false);
+        }
+
+        private void OnDisable()
+        {
+            GameManager.Instance.SetEscapeActive(true);
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                gameObject.SetActive(false);
+            }
         }
 
         private async Task LoadLeaderboardAsync()
@@ -87,23 +105,27 @@ namespace Zom.Pie.UI
 
             //    }
             //});
+
+            // Activate loading panel
+            LoadingPanel.Instance.Show(true);
+
             data = await LeaderboardManager.Instance.GetLeaderboardDataAsync();
+
+            // Deactivate loading panel
+            LoadingPanel.Instance.Show(false);
+
+            // If player is not logged in he will be notified
+            if (!AccountManager.Instance.Logged)
+                MessageBox.Show(MessageBox.Type.Ok, TextFactory.Instance.GetText(TextFactory.Type.UIMessage, 4));
 
             if (data!= null)
                 UpdateUI();
             
         }
 
-        private void OnDisable()
-        {
-            
-        }
 
-        // Update is called once per frame
-        void Update()
-        {
-       
-        }
+
+  
 
         void SetLevelsLabels()
         {
@@ -144,10 +166,11 @@ namespace Zom.Pie.UI
             }
         }
 
-        void HandleOnLeaderboardLoaded(LeaderboardData leaderboard)
+        void Reset()
         {
-
+            
         }
+
     }
 
 }

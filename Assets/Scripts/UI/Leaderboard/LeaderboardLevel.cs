@@ -20,6 +20,7 @@ namespace Zom.Pie.UI
         string levelStringFormat = "Level {0}";
 
         Transform remotePlayerTemplate;
+        bool initialized = false;
         private void Awake()
         {
             
@@ -33,12 +34,33 @@ namespace Zom.Pie.UI
             remotePlayerTemplate.gameObject.SetActive(false);
             // Move the template out
             remotePlayerTemplate.parent = remotePlayerContainer.parent;
+
+            initialized = true;
         }
 
         // Update is called once per frame
         void Update()
         {
 
+        }
+
+        private void OnEnable()
+        {
+            
+        }
+
+        private void OnDisable()
+        {
+            if (!initialized)
+                return;
+
+            //Debug.Log("OnDisabled " + gameObject);
+            // Remove all the remote player templates
+            int count = remotePlayerContainer.childCount;
+            for(int i=0; i<count; i++)
+            {
+                DestroyImmediate(remotePlayerContainer.GetChild(0).gameObject);
+            }
         }
 
         public void SetLevelLabel(int levelId)
@@ -58,10 +80,13 @@ namespace Zom.Pie.UI
             {
                 // Create a new player ui
                 Transform playerUI = GameObject.Instantiate(remotePlayerTemplate, remotePlayerContainer, true);
+                playerUI.gameObject.SetActive(true);
                 string userId = players[i].UserId;
                 float score = players[i].Score;
-                playerUI.GetComponent<LeaderboardRemotePlayer>().Init(userId, score, i+1);
-                playerUI.gameObject.SetActive(true);
+                string displayName = players[i].DisplayName;
+                string avatarUrl = players[i].AvatarUrl;
+                playerUI.GetComponent<LeaderboardRemotePlayer>().Init(userId, score, i+1, displayName, avatarUrl);
+                
             }
         }
     }

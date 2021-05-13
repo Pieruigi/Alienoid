@@ -12,6 +12,10 @@ namespace Zom.Pie.Services
 {
     public class FirebaseManager : MonoBehaviour
     {
+        public static readonly string UserCollection = "users";
+        public static readonly string DisplayNameKey = "displayName";
+        public static readonly string AvatarUrlKey = "avatarUrl";
+
         public static FirebaseManager Instance { get; private set; }
 
         public bool Initialized { get; private set; } = false;
@@ -21,11 +25,9 @@ namespace Zom.Pie.Services
         private UnityAction<bool> LoginCallback;
         Firebase.Auth.FirebaseAuth auth;
 
-        string userCollection = "users";
-        string displayNameKey = "displayName";
-        string avatarUrlKey = "avatarUrl";
+        
 
-        //FirebaseFirestore db;
+        FirebaseFirestore db;
 
         public Firebase.Auth.FirebaseUser User
         {
@@ -73,10 +75,10 @@ namespace Zom.Pie.Services
             db = FirebaseFirestore.DefaultInstance;
 
             Dictionary<string, object> data = new Dictionary<string, object>();
-            data.Add(displayNameKey, displayName);
-            data.Add(avatarUrlKey, avatarUrl);
+            data.Add(DisplayNameKey, displayName);
+            data.Add(AvatarUrlKey, avatarUrl);
 
-            await db.Collection(userCollection).Document(userId).SetAsync(data, SetOptions.MergeAll);
+            await db.Collection(UserCollection).Document(userId).SetAsync(data, SetOptions.MergeAll);
         }
 
         //public RemoteUserDetail GetRemoteUserDetail(string userId)

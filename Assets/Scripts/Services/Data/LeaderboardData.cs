@@ -50,10 +50,24 @@ namespace Zom.Pie.Services
                 get { return score; }
             }
 
-            public PlayerData(string userId, float score)
+            string displayName;
+            public string DisplayName
+            {
+                get { return displayName; }
+            }
+
+            string avatarUrl;
+            public string AvatarUrl
+            {
+                get { return avatarUrl; }
+            }
+
+            public PlayerData(string userId, float score, string displayName, string avatarUrl)
             {
                 this.userId = userId;
                 this.score = score;
+                this.displayName = displayName;
+                this.avatarUrl = avatarUrl;
             }
         }
 
