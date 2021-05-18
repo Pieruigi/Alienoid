@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
 using Zom.Pie.Collections;
 using Zom.Pie.Services;
 using static Zom.Pie.Services.LeaderboardData;
@@ -13,6 +14,11 @@ namespace Zom.Pie.UI
         [SerializeField]
         Transform levelGroup;
 
+        [SerializeField]
+        Button nextPageButton;
+
+        [SerializeField]
+        Button prevPageButton;
 
         public static LeaderboardPanel Instance { get; private set; }
 
@@ -21,9 +27,8 @@ namespace Zom.Pie.UI
         List<LeaderboardLevel> levels;
 
         int levelsPerPage = 4;
+        int numOfPages;
         LeaderboardData data;
-
-       
 
         
         private void Awake()
@@ -31,6 +36,14 @@ namespace Zom.Pie.UI
             if (!Instance)
             {
                 Instance = this;
+
+                // Compute the number of pages
+                numOfPages = GameManager.Instance.GetNumberOfLevels() / levelsPerPage;
+
+                // Set buttons 
+                nextPageButton.onClick.AddListener(NextPage);
+                prevPageButton.onClick.AddListener(PrevPage);
+                
 
                 // Fill template list
                 GameObject levelTemplate = levelGroup.GetChild(0).gameObject;
@@ -60,13 +73,18 @@ namespace Zom.Pie.UI
 
         private void OnEnable()
         {
-            GameManager.Instance.SetEscapeActive(false);
-            LoadLeaderboardAsync().ConfigureAwait(false);
+            if (GameManager.Instance)
+            {
+                GameManager.Instance.SetEscapeActive(false); 
+                LoadLeaderboardAsync().ConfigureAwait(false);
+            }
+            
         }
 
         private void OnDisable()
         {
-            GameManager.Instance.SetEscapeActive(true);
+            if(GameManager.Instance)
+                GameManager.Instance.SetEscapeActive(true);
         }
 
         // Update is called once per frame
@@ -76,6 +94,26 @@ namespace Zom.Pie.UI
             {
                 gameObject.SetActive(false);
             }
+        }
+
+        void NextPage()
+        {
+            if (page == numOfPages - 1)
+                page = 0;
+            else
+                page++;
+
+            UpdateUI();
+        }
+
+        void PrevPage()
+        {
+            if (page == 0)
+                page = numOfPages - 1;
+            else
+                page--;
+
+            UpdateUI();
         }
 
         private async Task LoadLeaderboardAsync()
@@ -141,6 +179,8 @@ namespace Zom.Pie.UI
         {
             Debug.Log("LevelGroup:" + levelGroup);
 
+            SetLevelsLabels();
+
             // Loop through each level
             int offset = page * levelsPerPage;
             for (int i = 0; i < levelsPerPage; i++)
@@ -148,6 +188,7 @@ namespace Zom.Pie.UI
               
                 // Get the ui level template
                 LeaderboardLevel levelUI = levelGroup.GetChild(i).GetComponent<LeaderboardLevel>();
+                levelUI.Clear();
                 // Level 
                 LevelData level = data.Levels[i+offset];
              

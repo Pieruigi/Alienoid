@@ -29,7 +29,7 @@ namespace Zom.Pie.UI
             if (!LevelManager.Instance.Running)
                 return;
 
-            if (GameManager.Instance.IsPaused())
+            if (GameManager.Instance && GameManager.Instance.IsPaused())
                 return;
 
             if(Input.GetKeyDown(KeyCode.Escape))
@@ -48,7 +48,8 @@ namespace Zom.Pie.UI
         public void Close()
         {
             panel.SetActive(false);
-            GameManager.Instance.Pause(false);
+            if(GameManager.Instance)
+                GameManager.Instance.Pause(false);
         }
 
         void HandleOnGameCompleted()

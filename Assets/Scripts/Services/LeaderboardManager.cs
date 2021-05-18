@@ -260,6 +260,7 @@ namespace Zom.Pie.Services
                     if (count == 1)
                     {
                         data.AddAllTimeRecord(int.Parse(level.Id), float.Parse(user.ToDictionary()[scoreField].ToString()));
+                        Debug.Log("All TIme record is:" + data.GetAllTimeRecord(int.Parse(level.Id)));
                     }
 
                     // Get player position and score
@@ -283,7 +284,7 @@ namespace Zom.Pie.Services
                         data.AddPlayerScore(int.Parse(level.Id), float.Parse(user.ToDictionary()[scoreField].ToString()));
                         data.AddPlayerPosition(int.Parse(level.Id), count);
                     }
-
+                    count++;
                     //Debug.Log("User:" + user.Id);
                 }
             }

@@ -16,12 +16,9 @@ namespace Zom.Pie.Services
     {
         public static readonly string PlayerPrefsLoggedKey = "Logged";
 
-        /// <summary>
-        /// Params:
-        /// - succeeded
-        /// - is silent login
-        /// </summary>
-        public UnityAction<bool, bool> OnLogin;
+        public UnityAction OnLoggedIn;
+        public UnityAction OnLogInFailed;
+        public UnityAction OnLoggedOut;
 
         public static AccountManager Instance { get; private set; }
 
@@ -133,8 +130,9 @@ namespace Zom.Pie.Services
 
 #if UNITY_ANDROID
             PlayGamesPlatform.Instance.SignOut();
-           
+
 #endif
+            OnLoggedOut?.Invoke();
         }
 
         /// <summary>
@@ -149,6 +147,12 @@ namespace Zom.Pie.Services
         public string GetUserId()
         {
             return FirebaseManager.Instance.GetCurrentUser().UserId;
+        }
+
+        public string GetAvatarUrl()
+        {
+            Debug.LogError("PhotoUrl:" + FirebaseManager.Instance.GetCurrentUser().PhotoUrl);
+            return FirebaseManager.Instance.GetCurrentUser().PhotoUrl.ToString();
         }
 
         #region private
@@ -169,6 +173,8 @@ namespace Zom.Pie.Services
                 {
                     logging = false;
                     Logged = false;
+
+                    OnLogInFailed?.Invoke();
                 }
 
             });
@@ -194,6 +200,7 @@ namespace Zom.Pie.Services
                     Debug.LogError("SignInWithCredentialAsync was canceled.");
                     logging = false;
                     Logged = false;
+                    OnLogInFailed?.Invoke();
                     return;
                 }
                 if (task.IsFaulted)
@@ -201,6 +208,7 @@ namespace Zom.Pie.Services
                     Debug.LogError("SignInWithCredentialAsync encountered an error: " + task.Exception);
                     logging = false;
                     Logged = false;
+                    OnLogInFailed?.Invoke();
                     return;
                 }
 
@@ -214,6 +222,8 @@ namespace Zom.Pie.Services
                 string displayName = FirebaseManager.Instance.GetCurrentUser().DisplayName;
                 string avatarUrl = FirebaseManager.Instance.GetCurrentUser().PhotoUrl.ToString();
                 FirebaseManager.Instance.SaveUserDetail(userId, displayName, avatarUrl).ConfigureAwait(false);
+
+                OnLoggedIn?.Invoke();
 
                 Debug.Log("FirebaseUser.DisplayName:" + FirebaseManager.Instance.GetCurrentUser().DisplayName);
             });

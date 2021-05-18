@@ -56,8 +56,13 @@ namespace Zom.Pie.UI
 
             //Debug.Log("OnDisabled " + gameObject);
             // Remove all the remote player templates
+            Clear();
+        }
+
+        public void Clear()
+        {
             int count = remotePlayerContainer.childCount;
-            for(int i=0; i<count; i++)
+            for (int i = 0; i < count; i++)
             {
                 DestroyImmediate(remotePlayerContainer.GetChild(0).gameObject);
             }

@@ -13,6 +13,12 @@ namespace Zom.Pie
     {
         //public UnityAction<int> OnGameSpeedChanged;
 
+        /// <summary>
+        /// Params:
+        ///     bool - true if a level scene is loading
+        /// </summary>
+        public UnityAction<bool> OnSceneLoading;
+
         public static GameManager Instance { get; private set; }
 
         int mainMenuSceneIndex = 0;
@@ -171,16 +177,19 @@ namespace Zom.Pie
         /// </summary>
         public void LoadMainMenu()
         {
+            OnSceneLoading?.Invoke(false);
             LoadScene(mainMenuSceneIndex);
         }
 
         public void LoadLevelMenu()
         {
+            OnSceneLoading?.Invoke(false);
             LoadScene(levelMenuSceneIndex);
         }
 
         public void LoadLevel(int levelId)
         {
+            OnSceneLoading?.Invoke(true);
             LoadScene(levelId + levelStartingIndex - 1);
         }
 
@@ -217,6 +226,8 @@ namespace Zom.Pie
         /// <param name="index"></param>
         public void LoadScene(int index)
         {
+
+
             SceneManager.LoadScene(index);
             loading = true;
         }

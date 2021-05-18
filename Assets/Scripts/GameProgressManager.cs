@@ -62,6 +62,9 @@ namespace Zom.Pie
 
         public int GetHigherUnlockedSpeed()
         {
+            if (!GameManager.Instance)
+                return 0;
+
             return (progress / GameManager.Instance.GetNumberOfLevels()) + 1;
         }
 

@@ -10,9 +10,14 @@ namespace Zom.Pie.UI
         [SerializeField]
         GameObject panel;
 
+        static bool showed = false;
+
         private void Awake()
         {
-           
+            if (!showed)
+                showed = true;
+            else
+                gameObject.SetActive(false);
         }
 
         // Start is called before the first frame update

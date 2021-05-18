@@ -19,8 +19,16 @@ namespace Zom.Pie.UI
         [SerializeField]
         Button restartButton;
 
+        bool levelBeaten = false;
+
         private void Awake()
         {
+            if (AdsManager.Instance)
+            {
+                AdsManager.Instance.OnInterstitialClosed += FinalizeLevel;
+                AdsManager.Instance.OnInterstitialFailed += FinalizeLevel;
+            }
+            
             Close();
         }
 
@@ -37,7 +45,12 @@ namespace Zom.Pie.UI
            
         }
 
-        
+        private void OnDestroy()
+        {
+            AdsManager.Instance.OnInterstitialClosed -= FinalizeLevel;
+            AdsManager.Instance.OnInterstitialFailed -= FinalizeLevel;
+        }
+
 
         public void Close()
         {
@@ -49,19 +62,25 @@ namespace Zom.Pie.UI
         {
             yield return new WaitForSeconds(4f * Time.timeScale);
 
+            // Pause app and show this panel
             GameManager.Instance.Pause(true);
-            panel.SetActive(true);
 
-            if (AccountManager.Instance.Logged)
+            if (PurchaseManager.Instance.IsPremiumVersion())// No ads
             {
-                // Save score if needed
-                LeaderboardManager.Instance.SaveLocalPlayerScoreByLevel(GameManager.Instance.GetCurrentLevelId(), LevelManager.Instance.TimeScore).ConfigureAwait(false);
+                // We skip ads because player owns premium version
+                FinalizeLevel();
             }
-            else
+            else// Show ads
             {
-                // Not logged in
-                MessageBox.Show(MessageBox.Type.Ok, TextFactory.Instance.GetText(TextFactory.Type.UIMessage, 4));
+#if UNITY_EDITOR
+                FinalizeLevel();
+#else
+                // We show the interstitial interstitial
+                AdsManager.Instance.ShowInterstitial();
+#endif
+
             }
+
         }
 
         void HandleOnLevelBeaten()
@@ -71,6 +90,8 @@ namespace Zom.Pie.UI
 
             // Activate the continue button
             nextButton.gameObject.SetActive(true);
+
+            levelBeaten = true;
 
             StartCoroutine(Open());
         }
@@ -83,6 +104,8 @@ namespace Zom.Pie.UI
             // Activate the continue button
             restartButton.gameObject.SetActive(true);
 
+            levelBeaten = false;
+
             StartCoroutine(Open());
         }
 
@@ -91,6 +114,29 @@ namespace Zom.Pie.UI
             nextButton.gameObject.SetActive(false);
             restartButton.gameObject.SetActive(false);
         }
+
+        void FinalizeLevel()
+        {
+            panel.SetActive(true);
+
+            if (levelBeaten)
+            {
+                if (AccountManager.Instance.Logged)
+                {
+                    // Save score if needed
+                    LeaderboardManager.Instance.SaveLocalPlayerScoreByLevel(GameManager.Instance.GetCurrentLevelId(), LevelManager.Instance.TimeScore).ConfigureAwait(false);
+                }
+                else
+                {
+                    // Not logged in
+                    MessageBox.Show(MessageBox.Type.Ok, TextFactory.Instance.GetText(TextFactory.Type.UIMessage, 4));
+                }
+            }
+
+            
+        }
+
+
     }
 
 }

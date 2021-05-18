@@ -3,11 +3,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Zom.Pie.Services
 {
     public class AdsManager : MonoBehaviour
     {
+        public UnityAction OnInterstitialFailed;
+        public UnityAction OnInterstitialClosed;
+
         public static AdsManager Instance { get; private set; }
         
         bool initialized = false;
@@ -24,6 +28,8 @@ namespace Zom.Pie.Services
             if (!Instance)
             {
                 Instance = this;
+
+                DontDestroyOnLoad(gameObject);
             }
             else
             {
@@ -55,13 +61,18 @@ namespace Zom.Pie.Services
             }
         }
 
+        
+
         /// <summary>
         /// Called by the app to show a preloaded interstitial
         /// </summary>
         public void ShowInterstitial()
         {
+
             if (interstitial != null && interstitial.IsLoaded())
                 interstitial.Show();
+            else
+                OnInterstitialFailed?.Invoke();
         }
 
         #region internal
@@ -143,7 +154,7 @@ namespace Zom.Pie.Services
         void HandleOnInterstitialClosed(object sender, EventArgs args)
         {
             Debug.LogFormat("Interstitial closed");
-
+            OnInterstitialClosed?.Invoke();
         }
         #endregion
     }

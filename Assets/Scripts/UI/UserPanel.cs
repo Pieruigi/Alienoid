@@ -15,28 +15,42 @@ namespace Zom.Pie.UI
         [SerializeField]
         TMP_Text userName;
 
+        [SerializeField]
+        Image avatar;
+
+        [SerializeField]
+        Button logOutButton;
+
+        Sprite dummySprite;
+
         private void Awake()
         {
-            // Hide user name
-            userName.gameObject.SetActive(false);
+            ResetLogin();
+
+            dummySprite = avatar.sprite;
         }
 
         // Start is called before the first frame update
         void Start()
         {
-            AccountManager.Instance.OnLogin += HandleOnLogin;
+            AccountManager.Instance.OnLoggedIn += HandleOnLoggedIn;
+            AccountManager.Instance.OnLogInFailed += HandleOnLogInFailed;
+            AccountManager.Instance.OnLoggedOut += HandleOnLoggedOut;
 
             if (AccountManager.Instance.Logged)
             {
-                // Hide login button
-                loginButton.gameObject.SetActive(false);
-
-                // Show player name
-                userName.gameObject.SetActive(true);
-                userName.text = AccountManager.Instance.GetDisplayName();
-
+                InitLogin();
             }
         }
+
+
+        private void OnDestroy()
+        {
+            AccountManager.Instance.OnLoggedIn -= HandleOnLoggedIn;
+            AccountManager.Instance.OnLogInFailed -= HandleOnLogInFailed;
+            AccountManager.Instance.OnLoggedOut -= HandleOnLoggedOut;
+        }
+
 
         // Update is called once per frame
         void Update()
@@ -44,21 +58,78 @@ namespace Zom.Pie.UI
 
         }
 
-        void HandleOnLogin(bool succeeded, bool isSilent)
+        public void LogIn()
         {
-            Debug.Log("UserPanel.HandleOnLogin - succeeded:" + succeeded);
-
-            if (succeeded)
-            {
-                // Hide button
-                loginButton.gameObject.SetActive(false);
-
-                // Show player name
-                userName.gameObject.SetActive(true);
-                userName.text = AccountManager.Instance.GetDisplayName();
-            }
+            AccountManager.Instance.LogIn();
         }
 
+        public void LogOut()
+        {
+            AccountManager.Instance.LogOut();
+        }
+
+        void HandleOnLoggedIn()
+        {
+            Debug.Log("UserPanel.HandleOnLoggedIn");
+
+            InitLogin();
+
+
+        }
+
+        void HandleOnLogInFailed()
+        {
+            Debug.Log("UserPanel.HandleOnLogInFailed");
+
+            ResetLogin();
+        }
+
+        void HandleOnLoggedOut()
+        {
+            Debug.Log("UserPanel.HandleOnLoggedOut");
+            ResetLogin();
+        }
+
+        private void ResetLogin()
+        {
+            avatar.gameObject.SetActive(false);
+            userName.gameObject.SetActive(false);
+            loginButton.gameObject.SetActive(true);
+            logOutButton.gameObject.SetActive(false);
+        }
+
+        void InitLogin()
+        {
+            // Hide button login
+            loginButton.gameObject.SetActive(false);
+
+            // Show log out
+            logOutButton.gameObject.SetActive(true);
+
+            // Show player name
+            userName.gameObject.SetActive(true);
+            userName.text = AccountManager.Instance.GetDisplayName();
+
+            // Download avatar
+            avatar.gameObject.SetActive(true);
+            Debug.Log("AvatarUrl:" + AccountManager.Instance.GetAvatarUrl());
+            if (!string.IsNullOrEmpty(AccountManager.Instance.GetAvatarUrl()))
+                StartCoroutine(GeneralUtility.GetTextureFromUrlAsync(AccountManager.Instance.GetAvatarUrl(), ShowAvatar));
+            else
+                avatar.sprite = dummySprite;
+        }
+
+        void ShowAvatar(bool succeeded, Texture texture)
+        {
+            if (succeeded)
+            {
+                avatar.sprite = Sprite.Create((Texture2D)texture, dummySprite.rect, Vector2.zero);
+            }
+            else
+            {
+                avatar.sprite = dummySprite;
+            }
+        }
         
     }
 
