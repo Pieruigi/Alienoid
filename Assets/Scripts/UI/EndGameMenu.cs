@@ -89,7 +89,8 @@ namespace Zom.Pie.UI
             ResetButtons();
 
             // Activate the continue button
-            nextButton.gameObject.SetActive(true);
+            restartButton.gameObject.SetActive(true);
+            //nextButton.gameObject.SetActive(true);
 
             levelBeaten = true;
 

@@ -29,11 +29,11 @@ namespace Zom.Pie.Services
 
         FirebaseFirestore db;
 
-        public Firebase.Auth.FirebaseUser User
-        {
-            get { return auth != null ? auth.CurrentUser : null; }
-            //get { if(Firebase.Auth == )}
-        }
+        //public Firebase.Auth.FirebaseUser User
+        //{
+        //    get { return auth != null ? auth.CurrentUser : null; }
+        //    //get { if(Firebase.Auth == )}
+        //}
 
         private void Awake()
         {
@@ -60,6 +60,14 @@ namespace Zom.Pie.Services
         void Update()
         {
 
+        }
+
+        public bool IsLogged()
+        {
+            if (Firebase.Auth.FirebaseAuth.GetAuth(FirebaseApp.DefaultInstance) == null)
+                return false;
+
+            return Firebase.Auth.FirebaseAuth.GetAuth(FirebaseApp.DefaultInstance).CurrentUser != null;
         }
 
         public Firebase.Auth.FirebaseUser GetCurrentUser()

@@ -144,10 +144,10 @@ namespace Zom.Pie.Services
             foreach (DocumentSnapshot level in lQuery.Documents)
             {
                 // Create a new level data
-                LeaderboardData.LevelData levelData = new LeaderboardData.LevelData();
+                LeaderboardData.LevelData levelData = new LeaderboardData.LevelData(int.Parse(level.Id));
                 data.AddLevelData(levelData);
 
-             
+                Debug.Log("Found level:" + level.Id);    
 
                
                 //return data;
@@ -158,6 +158,7 @@ namespace Zom.Pie.Services
                 if (new List<DocumentSnapshot>(users.Documents).Count == 0)
                     continue;
 
+                Debug.Log("Users.Count > 0");
 
                 // Loop through the top players
                 bool localFound = false;
@@ -166,7 +167,7 @@ namespace Zom.Pie.Services
                 {
                     // Create a new player data
                     float score = float.Parse(user.ToDictionary()[scoreField].ToString());
-                    
+                    Debug.LogFormat("User {0} - score:{1}", user, score);
 
                     // Get user detail
                     DocumentSnapshot userDetail = await db.Collection(FirebaseManager.UserCollection).Document(user.Id).GetSnapshotAsync();
@@ -192,7 +193,10 @@ namespace Zom.Pie.Services
 
 
 #if !UNITY_EDITOR
-                    localUserId = AccountManager.Instance.GetUserId();
+                    if (AccountManager.Instance == null || !AccountManager.Instance.Logged)
+                        localUserId = "";
+                    else
+                        localUserId = AccountManager.Instance.GetUserId();
                         
 #else
                     if (AccountManager.Instance == null || !AccountManager.Instance.Logged)
@@ -205,6 +209,8 @@ namespace Zom.Pie.Services
                     }
 
 #endif
+
+                    Debug.Log("Local user found:" + !string.IsNullOrEmpty(localUserId));
                     // Check if this player is the local player
                     if (localUserId == user.Id)
                     {
@@ -214,7 +220,7 @@ namespace Zom.Pie.Services
 
                 }
                 
-                if (!localFound)
+                if (!localFound && AccountManager.Instance.Logged)
                 {
                     // We must look for local player in the entire db because he's not a top player
                     DocumentSnapshot localUser = await level.Reference.Collection(userCollection).Document(localUserId).GetSnapshotAsync();
@@ -224,7 +230,8 @@ namespace Zom.Pie.Services
                     }
                 }
 
-               
+                Debug.Log("end loop level " + level.Id);
+
             }
 
 

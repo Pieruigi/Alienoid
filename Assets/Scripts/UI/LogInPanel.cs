@@ -7,6 +7,7 @@ namespace Zom.Pie.UI
 {
     public class LogInPanel : MonoBehaviour
     {
+        
         [SerializeField]
         GameObject panel;
 
@@ -29,9 +30,32 @@ namespace Zom.Pie.UI
 
         private void OnEnable()
         {
-            if (PlayerPrefs.HasKey(AccountManager.PlayerPrefsLoggedKey))
+            if (PlayerPrefs.HasKey(AccountManager.PlayerPrefsProviderKey))
                 panel.SetActive(false);
             
+        }
+
+        public void Show()
+        {
+            if (panel.activeSelf)
+                return;
+
+            panel.SetActive(true);
+        }
+
+        public void LogInNative()
+        {
+            AccountManager.Instance.LogIn((int)AccountManager.Provider.Native);
+        }
+
+        public void LogInWithFacebook()
+        {
+            AccountManager.Instance.LogIn((int)AccountManager.Provider.Facebook);
+        }
+
+        public void LogOut()
+        {
+            AccountManager.Instance.LogOut();
         }
 
         // Update is called once per frame

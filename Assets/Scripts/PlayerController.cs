@@ -29,9 +29,19 @@ namespace Zom.Pie
         [SerializeField]
         ParticleSystem shotFX;
 
+        [SerializeField]
+        AudioClip shootClip;
+
+        [SerializeField]
+        float shootClipVolume = 1;
+
+        [SerializeField]
+        AudioSource audioSource;
+
         float fireCooldown;
         DateTime lastShot;
         
+
 
         private void Awake()
         {
@@ -96,6 +106,11 @@ namespace Zom.Pie
 
                     // Particles
                     shotFX.Play();
+
+                    // Play audio clip
+                    audioSource.volume = shootClipVolume;
+                    audioSource.clip = shootClip;
+                    audioSource.Play();
 
                     // Reset cooldown
                     lastShot = DateTime.UtcNow;

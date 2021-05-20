@@ -21,6 +21,9 @@ namespace Zom.Pie.UI
         [SerializeField]
         Button logOutButton;
 
+        [SerializeField]
+        GameObject leaderboardPanel;
+
         Sprite dummySprite;
 
         private void Awake()
@@ -58,9 +61,16 @@ namespace Zom.Pie.UI
 
         }
 
-        public void LogIn()
+        public void OpenLeaderboard()
         {
-            AccountManager.Instance.LogIn();
+            if (AccountManager.Instance.Logged)
+            {
+                leaderboardPanel.SetActive(true);
+            }
+            else
+            {
+                GameObject.FindObjectOfType<LogInPanel>().Show();
+            }
         }
 
         public void LogOut()

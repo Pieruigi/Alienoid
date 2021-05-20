@@ -30,6 +30,9 @@ namespace Zom.Pie
         [SerializeField]
         ParticleSystem fx;
 
+        [SerializeField]
+        AudioSource audioSource;
+
         // We put here all the enemies collapsing inside the black hole in order to add to them a force
         List<Rigidbody> dyingEnemies = new List<Rigidbody>();
 
@@ -106,6 +109,7 @@ namespace Zom.Pie
             Colorize();
         }
 
+
         /// <summary>
         /// This method is similar to set enemy type, but simply fade from the old to the new color
         /// </summary>
@@ -157,6 +161,9 @@ namespace Zom.Pie
             Rigidbody enemyRB = enemy.GetComponent<Rigidbody>();
             dyingEnemies.Add(enemyRB);
 
+            // Play audio
+            audioSource.Play();
+
             yield return enemy.transform.DOScale(Vector3.zero, 0.5f).WaitForCompletion();
 
             // Remove fro the list
@@ -164,6 +171,8 @@ namespace Zom.Pie
 
             // Die
             enemy.GetComponent<Enemy>().Die(this);
+
+            
 
         }
 

@@ -36,19 +36,18 @@ namespace Zom.Pie.UI
             if (!Instance)
             {
                 Instance = this;
-
                 // Compute the number of pages
                 numOfPages = GameManager.Instance.GetNumberOfLevels() / levelsPerPage;
 
                 // Set buttons 
                 nextPageButton.onClick.AddListener(NextPage);
                 prevPageButton.onClick.AddListener(PrevPage);
-                
+
 
                 // Fill template list
                 GameObject levelTemplate = levelGroup.GetChild(0).gameObject;
 
-                for(int i=0; i<levelsPerPage-1; i++)
+                for (int i = 0; i < levelsPerPage - 1; i++)
                 {
                     // Create new template
                     GameObject.Instantiate(levelTemplate, levelGroup, true);
@@ -69,6 +68,7 @@ namespace Zom.Pie.UI
         void Start()
         {
 
+          
         }
 
         private void OnEnable()
@@ -95,6 +95,7 @@ namespace Zom.Pie.UI
                 gameObject.SetActive(false);
             }
         }
+
 
         void NextPage()
         {
@@ -178,11 +179,14 @@ namespace Zom.Pie.UI
         void UpdateUI()
         {
             Debug.Log("LevelGroup:" + levelGroup);
+            foreach (LevelData level in data.Levels)
+                Debug.Log("LevelId:" + level.LevelId);
 
             SetLevelsLabels();
 
             // Loop through each level
             int offset = page * levelsPerPage;
+            
             for (int i = 0; i < levelsPerPage; i++)
             {
               
@@ -190,7 +194,8 @@ namespace Zom.Pie.UI
                 LeaderboardLevel levelUI = levelGroup.GetChild(i).GetComponent<LeaderboardLevel>();
                 levelUI.Clear();
                 // Level 
-                LevelData level = data.Levels[i+offset];
+                
+                LevelData level = new List<LevelData>(data.Levels).Find(l => l.LevelId == (i+1+offset));
              
                 Debug.Log("LevelId:" + (i + 1 + offset).ToString());
                 Debug.Log("LocalScore:" + level.LocalScore);

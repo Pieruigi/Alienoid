@@ -27,10 +27,11 @@ public class TestTasks : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //Test1("Pippo").ConfigureAwait(false);
-        LeaderboardManager.Instance.GetLevelMenuScoreDataAsync(GetLevelMenuScoreDataAsyncCallback).ConfigureAwait(false);
-        Debug.Log("Main thread continue");
-        //Test2("Pippo");
+        //Test1("Pippo").ConfigureAwait(true) ;//.Wait();
+        Test1("Pippo").ContinueWith(task => { Debug.Log("Main thread continue"); });
+        //LeaderboardManager.Instance.GetLevelMenuScoreDataAsync(GetLevelMenuScoreDataAsyncCallback).ConfigureAwait(false);
+        
+        //Test2("Pippo"); 
     }
 
     // Update is called once per frame
@@ -48,7 +49,9 @@ public class TestTasks : MonoBehaviour
     async Task Test1(string playerName) 
     {
         Player player = await CreatePlayer(playerName);
+        await Task.Delay(2);
         PrintPlayer(player);
+        await Task.Delay(2);
     }
 
     void Test2(string playerName)

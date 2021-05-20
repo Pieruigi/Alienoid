@@ -114,24 +114,7 @@ namespace Zom.Pie.UI
         // Update is called once per frame
         void Update()
         {
-#if UNITY_EDITOR
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                Debug.LogFormat("Before:'{0}'", PlayerPrefs.GetString("save"));
-                int higher = GameProgressManager.Instance.GetHigherUnlockedSpeed();
-                int next = GameProgressManager.Instance.GetLastUnlockedLevel(higher);
-                if (next >= 0)
-                {
-                    GameProgressManager.Instance.SetLevelBeaten(next, higher);
-                    Debug.LogFormat("After:'{0}'", PlayerPrefs.GetString("save"));
-                }
-                else
-                {
-                    Debug.Log("No more levels");
-                }
 
-            }
-#endif
 
             // Check for level selection
             if (Input.GetMouseButtonDown(0))

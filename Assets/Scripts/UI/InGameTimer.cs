@@ -43,7 +43,7 @@ namespace Zom.Pie.UI
 
         }
 
-        void HandleOnPenaltyTime(float penaltyTime)
+        void HandleOnPenaltyTime(float penaltyTime, BlackHole blackHole)
         {
             // Add penalty
             //this.penaltyTime += penaltyTime;

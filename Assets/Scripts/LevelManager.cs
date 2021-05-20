@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Zom.Pie.Collection;
+using Zom.Pie.Collections;
+using Zom.Pie.UI;
 
 namespace Zom.Pie
 {
@@ -13,7 +15,7 @@ namespace Zom.Pie
         public UnityAction<Enemy> OnEnemyRemoved;
         
         public UnityAction OnLevelBeaten;
-        public UnityAction<float> OnPenaltyTime;
+        public UnityAction<float, BlackHole> OnPenaltyTime;
         
 
         public static LevelManager Instance { get; private set; }
@@ -55,6 +57,9 @@ namespace Zom.Pie
 
         [SerializeField]
         GameObject hudPrefab;
+
+        [SerializeField]
+        GameObject penaltyFxPrefab;
 
 
 #if UNITY_EDITOR
@@ -104,7 +109,9 @@ namespace Zom.Pie
         }
 
         float penaltyTime = 5f;
-        
+
+        bool invokeOnLevelBeaten = false;
+        bool onProgressFailed = false;
 
         private void Awake()
         {
@@ -118,6 +125,9 @@ namespace Zom.Pie
                 GameObject.Instantiate(endGameMenuPrefab);
                 // Create hud manager
                 GameObject.Instantiate(hudPrefab);
+
+                // Misc
+                GameObject.Instantiate(penaltyFxPrefab);
 
 /*
 #if UNITY_EDITOR
@@ -158,6 +168,18 @@ namespace Zom.Pie
             //if(!Application.isPlaying)
             //    Init(debug_levelData);
 #endif
+
+            if (invokeOnLevelBeaten)
+            {
+                invokeOnLevelBeaten = false;
+                OnLevelBeaten?.Invoke();
+            }
+
+            if (onProgressFailed)
+            {
+                onProgressFailed = false;
+                MessageBox.Show(MessageBox.Type.Ok, TextFactory.Instance.GetText(TextFactory.Type.UIMessage, 6));
+            }
 
             // Get the next random enemy to spawn if needed
             if (!hasNextEnemyToSpawn && enemies.Count > 0)
@@ -374,7 +396,7 @@ namespace Zom.Pie
                 // Add penalty time
                 timeScore += penaltyTime;
 
-                OnPenaltyTime?.Invoke(penaltyTime);
+                OnPenaltyTime?.Invoke(penaltyTime, blackHole);
             }
             else
             {
@@ -388,17 +410,43 @@ namespace Zom.Pie
             // Check if the level is completed
             if(enemiesOnScreen == 0 && enemies.Count == 0)
             {
-                // Game completed
-                GameProgressManager.Instance.SetLevelBeaten(GameManager.Instance.GetCurrentLevelId(), GameManager.Instance.GameSpeed);
-
                 // Stop running
                 running = false;
 
-                // Stop timer
-                //stoppingTime = System.DateTime.UtcNow;
+                // Game completed
+                //GameProgressManager.Instance.SetLevelBeaten(GameManager.Instance.GetCurrentLevelId(), GameManager.Instance.GameSpeed);
 
+                GameProgressManager.Instance.SetLevelBeatenAsync(GameManager.Instance.GetCurrentLevelId(), GameManager.Instance.GameSpeed).ContinueWith(task =>
+                {
+                    if (task.IsCompleted)
+                    {
+                        if (task.Result)
+                        {
+                            Debug.Log("GameProgress saved online");
+                            invokeOnLevelBeaten = true;
+                            onProgressFailed = false;
+                        }
+                        else
+                        {
+                            Debug.LogWarning("Can't save GameProgress online");
+                            invokeOnLevelBeaten = false;
+                            onProgressFailed = true;
+                        }
+                            
+                    }
+                    else
+                    {
+                        Debug.Log("GameProgress saving failed or interrupted");
+                        invokeOnLevelBeaten = false;
+                        onProgressFailed = true;
+                    }
+                });
+
+                
+
+   
                 //StartCoroutine(EndingLevel());
-                OnLevelBeaten?.Invoke();
+                //OnLevelBeaten?.Invoke();
             }
         }
 

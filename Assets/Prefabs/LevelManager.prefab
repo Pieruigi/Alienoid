@@ -47,7 +47,6 @@ MonoBehaviour:
   greenCount: 10
   yellowCount: 5
   redCount: 5
-  maxEnemiesOnScreen: 2
   enemyPrefab: {fileID: 6001564578340943021, guid: f0530fd9f9bd99b4a8c046e231af42ea,
     type: 3}
   groups:
@@ -57,6 +56,8 @@ MonoBehaviour:
   endGameMenuPrefab: {fileID: 2502811666459716344, guid: c2d184571619f9745b3c463f7f4b5a9e,
     type: 3}
   hudPrefab: {fileID: 7180573023215018722, guid: 45f7db42fafad684aa3499c0e6626528,
+    type: 3}
+  penaltyFxPrefab: {fileID: 856906713359088720, guid: 593553a2e2078eb4680ecfbb04e10e7a,
     type: 3}
   debug_levelData: {fileID: 11400000, guid: dfab044fbadfebb4990518158799565e, type: 2}
 --- !u!114 &-283948258833761537

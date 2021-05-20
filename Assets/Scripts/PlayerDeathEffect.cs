@@ -18,6 +18,15 @@ namespace Zom.Pie
         [SerializeField]
         GameObject controlBase;
 
+        [SerializeField]
+        AudioClip deathClip;
+
+        [SerializeField]
+        float deathClipVolume = 1;
+
+        [SerializeField]
+        AudioSource audioSource;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -47,7 +56,12 @@ namespace Zom.Pie
             // Create the particle system
             GameObject fx = Instantiate(fxPrefab);
             fx.transform.position = fxPoint.transform.position;
-            
+
+            // Audio clip
+            audioSource.clip = deathClip;
+            audioSource.volume = deathClipVolume;
+            audioSource.Play();
+
             // Destroy the control base
             Destroy(controlBase, 0.2f);
         }

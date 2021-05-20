@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Zom.Pie.Collections;
+using Zom.Pie.Services;
 
 namespace Zom.Pie.UI
 {
@@ -17,6 +18,8 @@ namespace Zom.Pie.UI
 
         [SerializeField]
         Color disabledColor;
+
+        
 
         private void Awake()
         {
@@ -51,7 +54,29 @@ namespace Zom.Pie.UI
         {
             if (GameManager.Instance.IsInMainMenu())
             {
-                GameManager.Instance.LoadLevelMenu();
+                // Check whether you are logged or not
+                if(!AccountManager.Instance.Logged)
+                {
+                    // Not logged, show a message box
+                    // Get the login panel
+                    GameObject.FindObjectOfType<LogInPanel>().Show();
+                    //MessageBox.Show(MessageBox.Type.Ok, TextFactory.Instance.GetText(TextFactory.Type.UIMessage, 5));
+                }
+                else
+                {
+                    // Check if game progress has been synchronized 
+                    if (!GameProgressManager.Instance.Loaded)
+                    {
+                        MessageBox.Show(MessageBox.Type.Ok, TextFactory.Instance.GetText(TextFactory.Type.UIMessage, 5));
+                    }
+                    else
+                    {
+                        // You are logged in and the game progress has been loaded
+                        GameManager.Instance.LoadLevelMenu();
+                    }
+                    
+                }
+                
             }
             else if (GameManager.Instance.IsInLevelMenu())
             {

@@ -30,6 +30,7 @@ namespace Zom.Pie.UI
         void Start()
         {
             // Move the player template into a variable for further use
+            Debug.Log("RemotePlayerContainer.Child:" + remotePlayerContainer.GetChild(0));
             remotePlayerTemplate = remotePlayerContainer.GetChild(0);
             remotePlayerTemplate.gameObject.SetActive(false);
             // Move the template out

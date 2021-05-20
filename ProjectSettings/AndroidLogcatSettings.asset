@@ -10,39 +10,33 @@
     "m_KnownPackagesForSerialization": [
         {
             "deviceId": "127.0.0.1:62001",
-            "name": "com.upgradinglight.hawking",
-            "processId": 7293,
-            "exited": true
-        },
-        {
-            "deviceId": "127.0.0.1:62001",
-            "name": "com.upgradinglight.hawking",
-            "processId": 8835,
-            "exited": true
-        },
-        {
-            "deviceId": "127.0.0.1:62001",
-            "name": "com.upgradinglight.hawking",
-            "processId": 4410,
+            "name": "com.vphone.launcher",
+            "processId": 2477,
             "exited": true
         },
         {
             "deviceId": "127.0.0.1:62001",
             "name": "com.vphone.launcher",
-            "processId": 2446,
-            "exited": true
-        },
-        {
-            "deviceId": "127.0.0.1:62001",
-            "name": "com.upgradinglight.hawking",
-            "processId": 6491,
-            "exited": true
-        },
-        {
-            "deviceId": "127.0.0.1:62001",
-            "name": "com.vphone.launcher",
-            "processId": 2513,
+            "processId": 2456,
             "exited": false
+        },
+        {
+            "deviceId": "127.0.0.1:62001",
+            "name": "com.upgradinglight.hawking",
+            "processId": 6605,
+            "exited": true
+        },
+        {
+            "deviceId": "127.0.0.1:62001",
+            "name": "com.upgradinglight.hawking",
+            "processId": 9866,
+            "exited": true
+        },
+        {
+            "deviceId": "127.0.0.1:62001",
+            "name": "com.upgradinglight.hawking",
+            "processId": 11463,
+            "exited": true
         },
         {
             "deviceId": "57U7N17927038338",

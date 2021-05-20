@@ -1,31 +1,73 @@
 #if !OLD_SYSTEM
+using Firebase.Firestore;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
+using Zom.Pie.Services;
 
 namespace Zom.Pie
 {
     /// <summary>
     /// We simply increase an integer avery time a new level is beaten to trace progress.
     /// </summary>
-    public class GameProgressManager
+    public class GameProgressManager: MonoBehaviour
     {
+        
+
 
         //string cacheData;
         string cacheName = "save";
 
         int progress = 0;
 
-        static GameProgressManager instance;
-        public static GameProgressManager Instance
+        //static GameProgressManager instance;
+        //public static GameProgressManager Instance
+        //{
+        //    get { if (instance == null) instance = new GameProgressManager(); return instance; }
+        //}
+
+        public static GameProgressManager Instance { get; private set; }
+
+        bool loaded = false;
+        public bool Loaded
         {
-            get { if (instance == null) instance = new GameProgressManager(); return instance; }
+            get { return loaded; }
         }
 
-        private GameProgressManager()
+        void Awake()
         {
-            Init();
+            if (!Instance)
+            {
+                Instance = this;
+
+
+                DontDestroyOnLoad(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
+
+        private void Start()
+        {
+            Debug.Log("GameProgressManager Start()...");
+            AccountManager.Instance.OnLoggedIn += delegate { LoadCache(); };
+            AccountManager.Instance.OnLoggedOut += delegate { loaded = false; progress = 0; };
+        }
+
+        //private GameProgressManager()
+        //{
+        //    Init();
+        //}
+
+        public void LoadGameProgress()
+        {
+            LoadCache();
+        }
+        
+        
 
         /// <summary>
         /// Returns the last level that has been unlocked by the player ( or the first level )
@@ -120,16 +162,19 @@ namespace Zom.Pie
         /// </summary>
         /// <param name="levelId"></param>
         /// <param name="speed"></param>
-        public void SetLevelBeaten(int levelId, int speed)
-        {
-            // Already beaten ( we can play the same level more times )
-            if (LevelHasBeenBeaten(levelId, speed))
-                return;
+        //public void SetLevelBeaten(int levelId, int speed)
+        //{
+        //    Debug.Log("Setting level beaten:" + levelId);
+        //    // Already beaten ( we can play the same level more times )
+        //    if (LevelHasBeenBeaten(levelId, speed))
+        //        return;
 
-            progress++;
+        //    progress++;
+        //    Debug.Log("Setting level beaten - progress increased:" + progress);
 
-            SaveCache();
-        }
+        //    SaveCache();
+        //    Debug.Log("CacheSaved");
+        //}
 
         public bool LevelHasBeenBeaten(int levelId, int speed)
         {
@@ -154,12 +199,13 @@ namespace Zom.Pie
         public void Reset()
         {
             PlayerPrefs.DeleteKey(cacheName);
-            Init();
+            LoadCache();
         }
 
-        void Init()
+        void LoadCache()
         {
-
+#if UNITY_EDITOR && LOCAL_SAVE
+            loaded = false;
             // Load player pref
             string data = PlayerPrefs.GetString(cacheName);
 
@@ -172,14 +218,92 @@ namespace Zom.Pie
             {
                 progress = 0;
             }
-
+            loaded = true;
+#else
+            // Loading from firebase
+            loaded = false;
+            LoadCacheAsync().ConfigureAwait(false);
+#endif
         }
 
-        void SaveCache()
+
+        public async Task<bool> SetLevelBeatenAsync(int levelId, int speed)
         {
-            // Save progress
-            PlayerPrefs.SetString(cacheName, progress.ToString());
-            PlayerPrefs.Save();
+            Debug.LogFormat("Saving progress - levelId:{0}, speed:{1}", levelId, speed);
+            if (LevelHasBeenBeaten(levelId, speed))
+                return true;
+
+            if (!AccountManager.Instance.Logged)
+            {
+                return false;
+            }
+
+            Debug.LogFormat("Init firestore");
+            Firebase.Firestore.FirebaseFirestore db = Firebase.Firestore.FirebaseFirestore.DefaultInstance;
+
+            DocumentSnapshot user = await db.Collection("users").Document(AccountManager.Instance.GetUserId()).GetSnapshotAsync();
+            Debug.LogFormat("User found:" + user.Exists);
+
+            if (!user.Exists)
+            {
+                return false;
+            }
+
+
+            // User found
+            progress++;
+            Dictionary<string, object> data = user.ToDictionary();
+            if (!data.ContainsKey(cacheName))
+                data.Add(cacheName, progress.ToString());
+            else
+                data[cacheName] = progress.ToString();
+
+            bool ret = false;
+            await user.Reference.SetAsync(data, SetOptions.MergeAll).ContinueWith(task =>
+            {
+                if (task.IsFaulted || task.IsCanceled)
+                {
+                    Debug.LogWarning("Task not completed; rolling bask progress...");
+                    progress--;
+                    
+                }
+                else
+                {
+                    Debug.Log("Task completed; progress saved...");
+                    ret = true;
+                }   
+            });
+
+            Debug.Log("Returning " + ret);
+            return ret;
+        }
+
+        async Task LoadCacheAsync()
+        {
+            progress = 0;
+
+            Debug.LogFormat("User logged in:" + AccountManager.Instance.Logged);
+            if (!AccountManager.Instance.Logged)
+                return;
+            
+            Firebase.Firestore.FirebaseFirestore db = Firebase.Firestore.FirebaseFirestore.DefaultInstance;
+
+            DocumentSnapshot user = await db.Collection("users").Document(AccountManager.Instance.GetUserId()).GetSnapshotAsync();
+            Debug.LogFormat("User found:" + user.Exists);
+
+            if (!user.Exists)
+                return;
+
+            // User found
+            loaded = true;
+            
+            Dictionary<string, object> data = user.ToDictionary();
+            if (!data.ContainsKey(cacheName))
+                return;
+
+            Debug.LogFormat("Found save game:"+data[cacheName]);
+            progress = int.Parse(data[cacheName].ToString());
+            
         }
     }
 

@@ -8,7 +8,12 @@ namespace Zom.Pie.Services
     {
         public class LevelData
         {
-            
+            int levelId = 0;
+            public int LevelId
+            {
+                get { return levelId; }
+            }
+
             List<PlayerData> players;
             public IList<PlayerData> Players
             {
@@ -21,8 +26,9 @@ namespace Zom.Pie.Services
                 get { return localScore; }
             }
 
-            public LevelData()
+            public LevelData(int levelId)
             {
+                this.levelId = levelId;
                 players = new List<PlayerData>();
             }
 

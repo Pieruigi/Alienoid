@@ -27,6 +27,7 @@ namespace Zom.Pie
         [SerializeField]
         GameObject explosionPrefab;
 
+
         EnemyType type;
         public EnemyType Type
         {
@@ -87,6 +88,7 @@ namespace Zom.Pie
             {
                 GameObject g = Instantiate(explosionPrefab);
                 g.transform.position = transform.position;
+                
             }
                 
 
