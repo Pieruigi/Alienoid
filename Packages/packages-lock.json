@@ -1,35 +1,41 @@
 {
   "dependencies": {
     "com.google.external-dependency-manager": {
-      "version": "1.2.164",
+      "version": "file:com.google.external-dependency-manager-1.2.165.tgz",
       "depth": 0,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://unityregistry-pa.googleapis.com"
+      "source": "local-tarball",
+      "dependencies": {}
     },
     "com.google.firebase.app": {
-      "version": "7.1.0",
-      "depth": 1,
-      "source": "registry",
-      "dependencies": {
-        "com.google.external-dependency-manager": "1.2.164"
-      },
-      "url": "https://unityregistry-pa.googleapis.com"
-    },
-    "com.google.firebase.auth": {
-      "version": "file:com.google.firebase.auth-7.1.0.tgz",
+      "version": "file:com.google.firebase.app-7.2.0.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {
-        "com.google.firebase.app": "7.1.0"
+        "com.google.external-dependency-manager": "1.2.165"
+      }
+    },
+    "com.google.firebase.auth": {
+      "version": "file:com.google.firebase.auth-7.2.0.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {
+        "com.google.firebase.app": "7.2.0"
+      }
+    },
+    "com.google.firebase.crashlytics": {
+      "version": "file:com.google.firebase.crashlytics-7.2.0.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {
+        "com.google.firebase.app": "7.2.0"
       }
     },
     "com.google.firebase.firestore": {
-      "version": "file:com.google.firebase.firestore-7.1.0.tgz",
+      "version": "file:com.google.firebase.firestore-7.2.0.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {
-        "com.google.firebase.app": "7.1.0"
+        "com.google.firebase.app": "7.2.0"
       }
     },
     "com.unity.2d.sprite": {

@@ -2,13 +2,15 @@
   <packages>
     <package>com.google.android.gms:play-services-ads:19.5.0</package>
     <package>com.google.android.gms:play-services-base:17.6.0</package>
-    <package>com.google.firebase:firebase-analytics:18.0.2</package>
-    <package>com.google.firebase:firebase-app-unity:7.1.0</package>
-    <package>com.google.firebase:firebase-auth:20.0.2</package>
-    <package>com.google.firebase:firebase-auth-unity:7.1.0</package>
+    <package>com.google.firebase:firebase-analytics:18.0.3</package>
+    <package>com.google.firebase:firebase-app-unity:7.2.0</package>
+    <package>com.google.firebase:firebase-auth:20.0.4</package>
+    <package>com.google.firebase:firebase-auth-unity:7.2.0</package>
     <package>com.google.firebase:firebase-common:19.5.0</package>
-    <package>com.google.firebase:firebase-firestore:22.0.2</package>
-    <package>com.google.firebase:firebase-firestore-unity:7.1.0</package>
+    <package>com.google.firebase:firebase-crashlytics:17.4.1</package>
+    <package>com.google.firebase:firebase-crashlytics-unity:7.2.0</package>
+    <package>com.google.firebase:firebase-firestore:22.1.2</package>
+    <package>com.google.firebase:firebase-firestore-unity:7.2.0</package>
     <package>com.google.games:gpgs-plugin-support:0.10.12</package>
   </packages>
   <files>
@@ -47,6 +49,9 @@
     <file>Assets/Plugins/Android/androidx.viewpager.viewpager-1.0.0.aar</file>
     <file>Assets/Plugins/Android/androidx.work.work-runtime-2.1.0.aar</file>
     <file>Assets/Plugins/Android/com.google.android.annotations-4.1.1.4.jar</file>
+    <file>Assets/Plugins/Android/com.google.android.datatransport.transport-api-2.2.1.aar</file>
+    <file>Assets/Plugins/Android/com.google.android.datatransport.transport-backend-cct-2.3.3.aar</file>
+    <file>Assets/Plugins/Android/com.google.android.datatransport.transport-runtime-2.2.6.aar</file>
     <file>Assets/Plugins/Android/com.google.android.gms.play-services-ads-19.5.0.aar</file>
     <file>Assets/Plugins/Android/com.google.android.gms.play-services-ads-base-19.5.0.aar</file>
     <file>Assets/Plugins/Android/com.google.android.gms.play-services-ads-identifier-17.0.0.aar</file>
@@ -59,12 +64,12 @@
     <file>Assets/Plugins/Android/com.google.android.gms.play-services-drive-17.0.0.aar</file>
     <file>Assets/Plugins/Android/com.google.android.gms.play-services-games-21.0.0.aar</file>
     <file>Assets/Plugins/Android/com.google.android.gms.play-services-gass-19.5.0.aar</file>
-    <file>Assets/Plugins/Android/com.google.android.gms.play-services-measurement-18.0.2.aar</file>
-    <file>Assets/Plugins/Android/com.google.android.gms.play-services-measurement-api-18.0.2.aar</file>
-    <file>Assets/Plugins/Android/com.google.android.gms.play-services-measurement-base-18.0.2.aar</file>
-    <file>Assets/Plugins/Android/com.google.android.gms.play-services-measurement-impl-18.0.2.aar</file>
-    <file>Assets/Plugins/Android/com.google.android.gms.play-services-measurement-sdk-18.0.2.aar</file>
-    <file>Assets/Plugins/Android/com.google.android.gms.play-services-measurement-sdk-api-18.0.2.aar</file>
+    <file>Assets/Plugins/Android/com.google.android.gms.play-services-measurement-18.0.3.aar</file>
+    <file>Assets/Plugins/Android/com.google.android.gms.play-services-measurement-api-18.0.3.aar</file>
+    <file>Assets/Plugins/Android/com.google.android.gms.play-services-measurement-base-18.0.3.aar</file>
+    <file>Assets/Plugins/Android/com.google.android.gms.play-services-measurement-impl-18.0.3.aar</file>
+    <file>Assets/Plugins/Android/com.google.android.gms.play-services-measurement-sdk-18.0.3.aar</file>
+    <file>Assets/Plugins/Android/com.google.android.gms.play-services-measurement-sdk-api-18.0.3.aar</file>
     <file>Assets/Plugins/Android/com.google.android.gms.play-services-nearby-17.0.0.aar</file>
     <file>Assets/Plugins/Android/com.google.android.gms.play-services-safetynet-17.0.0.aar</file>
     <file>Assets/Plugins/Android/com.google.android.gms.play-services-stats-17.0.0.aar</file>
@@ -72,19 +77,23 @@
     <file>Assets/Plugins/Android/com.google.code.findbugs.jsr305-3.0.2.jar</file>
     <file>Assets/Plugins/Android/com.google.code.gson.gson-2.8.6.jar</file>
     <file>Assets/Plugins/Android/com.google.errorprone.error_prone_annotations-2.3.4.jar</file>
-    <file>Assets/Plugins/Android/com.google.firebase.firebase-analytics-18.0.2.aar</file>
+    <file>Assets/Plugins/Android/com.google.firebase.firebase-analytics-18.0.3.aar</file>
     <file>Assets/Plugins/Android/com.google.firebase.firebase-annotations-16.0.0.jar</file>
-    <file>Assets/Plugins/Android/com.google.firebase.firebase-app-unity-7.1.0.aar</file>
-    <file>Assets/Plugins/Android/com.google.firebase.firebase-auth-20.0.2.aar</file>
-    <file>Assets/Plugins/Android/com.google.firebase.firebase-auth-interop-19.0.0.aar</file>
-    <file>Assets/Plugins/Android/com.google.firebase.firebase-auth-unity-7.1.0.aar</file>
+    <file>Assets/Plugins/Android/com.google.firebase.firebase-app-unity-7.2.0.aar</file>
+    <file>Assets/Plugins/Android/com.google.firebase.firebase-auth-20.0.4.aar</file>
+    <file>Assets/Plugins/Android/com.google.firebase.firebase-auth-interop-19.0.2.aar</file>
+    <file>Assets/Plugins/Android/com.google.firebase.firebase-auth-unity-7.2.0.aar</file>
     <file>Assets/Plugins/Android/com.google.firebase.firebase-common-19.5.0.aar</file>
     <file>Assets/Plugins/Android/com.google.firebase.firebase-components-16.1.0.aar</file>
+    <file>Assets/Plugins/Android/com.google.firebase.firebase-crashlytics-17.4.1.aar</file>
+    <file>Assets/Plugins/Android/com.google.firebase.firebase-crashlytics-unity-7.2.0.aar</file>
     <file>Assets/Plugins/Android/com.google.firebase.firebase-database-collection-17.0.1.aar</file>
-    <file>Assets/Plugins/Android/com.google.firebase.firebase-firestore-22.0.2.aar</file>
-    <file>Assets/Plugins/Android/com.google.firebase.firebase-firestore-unity-7.1.0.aar</file>
-    <file>Assets/Plugins/Android/com.google.firebase.firebase-installations-16.3.2.aar</file>
-    <file>Assets/Plugins/Android/com.google.firebase.firebase-installations-interop-16.0.0.aar</file>
+    <file>Assets/Plugins/Android/com.google.firebase.firebase-encoders-16.1.0.jar</file>
+    <file>Assets/Plugins/Android/com.google.firebase.firebase-encoders-json-17.1.0.aar</file>
+    <file>Assets/Plugins/Android/com.google.firebase.firebase-firestore-22.1.2.aar</file>
+    <file>Assets/Plugins/Android/com.google.firebase.firebase-firestore-unity-7.2.0.aar</file>
+    <file>Assets/Plugins/Android/com.google.firebase.firebase-installations-16.3.5.aar</file>
+    <file>Assets/Plugins/Android/com.google.firebase.firebase-installations-interop-16.0.1.aar</file>
     <file>Assets/Plugins/Android/com.google.firebase.firebase-measurement-connector-18.0.0.aar</file>
     <file>Assets/Plugins/Android/com.google.firebase.protolite-well-known-types-17.1.1.aar</file>
     <file>Assets/Plugins/Android/com.google.games.gpgs-plugin-support-0.10.12.aar</file>
@@ -103,6 +112,7 @@
     <file>Assets/Plugins/Android/io.grpc.grpc-protobuf-lite-1.28.0.jar</file>
     <file>Assets/Plugins/Android/io.grpc.grpc-stub-1.28.0.jar</file>
     <file>Assets/Plugins/Android/io.perfmark.perfmark-api-0.19.0.jar</file>
+    <file>Assets/Plugins/Android/javax.inject.javax.inject-1.jar</file>
     <file>Assets/Plugins/Android/org.checkerframework.checker-compat-qual-2.5.5.jar</file>
     <file>Assets/Plugins/Android/org.codehaus.mojo.animal-sniffer-annotations-1.18.jar</file>
   </files>

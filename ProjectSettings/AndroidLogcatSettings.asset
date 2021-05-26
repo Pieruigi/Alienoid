@@ -1,9 +1,9 @@
 {
-    "m_SelectedDeviceId": "127.0.0.1:62001",
+    "m_SelectedDeviceId": "57U7N17927038338",
     "m_SelectedPackage": {
-        "deviceId": "",
-        "name": "",
-        "processId": 0,
+        "deviceId": "57U7N17927038338",
+        "name": "com.upgradinglight.hawking",
+        "processId": 8633,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -121,6 +121,18 @@
             "name": "com.upgradinglight.hawking",
             "processId": 9851,
             "exited": true
+        },
+        {
+            "deviceId": "57U7N17927038338",
+            "name": "com.upgradinglight.hawking",
+            "processId": 31497,
+            "exited": true
+        },
+        {
+            "deviceId": "57U7N17927038338",
+            "name": "com.upgradinglight.hawking",
+            "processId": 8633,
+            "exited": false
         }
     ],
     "m_Tags": {
