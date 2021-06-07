@@ -14,24 +14,8 @@
         "com.google.external-dependency-manager": "1.2.165"
       }
     },
-    "com.google.firebase.auth": {
-      "version": "file:com.google.firebase.auth-7.2.0.tgz",
-      "depth": 0,
-      "source": "local-tarball",
-      "dependencies": {
-        "com.google.firebase.app": "7.2.0"
-      }
-    },
     "com.google.firebase.crashlytics": {
       "version": "file:com.google.firebase.crashlytics-7.2.0.tgz",
-      "depth": 0,
-      "source": "local-tarball",
-      "dependencies": {
-        "com.google.firebase.app": "7.2.0"
-      }
-    },
-    "com.google.firebase.firestore": {
-      "version": "file:com.google.firebase.firestore-7.2.0.tgz",
       "depth": 0,
       "source": "local-tarball",
       "dependencies": {

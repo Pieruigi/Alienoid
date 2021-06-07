@@ -1,6 +1,4 @@
 using Firebase;
-using Firebase.Auth;
-using Firebase.Firestore;
 using Google;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,28 +10,12 @@ namespace Zom.Pie.Services
 {
     public class FirebaseManager : MonoBehaviour
     {
-        public static readonly string UserCollection = "users";
-        public static readonly string DisplayNameKey = "displayName";
-        public static readonly string AvatarUrlKey = "avatarUrl";
 
         public static FirebaseManager Instance { get; private set; }
 
         public bool Initialized { get; private set; } = false;
 
-        FirebaseApp app;
-  
-        private UnityAction<bool> LoginCallback;
-        Firebase.Auth.FirebaseAuth auth;
-
-        
-
-        FirebaseFirestore db;
-
-        //public Firebase.Auth.FirebaseUser User
-        //{
-        //    get { return auth != null ? auth.CurrentUser : null; }
-        //    //get { if(Firebase.Auth == )}
-        //}
+        Firebase.FirebaseApp app;
 
         private void Awake()
         {
@@ -62,38 +44,7 @@ namespace Zom.Pie.Services
 
         }
 
-        public bool IsLogged()
-        {
-            if (Firebase.Auth.FirebaseAuth.GetAuth(FirebaseApp.DefaultInstance) == null)
-                return false;
-
-            return Firebase.Auth.FirebaseAuth.GetAuth(FirebaseApp.DefaultInstance).CurrentUser != null;
-        }
-
-        public Firebase.Auth.FirebaseUser GetCurrentUser()
-        {
-            if (Firebase.Auth.FirebaseAuth.GetAuth(FirebaseApp.DefaultInstance) == null)
-                return null;
-
-            return Firebase.Auth.FirebaseAuth.GetAuth(FirebaseApp.DefaultInstance).CurrentUser;
-        }
-
-        public async Task SaveUserDetail(string userId, string displayName, string avatarUrl)
-        {
-            db = FirebaseFirestore.DefaultInstance;
-
-            Dictionary<string, object> data = new Dictionary<string, object>();
-            data.Add(DisplayNameKey, displayName);
-            data.Add(AvatarUrlKey, avatarUrl);
-
-            await db.Collection(UserCollection).Document(userId).SetAsync(data, SetOptions.MergeAll);
-        }
-
-        //public RemoteUserDetail GetRemoteUserDetail(string userId)
-        //{
-        //    db.Collection(userCollection).Document(userId).GetSnapshotAsync
-        //}
-
+    
         void Initialize()
         {
             Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => {
@@ -117,10 +68,6 @@ namespace Zom.Pie.Services
 
         }
 
-
-       
-
-       
       
     }
 
