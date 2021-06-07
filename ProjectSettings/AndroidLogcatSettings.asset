@@ -1,9 +1,9 @@
 {
-    "m_SelectedDeviceId": "127.0.0.1:62001",
+    "m_SelectedDeviceId": "57U7N17927038338",
     "m_SelectedPackage": {
-        "deviceId": "",
-        "name": "",
-        "processId": 0,
+        "deviceId": "57U7N17927038338",
+        "name": "com.upgradinglight.hawking",
+        "processId": 8633,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -11,8 +11,14 @@
         {
             "deviceId": "127.0.0.1:62001",
             "name": "com.vphone.launcher",
-            "processId": 2456,
+            "processId": 2477,
             "exited": true
+        },
+        {
+            "deviceId": "127.0.0.1:62001",
+            "name": "com.vphone.launcher",
+            "processId": 2456,
+            "exited": false
         },
         {
             "deviceId": "127.0.0.1:62001",
@@ -31,18 +37,6 @@
             "name": "com.upgradinglight.hawking",
             "processId": 11463,
             "exited": true
-        },
-        {
-            "deviceId": "127.0.0.1:62001",
-            "name": "com.upgradinglight.hawking",
-            "processId": 3626,
-            "exited": true
-        },
-        {
-            "deviceId": "127.0.0.1:62001",
-            "name": "com.vphone.launcher",
-            "processId": 2599,
-            "exited": false
         },
         {
             "deviceId": "57U7N17927038338",

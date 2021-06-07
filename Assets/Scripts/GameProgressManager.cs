@@ -107,11 +107,7 @@ namespace Zom.Pie
             if (!GameManager.Instance)
                 return 0;
 
-            int ret = (progress / GameManager.Instance.GetNumberOfLevels()) + 1;
-            if (ret > Constants.MaxLevelSpeed)
-                return Constants.MaxLevelSpeed;
-            else
-                return ret;
+            return (progress / GameManager.Instance.GetNumberOfLevels()) + 1;
         }
 
         /// <summary>
@@ -128,9 +124,6 @@ namespace Zom.Pie
 
             // If the next speed is unlocked then the level is unlocked
             if (speed < Constants.MaxLevelSpeed && IsSpeedUnlocked(speed + 1))
-                return true;
-
-            if (progress == GameManager.Instance.GetNumberOfLevels())
                 return true;
 
             if (progress % GameManager.Instance.GetNumberOfLevels() < levelId - 1)
@@ -190,9 +183,6 @@ namespace Zom.Pie
 
             // If the next speed has been unlocked then the level has been beaten
             if (speed < Constants.MaxLevelSpeed && IsSpeedUnlocked(speed + 1))
-                return true;
-
-            if (progress == GameManager.Instance.GetNumberOfLevels())
                 return true;
 
             if (progress % GameManager.Instance.GetNumberOfLevels() < levelId)
