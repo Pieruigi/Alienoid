@@ -72,6 +72,8 @@ namespace Zom.Pie
                 Instance = this;
                 SceneManager.sceneLoaded += HandleOnSceneLoaded;
 
+                Application.targetFrameRate = 60;
+
                 // Initialize customization manager
                 CustomizationManager.Initialize();
 
