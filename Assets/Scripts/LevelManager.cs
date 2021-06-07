@@ -169,6 +169,18 @@ namespace Zom.Pie
             //    Init(debug_levelData);
 #endif
 
+            if (invokeOnLevelBeaten)
+            {
+                invokeOnLevelBeaten = false;
+                OnLevelBeaten?.Invoke();
+            }
+
+            if (onProgressFailed)
+            {
+                onProgressFailed = false;
+                MessageBox.Show(MessageBox.Type.Ok, TextFactory.Instance.GetText(TextFactory.Type.UIMessage, 6));
+            }
+
             // Get the next random enemy to spawn if needed
             if (!hasNextEnemyToSpawn && enemies.Count > 0)
             {
@@ -404,12 +416,35 @@ namespace Zom.Pie
                 // Game completed
                 //GameProgressManager.Instance.SetLevelBeaten(GameManager.Instance.GetCurrentLevelId(), GameManager.Instance.GameSpeed);
 
-                GameProgressManager.Instance.SetLevelBeaten(GameManager.Instance.GetCurrentLevelId(), GameManager.Instance.GameSpeed);
+                GameProgressManager.Instance.SetLevelBeatenAsync(GameManager.Instance.GetCurrentLevelId(), GameManager.Instance.GameSpeed).ContinueWith(task =>
+                {
+                    if (task.IsCompleted)
+                    {
+                        if (task.Result)
+                        {
+                            Debug.Log("GameProgress saved online");
+                            invokeOnLevelBeaten = true;
+                            onProgressFailed = false;
+                        }
+                        else
+                        {
+                            Debug.LogWarning("Can't save GameProgress online");
+                            invokeOnLevelBeaten = false;
+                            onProgressFailed = true;
+                        }
+                            
+                    }
+                    else
+                    {
+                        Debug.Log("GameProgress saving failed or interrupted");
+                        invokeOnLevelBeaten = false;
+                        onProgressFailed = true;
+                    }
+                });
+
                 
 
-                OnLevelBeaten?.Invoke();
-
-
+   
                 //StartCoroutine(EndingLevel());
                 //OnLevelBeaten?.Invoke();
             }

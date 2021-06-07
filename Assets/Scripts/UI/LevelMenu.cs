@@ -107,7 +107,8 @@ namespace Zom.Pie.UI
 
             SetSpeed(selectedSpeed);
 
-           
+            // Load leaderboard
+            LeaderboardManager.Instance.GetLevelMenuScoreDataAsync(HandleOnLeaderboardLoaded).ConfigureAwait(false);
         }
 
         // Update is called once per frame
