@@ -70,10 +70,8 @@ namespace Zom.Pie.UI
 
                 // Read data from cache ( we shold really take into account whether the player is playing
                 // random levels or not )
-                selectedSpeed = GameProgressManager.Instance.GetHigherUnlockedSpeed();
-                selectedLevelId = GameProgressManager.Instance.GetLastUnlockedLevel(selectedSpeed);
-
-               
+                selectedSpeed = GameProgressManager.Instance.Speed;
+                selectedLevelId = GameProgressManager.Instance.LevelId;
 
                 Debug.LogFormat("SelectedSpeed: {0}", selectedSpeed);
                 Debug.LogFormat("SelectedLevelId: {0}", selectedLevelId);
@@ -195,10 +193,15 @@ namespace Zom.Pie.UI
             {
                 container.GetChild(i).GetComponent<Level>().Init(i + 1, selectedSpeed);
             }
-            
 
-            // Get the higher available level and select it if any 
-            selectedLevelId = GameProgressManager.Instance.GetLastUnlockedLevel(selectedSpeed);
+
+            // Get the last unlocked level if the selected speed is the higher unlocked, otherwise
+            // get the first level of the old played speed
+            if (selectedSpeed == GameProgressManager.Instance.Speed)
+                selectedLevelId = GameProgressManager.Instance.LevelId;
+            else
+                selectedLevelId = 1;
+
             if(selectedLevelId > 0)
             {
                 container.GetChild(selectedLevelId - 1).GetComponent<Level>().Select(true);

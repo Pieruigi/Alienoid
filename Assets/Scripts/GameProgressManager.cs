@@ -14,18 +14,20 @@ namespace Zom.Pie
     public class GameProgressManager: MonoBehaviour
     {
         
-
-
         //string cacheData;
         string cacheName = "save";
 
-        int progress = 0;
-
-        //static GameProgressManager instance;
-        //public static GameProgressManager Instance
-        //{
-        //    get { if (instance == null) instance = new GameProgressManager(); return instance; }
-        //}
+        int speed = 1;
+        public int Speed
+        {
+            get { return speed; }
+        }
+        int levelId = 1;
+        public int LevelId
+        {
+            get { return levelId; }
+        }
+       
 
         public static GameProgressManager Instance { get; private set; }
 
@@ -54,13 +56,10 @@ namespace Zom.Pie
         {
             Debug.Log("GameProgressManager Start()...");
             AccountManager.Instance.OnLoggedIn += delegate { LoadCache(); };
-            AccountManager.Instance.OnLoggedOut += delegate { loaded = false; progress = 0; };
+            AccountManager.Instance.OnLoggedOut += delegate { loaded = false; speed = 1; levelId = 1; };
         }
 
-        //private GameProgressManager()
-        //{
-        //    Init();
-        //}
+    
 
         public void LoadGameProgress()
         {
@@ -68,51 +67,19 @@ namespace Zom.Pie
         }
         
         
-
-        /// <summary>
-        /// Returns the last level that has been unlocked by the player ( or the first level )
-        /// </summary>
-        /// <returns></returns>
-        public int GetLastUnlockedLevel(int speed)
-        {
-            // No level available 
-            if (!IsSpeedUnlocked(speed))
-                return 0;
-
-            if(Constants.MaxLevelSpeed > speed && IsSpeedUnlocked(speed + 1))
-            {
-                // If the next speed is unlocked then all the levels are available
-                return GameManager.Instance.GetNumberOfLevels();
-            }
-
-
-            return ((progress % GameManager.Instance.GetNumberOfLevels()) + 1);
-
-
-        }
+        
+       
 
         public bool IsSpeedUnlocked(int speed)
         {
-            if (speed == 1)
+            if (speed <= this.speed)
                 return true;
 
-            if (progress >= (speed-1) * GameManager.Instance.GetNumberOfLevels())
-                return true;
-            else
-                return false;
+            return false;
+            
         }
 
-        public int GetHigherUnlockedSpeed()
-        {
-            if (!GameManager.Instance)
-                return 0;
-
-            int ret = (progress / GameManager.Instance.GetNumberOfLevels()) + 1;
-            if (ret > Constants.MaxLevelSpeed)
-                return Constants.MaxLevelSpeed;
-            else
-                return ret;
-        }
+      
 
         /// <summary>
         /// Returns true if the given level is unlocked ( that means this is the first level or the previous
@@ -122,89 +89,29 @@ namespace Zom.Pie
         /// <returns></returns>
         public bool LevelIsUnlocked(int levelId, int speed)
         {
-            // The speed has not been unlocked yet
-            if (!IsSpeedUnlocked(speed))
-                return false;
 
-            // If the next speed is unlocked then the level is unlocked
-            if (speed < Constants.MaxLevelSpeed && IsSpeedUnlocked(speed + 1))
+            if (this.speed > speed)
                 return true;
 
-            if (progress == GameManager.Instance.GetNumberOfLevels())
+            if (this.speed == speed && this.levelId >= levelId)
                 return true;
 
-            if (progress % GameManager.Instance.GetNumberOfLevels() < levelId - 1)
-                return false;
+            return false;
 
-            return true;
         }
-
-        /// <summary>
-        /// Returns true if all levels have been beaten at each available speed
-        /// </summary>
-        /// <returns></returns>
-        public bool IsGameCompleted()
-        {
-            if (progress >= Constants.MaxLevelSpeed * GameManager.Instance.GetNumberOfLevels())
-                return true;
-            else
-                return false;
-        }
-
-        //public bool IsGameSpeedAvailable(int levelId, int gameSpeed)
-        //{
-        //    // Get the max available speed for the current level
-        //    int beatenSpeed = GetMaxBeatenSpeed(levelId);
-
-        //    // We have beaten the level at all the speeds
-        //    if (beatenSpeed == Constants.MaxLevelSpeed || gameSpeed <= beatenSpeed + 1)
-        //        return true;
-
-        //    return false;
-
-        //}
-
-        /// <summary>
-        /// Simply update beaten speed if needed
-        /// </summary>
-        /// <param name="levelId"></param>
-        /// <param name="speed"></param>
-        //public void SetLevelBeaten(int levelId, int speed)
-        //{
-        //    Debug.Log("Setting level beaten:" + levelId);
-        //    // Already beaten ( we can play the same level more times )
-        //    if (LevelHasBeenBeaten(levelId, speed))
-        //        return;
-
-        //    progress++;
-        //    Debug.Log("Setting level beaten - progress increased:" + progress);
-
-        //    SaveCache();
-        //    Debug.Log("CacheSaved");
-        //}
+     
 
         public bool LevelHasBeenBeaten(int levelId, int speed)
         {
-            if (!IsSpeedUnlocked(speed))
-                return false;
-
-            // If the next speed has been unlocked then the level has been beaten
-            if (speed < Constants.MaxLevelSpeed && IsSpeedUnlocked(speed + 1))
+            if (this.speed > speed)
                 return true;
 
-            if (progress == GameManager.Instance.GetNumberOfLevels())
+            if (this.speed == speed && this.levelId >= levelId)
                 return true;
 
-            if (progress % GameManager.Instance.GetNumberOfLevels() < levelId)
-                return false;
-
-            return true;
+            return false;
         }
 
-        //public bool AllLevelsBeaten()
-        //{
-        //    return levels[levels.Count - 1] > 0;
-        //}
 
         public void Reset()
         {
@@ -240,7 +147,11 @@ namespace Zom.Pie
         public async Task<bool> SetLevelBeatenAsync(int levelId, int speed)
         {
             Debug.LogFormat("Saving progress - levelId:{0}, speed:{1}", levelId, speed);
-            if (LevelHasBeenBeaten(levelId, speed))
+
+            if (speed < this.speed)
+                return true;
+
+            if (levelId < this.levelId)
                 return true;
 
             if (!AccountManager.Instance.Logged)
@@ -252,21 +163,33 @@ namespace Zom.Pie
             Firebase.Firestore.FirebaseFirestore db = Firebase.Firestore.FirebaseFirestore.DefaultInstance;
 
             DocumentSnapshot user = await db.Collection("users").Document(AccountManager.Instance.GetUserId()).GetSnapshotAsync();
-            Debug.LogFormat("User found:" + user.Exists);
+            Debug.LogFormat("User {0} found: {1}", AccountManager.Instance.GetUserId(), user.Exists);
 
             if (!user.Exists)
             {
                 return false;
             }
 
+            int speedOld = this.speed;
+            int levelIdOld = this.levelId;
 
-            // User found
-            progress++;
-            Dictionary<string, object> data = user.ToDictionary();
-            if (!data.ContainsKey(cacheName))
-                data.Add(cacheName, progress.ToString());
+            if(levelId < GameManager.Instance.GetNumberOfLevels())
+            {
+                this.levelId++;
+            }
             else
-                data[cacheName] = progress.ToString();
+            {
+                this.levelId = 1;
+                this.speed++;
+            }
+            // User found
+            //progress++;
+            Dictionary<string, object> data = user.ToDictionary();
+            string value = string.Format("{0} {1}", this.speed, this.levelId);
+            if (!data.ContainsKey(cacheName))
+                data.Add(cacheName, value);
+            else
+                data[cacheName] = value;
 
             bool ret = false;
             await user.Reference.SetAsync(data, SetOptions.MergeAll).ContinueWith(task =>
@@ -274,8 +197,9 @@ namespace Zom.Pie
                 if (task.IsFaulted || task.IsCanceled)
                 {
                     Debug.LogWarning("Task not completed; rolling bask progress...");
-                    progress--;
-                    
+                    //progress--;
+                    this.levelId = levelIdOld;
+                    this.speed = speedOld;
                 }
                 else
                 {
@@ -290,7 +214,7 @@ namespace Zom.Pie
 
         async Task LoadCacheAsync()
         {
-            progress = 0;
+           
 
             Debug.LogFormat("User logged in:" + AccountManager.Instance.Logged);
             if (!AccountManager.Instance.Logged)
@@ -312,7 +236,12 @@ namespace Zom.Pie
                 return;
 
             Debug.LogFormat("Found save game:"+data[cacheName]);
-            progress = int.Parse(data[cacheName].ToString());
+
+            string[] splits = data[cacheName].ToString().Split(' ');
+            speed = int.Parse(splits[0]);
+            levelId = int.Parse(splits[1]);
+
+            
             
         }
     }

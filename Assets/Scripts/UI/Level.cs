@@ -63,12 +63,6 @@ namespace Zom.Pie.UI
             // Set the current level id
             this.levelId = levelId;
 
-            // Get the max speed the level has been beaten
-            //speed = GameProgressManager.Instance.GetMaxBeatenSpeed(levelId);
-
-            // Set handle
-            //LeaderboardManager.Instance.OnLeaderboardLoaded += HandleOnLeaderboardLoaded;
-
             // Hide position label
             position.gameObject.SetActive(false);
             
@@ -79,15 +73,19 @@ namespace Zom.Pie.UI
             // Deactivate padlock
             padlock.SetActive(false);
 
-            if (GameProgressManager.Instance.LevelIsUnlocked(levelId, speed))
+            bool unlocked = false;
+            if (speed < GameProgressManager.Instance.Speed || levelId <= GameProgressManager.Instance.LevelId)
+                unlocked = true;
+
+            if (unlocked)
             {
                 GetComponent<Image>().color = Color.white;
 
-                if (GameProgressManager.Instance.LevelHasBeenBeaten(levelId, speed))
-                {
-                    // Show star 
-                    star.SetActive(true);
-                }
+                //if (GameProgressManager.Instance.LevelHasBeenBeaten(levelId, speed))
+                //{
+                //    // Show star 
+                //    star.SetActive(true);
+                //}
                
             }
             else

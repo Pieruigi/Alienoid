@@ -54,6 +54,7 @@ namespace Zom.Pie.UI
         {
             if (GameManager.Instance.IsInMainMenu())
             {
+
                 // Check whether you are logged or not
                 if(!AccountManager.Instance.Logged)
                 {
@@ -76,7 +77,7 @@ namespace Zom.Pie.UI
                     }
                     
                 }
-                
+
             }
             else if (GameManager.Instance.IsInLevelMenu())
             {

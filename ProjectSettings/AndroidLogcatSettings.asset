@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "57U7N17927038338",
         "name": "com.upgradinglight.hawking",
-        "processId": 3809,
+        "processId": 20282,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -144,6 +144,42 @@
             "deviceId": "57U7N17927038338",
             "name": "com.upgradinglight.hawking",
             "processId": 3809,
+            "exited": false
+        },
+        {
+            "deviceId": "57U7N17927038338",
+            "name": "com.upgradinglight.hawking",
+            "processId": 11969,
+            "exited": true
+        },
+        {
+            "deviceId": "57U7N17927038338",
+            "name": "com.upgradinglight.hawking",
+            "processId": 16980,
+            "exited": true
+        },
+        {
+            "deviceId": "57U7N17927038338",
+            "name": "com.upgradinglight.hawking",
+            "processId": 19304,
+            "exited": true
+        },
+        {
+            "deviceId": "57U7N17927038338",
+            "name": "com.upgradinglight.hawking",
+            "processId": 20803,
+            "exited": false
+        },
+        {
+            "deviceId": "57U7N17927038338",
+            "name": "com.upgradinglight.hawking",
+            "processId": 23093,
+            "exited": false
+        },
+        {
+            "deviceId": "57U7N17927038338",
+            "name": "com.upgradinglight.hawking",
+            "processId": 20282,
             "exited": false
         }
     ],

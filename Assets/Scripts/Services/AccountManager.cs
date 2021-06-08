@@ -280,8 +280,10 @@ namespace Zom.Pie.Services
         bool logging = false;
 
         bool loginOnStart = false;
+#if UNITY_EDITOR
+        string fakeUserId = "fake_user_id";
+#endif
 
-     
         private void Awake()
         {
             if (!Instance)
@@ -422,18 +424,30 @@ namespace Zom.Pie.Services
         /// <returns></returns>
         public string GetDisplayName()
         {
+#if UNITY_EDITOR
+            return "FakeUserName";
+#else
             return FirebaseManager.Instance.GetCurrentUser().DisplayName;
+#endif
         }
 
         public string GetUserId()
         {
+#if UNITY_EDITOR
+            return fakeUserId;
+#else
             return FirebaseManager.Instance.GetCurrentUser().UserId;
+#endif
         }
 
         public string GetAvatarUrl()
         {
+#if UNITY_EDITOR
+            return null;
+#else
             Debug.LogError("PhotoUrl:" + FirebaseManager.Instance.GetCurrentUser().PhotoUrl);
             return FirebaseManager.Instance.GetCurrentUser().PhotoUrl.ToString();
+#endif
         }
 
 #region private
@@ -441,7 +455,12 @@ namespace Zom.Pie.Services
 #if UNITY_ANDROID
         void LoginWithPlayGames()
         {
-            
+#if UNITY_EDITOR
+            logging = false;
+            Logged = true;
+            OnLoggedIn?.Invoke();
+#else
+
             Social.localUser.Authenticate((bool success) =>
             {
                 Debug.Log("success:" + success);
@@ -459,8 +478,8 @@ namespace Zom.Pie.Services
                 }
 
             });
+#endif
 
-           
         }
 
         void FirebaseSignInWithPlayGames()
@@ -513,7 +532,7 @@ namespace Zom.Pie.Services
 #endif
 
 #endregion
-    }
+        }
 
 }
 #endif
