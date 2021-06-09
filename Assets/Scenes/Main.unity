@@ -6170,6 +6170,7 @@ GameObject:
   - component: {fileID: 1566086278}
   - component: {fileID: 1566086277}
   - component: {fileID: 1566086280}
+  - component: {fileID: 1566086281}
   m_Layer: 5
   m_Name: PlayButton
   m_TagString: Untagged
@@ -6248,7 +6249,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1566086275}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -6293,6 +6294,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enabledColor: {r: 0, g: 0, b: 0, a: 0}
   disabledColor: {r: 0, g: 0, b: 0, a: 0}
+--- !u!114 &1566086281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1566086275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b24621940b45a37459e95f4ea70ace19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1625372980
 GameObject:
   m_ObjectHideFlags: 0

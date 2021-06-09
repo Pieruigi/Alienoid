@@ -31,8 +31,8 @@ namespace Zom.Pie.UI
             int higherSpeed = GameProgressManager.Instance.Speed;
             int nextLevel = GameProgressManager.Instance.LevelId;
 
-            GameManager.Instance.GameSpeed = higherSpeed;
-            GameManager.Instance.LoadLevel(nextLevel);
+            //GameManager.Instance.GameSpeed = higherSpeed;
+            //GameManager.Instance.LoadLevel(nextLevel);
         }
     }
 

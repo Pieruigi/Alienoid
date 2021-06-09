@@ -19,7 +19,7 @@ namespace Zom.Pie.UI
         [SerializeField]
         Color disabledColor;
 
-        
+        bool clicking = false;
 
         private void Awake()
         {
@@ -52,6 +52,20 @@ namespace Zom.Pie.UI
 
         void HandleOnClick()
         {
+            if (clicking)
+                return;
+            
+            clicking = true;
+
+            StartCoroutine(OnClickInternal());
+        }
+
+        IEnumerator OnClickInternal()
+        {
+            yield return new WaitForSeconds(Constants.ButtonOnClickEffectTime);
+
+            clicking = false;
+
             if (GameManager.Instance.IsInMainMenu())
             {
 
@@ -83,10 +97,11 @@ namespace Zom.Pie.UI
             {
                 // Set game speed and load level
                 GameManager.Instance.GameSpeed = LevelMenu.Instance.SelectedSpeed;
-                GameManager.Instance.LoadLevel(LevelMenu.Instance.SelectedLevelId);
+                GameManager.Instance.LevelId = LevelMenu.Instance.SelectedLevelId;
+                GameManager.Instance.LoadLevel();
             }
-                
-         
+
+            
         }
 
         void HandleOnGameSpeedChanged(int gameSpeed)
@@ -109,7 +124,7 @@ namespace Zom.Pie.UI
                 
         }
 
-    
+        
     }
 
 }

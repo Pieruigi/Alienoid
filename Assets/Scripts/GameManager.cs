@@ -42,7 +42,14 @@ namespace Zom.Pie
             get { return gameSpeed; }
             set { gameSpeed = value; /*OnGameSpeedChanged?.Invoke(gameSpeed);*/ }
         }
-  
+
+        int levelid = 1;
+        public int LevelId
+        {
+            get { return levelid; }
+            set { levelid = value; }
+        }
+
         Language language = Language.English;
         public Language Language
         {
@@ -88,7 +95,11 @@ namespace Zom.Pie
         // Start is called before the first frame update
         void Start()
         {
-
+            GameProgressManager.Instance.OnLoadedOrUpdated += delegate
+            {
+                gameSpeed = GameProgressManager.Instance.Speed;
+                levelid = GameProgressManager.Instance.LevelId;
+            };
         }
 
         // Update is called once per frame
@@ -189,7 +200,12 @@ namespace Zom.Pie
             LoadScene(levelMenuSceneIndex);
         }
 
-        public void LoadLevel(int levelId)
+        public void LoadLevel()
+        {
+            LoadLevel(levelid);
+        }
+
+        void LoadLevel(int levelId)
         {
             OnSceneLoading?.Invoke(true);
             LoadScene(levelId + levelStartingIndex - 1);
@@ -208,7 +224,7 @@ namespace Zom.Pie
             }
             else
             {
-                Time.timeScale = GetActualGameSpeed();
+                Time.timeScale = GetGameTimeScale();
                 if(PlayerManager.Instance != null)
                     PlayerManager.Instance.EnableController(true);
             }
@@ -253,7 +269,7 @@ namespace Zom.Pie
             else
             {
                 // Set the actual time scale
-                Time.timeScale = GetActualGameSpeed();
+                Time.timeScale = GetGameTimeScale();
             }
         }
 
@@ -271,35 +287,16 @@ namespace Zom.Pie
         {
             if (IsInGame())
             {
-                Time.timeScale = GetActualGameSpeed();
+                Time.timeScale = GetGameTimeScale();
             }
 
         }
 
-        float GetActualGameSpeed()
+        float GetGameTimeScale()
         {
-            //float ret = 1;
-            //switch (gameSpeed)
-            //{
-            //    case 1:
-            //        ret = Constants.DefaultTimeScale;
-            //        break;
-            //    case 2:
-            //        ret = Constants.DefaultTimeScale * 1.25f;
-            //        break;
-            //    case 3:
-            //        ret = Constants.DefaultTimeScale * 1.5f;
-            //        break;
-            //    case 4:
-            //        ret = Constants.DefaultTimeScale * 1.75f;
-            //        break;
-            //    case 5:
-            //        ret = Constants.DefaultTimeScale * 2f;
-            //        break;
-
-            //}
-
-            return Constants.DefaultTimeScale;
+            float timeScale = Constants.DefaultTimeScale + Constants.LevelSpeedStep * (gameSpeed - 1);
+            Debug.Log("GetGameTimeScale:" + timeScale);
+            return timeScale;
         }
 
     }

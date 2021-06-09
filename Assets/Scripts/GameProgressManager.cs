@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
 using Zom.Pie.Services;
 
 namespace Zom.Pie
@@ -13,7 +14,8 @@ namespace Zom.Pie
     /// </summary>
     public class GameProgressManager: MonoBehaviour
     {
-        
+        public UnityAction OnLoadedOrUpdated;
+       
         //string cacheData;
         string cacheName = "save";
 
@@ -208,6 +210,9 @@ namespace Zom.Pie
                 }   
             });
 
+            if (ret)
+                OnLoadedOrUpdated?.Invoke();
+
             Debug.Log("Returning " + ret);
             return ret;
         }
@@ -241,8 +246,8 @@ namespace Zom.Pie
             speed = int.Parse(splits[0]);
             levelId = int.Parse(splits[1]);
 
-            
-            
+            OnLoadedOrUpdated?.Invoke();
+
         }
     }
 

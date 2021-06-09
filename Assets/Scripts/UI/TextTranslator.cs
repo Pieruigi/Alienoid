@@ -21,7 +21,7 @@ namespace Zom.Pie.UI
         int textId;
 
         // Start is called before the first frame update
-        void Start()
+        void Awake()
         {
             Init();
         }

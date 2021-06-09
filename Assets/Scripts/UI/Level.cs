@@ -15,10 +15,8 @@ namespace Zom.Pie.UI
         GameObject padlock;
 
         [SerializeField]
-        GameObject star;
+        TMP_Text levelIdText;
 
-        [SerializeField]
-        TMP_Text position;
 
         int levelId;
         public int LevelId
@@ -63,13 +61,7 @@ namespace Zom.Pie.UI
             // Set the current level id
             this.levelId = levelId;
 
-            // Hide position label
-            position.gameObject.SetActive(false);
-            
-            // Deactivate the star
-            HighlightStar(false);
-            star.SetActive(false);
-
+         
             // Deactivate padlock
             padlock.SetActive(false);
 
@@ -80,13 +72,7 @@ namespace Zom.Pie.UI
             if (unlocked)
             {
                 GetComponent<Image>().color = Color.white;
-
-                //if (GameProgressManager.Instance.LevelHasBeenBeaten(levelId, speed))
-                //{
-                //    // Show star 
-                //    star.SetActive(true);
-                //}
-               
+                levelIdText.text = levelId.ToString();
             }
             else
             {
@@ -101,8 +87,6 @@ namespace Zom.Pie.UI
 
             }
 
-            // Load leaderboard
-            //LeaderboardManager.Instance.LoadLeaderboard(levelId);
         }
 
         public void Select(bool value)
@@ -126,85 +110,8 @@ namespace Zom.Pie.UI
             }
         }
 
-        public void SetDataScore(float playerPosition)
-        {
 
-            if (!GameProgressManager.Instance.LevelIsUnlocked(levelId, speed))
-                return;
-
-            Debug.LogFormat("LevelUnlocked:({0},{1})", levelId, speed);
-
-            if (!GameProgressManager.Instance.LevelHasBeenBeaten(levelId, speed))
-                return;
-
-            Debug.LogFormat("HandleOnLeaderboardLoaded({0})", levelId);
-
-
-            // Check if the player is ranked
-            //if (LeaderboardManager.Instance.IsLocalPlayerInRankingByLevel(levelId))
-            if (playerPosition > 0)
-            {
-                //int localPosition = LeaderboardManager.Instance.GetLocalPlayerPositionByLevel(levelId);
-                Debug.LogFormat("LocalPosition: {0}", playerPosition);
-                // Check the player position for the given level ranking
-                if (playerPosition > Constants.TopPlayers)
-                {
-                    Debug.Log("Out of the top");
-                    // You are not in the top players ranking
-                    // Activate star but not highlited
-                    // We set some default value in case for some reason you are not 
-                    // able to retrieve online leadearboard
-                    star.SetActive(true);
-                    HighlightStar(false);
-
-                    // Hide position
-                    position.gameObject.SetActive(false);
-                }
-                else
-                {
-                    Debug.Log("In the top");
-
-                    // You are top
-                    if (playerPosition > 3)
-                    {
-                        // Highlight star
-                        star.SetActive(true);
-                        HighlightStar(true);
-                        // Hide position
-                        position.gameObject.SetActive(false);
-                    }
-                    else
-                    {
-                        // Hide star
-                        star.SetActive(false);
-                        // Set position
-                        position.gameObject.SetActive(true);
-                        position.text = playerPosition.ToString();
-                        Debug.LogFormat("You are in {0} position", playerPosition);
-                    }
-                }
-            }
-        }
-
-        void HighlightStar(bool value)
-        {
-            Color c = Color.white;
-            
-            if (!value)
-            {
-                // Set gray color
-                c *= 0.4f;
-                c.a = 1;
-                
-            }
-            
-            star.GetComponent<Image>().color = c;
-        }
-
-        void UpdateSpeedPanel()
-        {
-
-        }
+    
 
        
     }
