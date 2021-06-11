@@ -21,8 +21,7 @@ namespace Zom.Pie.UI
         [SerializeField]
         Button logOutButton;
 
-        [SerializeField]
-        GameObject leaderboardPanel;
+        
 
         Sprite dummySprite;
 
@@ -36,6 +35,7 @@ namespace Zom.Pie.UI
         // Start is called before the first frame update
         void Start()
         {
+        
             AccountManager.Instance.OnLoggedIn += HandleOnLoggedIn;
             AccountManager.Instance.OnLogInFailed += HandleOnLogInFailed;
             AccountManager.Instance.OnLoggedOut += HandleOnLoggedOut;
@@ -61,11 +61,15 @@ namespace Zom.Pie.UI
 
         }
 
-        public void OpenLeaderboard()
+        public void OpenCloseLeaderboard()
         {
             if (AccountManager.Instance.Logged)
             {
-                leaderboardPanel.SetActive(true);
+                //leaderboardPanel.SetActive(true);
+                if(!LeaderboardPanel.Instance.IsOpen())
+                    LeaderboardPanel.Instance.Open();
+                else
+                    LeaderboardPanel.Instance.Close();
             }
             else
             {

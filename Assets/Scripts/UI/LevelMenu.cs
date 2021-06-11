@@ -112,7 +112,20 @@ namespace Zom.Pie.UI
         // Update is called once per frame
         void Update()
         {
-
+#if UNITY_EDITOR
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                selectedSpeed++;
+                GameManager.Instance.GameSpeed = selectedSpeed;
+                SetSpeed(selectedSpeed);
+            }
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                selectedSpeed--;
+                GameManager.Instance.GameSpeed = selectedSpeed;
+                SetSpeed(selectedSpeed);
+            }
+#endif
 
             // Check for level selection
             if (Input.GetMouseButtonDown(0))
@@ -176,7 +189,14 @@ namespace Zom.Pie.UI
 
         }
 
-        public void SetSpeed(int speed)
+        public void UpdateSpeed(int newSpeed)
+        {
+            selectedSpeed = newSpeed;
+            GameManager.Instance.GameSpeed = selectedSpeed;
+            SetSpeed(selectedSpeed);
+        }
+        
+        void SetSpeed(int speed)
         {
             // Set the new speed
             selectedSpeed = speed;

@@ -477,7 +477,31 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
---- !u!21 &625130334
+--- !u!114 &680028162 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2999463385617261252, guid: 8d891e4aad77a154182019fbc6507d2a,
+    type: 3}
+  m_PrefabInstance: {fileID: 1250487777877070565}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f4201f36960e7d449391e9af20e3a21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &738822116 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2999463386707256950, guid: 8d891e4aad77a154182019fbc6507d2a,
+    type: 3}
+  m_PrefabInstance: {fileID: 1250487777877070565}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f4201f36960e7d449391e9af20e3a21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!21 &983235932
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
@@ -586,30 +610,6 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &680028162 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2999463385617261252, guid: 8d891e4aad77a154182019fbc6507d2a,
-    type: 3}
-  m_PrefabInstance: {fileID: 1250487777877070565}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f4201f36960e7d449391e9af20e3a21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &738822116 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2999463386707256950, guid: 8d891e4aad77a154182019fbc6507d2a,
-    type: 3}
-  m_PrefabInstance: {fileID: 1250487777877070565}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f4201f36960e7d449391e9af20e3a21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!21 &1229446195
 Material:
   serializedVersion: 6
@@ -785,7 +785,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &1463752653
+--- !u!21 &1727061992
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
@@ -894,7 +894,7 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
---- !u!21 &1550554233
+--- !u!21 &1814715751
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
@@ -1834,12 +1834,12 @@ PrefabInstance:
     - target: {fileID: 6323986850573183990, guid: 191440e392f61944cab9fd21968d8235,
         type: 3}
       propertyPath: greenCount
-      value: 16
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6323986850573183990, guid: 191440e392f61944cab9fd21968d8235,
         type: 3}
       propertyPath: yellowCount
-      value: 8
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6323986850573183990, guid: 191440e392f61944cab9fd21968d8235,
         type: 3}

@@ -1,6 +1,8 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Zom.Pie.Collections;
@@ -11,52 +13,38 @@ namespace Zom.Pie.UI
 {
     public class LeaderboardPanel : MonoBehaviour
     {
-        [SerializeField]
-        Transform levelGroup;
-
-        [SerializeField]
-        Button nextPageButton;
-
-        [SerializeField]
-        Button prevPageButton;
+        
 
         public static LeaderboardPanel Instance { get; private set; }
 
-        int page = 0;
+        [SerializeField]
+        GameObject panel;
 
-        List<LeaderboardLevel> levels;
+        [SerializeField]
+        TMP_Text localText;
 
-        int levelsPerPage = 4;
-        int numOfPages;
-        LeaderboardData data;
+        [SerializeField]
+        Transform content;
 
+        GameObject playerTemplate;
+
+        float defaultPositionX;
+        bool open = false;
+        
+        bool busy = false;
+
+        string topPlayerTxt = "You are a top player";
+        string notTopPlayerTxt = "You are not a top player";
+
+        bool leaderboardLoaded = false;
+        LeaderboardData leaderboardData;
         
         private void Awake()
         {
             if (!Instance)
             {
                 Instance = this;
-                // Compute the number of pages
-                numOfPages = GameManager.Instance.GetNumberOfLevels() / levelsPerPage;
-
-                // Set buttons 
-                nextPageButton.onClick.AddListener(NextPage);
-                prevPageButton.onClick.AddListener(PrevPage);
-
-
-                // Fill template list
-                GameObject levelTemplate = levelGroup.GetChild(0).gameObject;
-
-                for (int i = 0; i < levelsPerPage - 1; i++)
-                {
-                    // Create new template
-                    GameObject.Instantiate(levelTemplate, levelGroup, true);
-                }
-
-                // Get levels templates
-                levels = new List<LeaderboardLevel>(levelGroup.GetComponentsInChildren<LeaderboardLevel>());
-
-                gameObject.SetActive(false);
+                defaultPositionX = panel.transform.localPosition.x;
             }
             else
             {
@@ -67,156 +55,93 @@ namespace Zom.Pie.UI
         // Start is called before the first frame update
         void Start()
         {
-
-          
+            // Get the player template
+            playerTemplate = content.GetChild(0).gameObject;
+            // Move out and deactivate
+            playerTemplate.transform.parent = panel.transform;
+            playerTemplate.SetActive(false);
         }
 
-        private void OnEnable()
+        private void Update()
         {
-            if (GameManager.Instance)
+            if (leaderboardLoaded)
             {
-                GameManager.Instance.SetEscapeActive(false); 
-                LoadLeaderboardAsync().ConfigureAwait(false);
-            }
-            
-        }
-
-        private void OnDisable()
-        {
-            if(GameManager.Instance)
-                GameManager.Instance.SetEscapeActive(true);
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                gameObject.SetActive(false);
-            }
-        }
-
-
-        void NextPage()
-        {
-            if (page == numOfPages - 1)
-                page = 0;
-            else
-                page++;
-
-            UpdateUI();
-        }
-
-        void PrevPage()
-        {
-            if (page == 0)
-                page = numOfPages - 1;
-            else
-                page--;
-
-            UpdateUI();
-        }
-
-        private async Task LoadLeaderboardAsync()
-        {
-            
-            // Reset 
-            page = 0;
-            SetLevelsLabels();
-
-            Debug.Log("Leaderboard panel enabled");
-
-            //await LeaderboardManager.Instance.GetLeaderboardDataAsync().ContinueWith(task =>
-            //{
-            //    if (task.IsFaulted || task.IsCanceled)
-            //    {
-
-            //    }
-            //    else
-            //    {
-            //        // Hide loading panel
-
-            //        Debug.Log("Task returned ok");
-            //        // Get data
-            //        data = task.Result;
-
-            //        Debug.Log("data is null:" + (data == null));
-
-            //    }
-            //});
-
-            // Activate loading panel
-            LoadingPanel.Instance.Show(true);
-
-            data = await LeaderboardManager.Instance.GetLeaderboardDataAsync();
-
-            // Deactivate loading panel
-            LoadingPanel.Instance.Show(false);
-
-            // If player is not logged in he will be notified
-            if (!AccountManager.Instance.Logged)
-                MessageBox.Show(MessageBox.Type.Ok, TextFactory.Instance.GetText(TextFactory.Type.UIMessage, 4));
-
-            if (data!= null)
-                UpdateUI();
-            
-        }
-
-
-
-  
-
-        void SetLevelsLabels()
-        {
-            int offset = page * levelsPerPage;
-            for (int i = 0; i < levels.Count; i++)
-            {
-                // Set label
-                levels[i].SetLevelLabel((i + 1) + offset);
-            }
-        }
-
-        void UpdateUI()
-        {
-            Debug.Log("LevelGroup:" + levelGroup);
-            foreach (LevelData level in data.Levels)
-                Debug.Log("LevelId:" + level.LevelId);
-
-            SetLevelsLabels();
-
-            // Loop through each level
-            int offset = page * levelsPerPage;
-            
-            for (int i = 0; i < levelsPerPage; i++)
-            {
-              
-                // Get the ui level template
-                LeaderboardLevel levelUI = levelGroup.GetChild(i).GetComponent<LeaderboardLevel>();
-                levelUI.Clear();
-                // Level 
-                
-                LevelData level = new List<LevelData>(data.Levels).Find(l => l.LevelId == (i+1+offset));
-             
-                Debug.Log("LevelId:" + (i + 1 + offset).ToString());
-                Debug.Log("LocalScore:" + level.LocalScore);
-                Debug.Log("Players.count:" + level.Players.Count);
-
-                if (level.LocalScore > 0)
+                leaderboardLoaded = false;
+                PlayerData local = new List<PlayerData>(leaderboardData.Players).Find(p => p.UserId == AccountManager.Instance.GetUserId());
+                Debug.Log("Local found:" + local);
+                if (local != null)
                 {
-                    // Set UI
-                    levelUI.SetLocalPlayerScore(level.LocalScore);
+                    // Top player
+                    localText.text = topPlayerTxt;
+                }
+                else
+                {
+                    localText.text = notTopPlayerTxt;
                 }
 
-                // Show remote players
-                levelUI.SetOtherPlayers(level.Players);
+                // Leaderboard
+                int i = 1;
+                foreach(PlayerData player in leaderboardData.Players)
+                {
+                    GameObject pObj = GameObject.Instantiate(playerTemplate, content, true);
+                    pObj.GetComponent<LeaderboardRemotePlayer>().Init(player.UserId, 0, i, player.DisplayName, player.AvatarUrl);
+                    pObj.SetActive(true);
+                    i++;
+                }
             }
         }
 
-        void Reset()
+        public bool IsOpen()
         {
-            
+            return open;
         }
 
+        public void Open()
+        {
+            if (busy)
+                return;
+            open = true;
+            busy = true;
+            panel.transform.DOMoveX(0, 0.5f).OnComplete(()=> { busy = false; });
+
+            LoadLeaderboard();
+        }
+
+        public void Close()
+        {
+            
+            if (busy)
+                return;
+            busy = true;
+            open = false;
+            panel.transform.DOLocalMoveX(defaultPositionX, 0.5f).OnComplete(()=> { busy = false; ClearAll(); });
+        }
+
+
+        void LoadLeaderboard()
+        {
+            LeaderboardManager.Instance.GetLeaderboardDataAsync().ContinueWith(task =>
+            {
+                if(task.IsFaulted || task.IsCanceled)
+                {
+                    Debug.Log("LoadLeaderboard failed or canceled");
+                    return;
+                }
+                else
+                {
+                    Debug.Log("LoadLeaderboard succeeded");
+                    leaderboardData = task.Result;
+                    leaderboardLoaded = true;
+                }
+            });
+        }
+
+        void ClearAll()
+        {
+            int count = content.childCount;
+            for (int i = 0; i < count; i++)
+                DestroyImmediate(content.GetChild(0).gameObject);
+        }
     }
 
 }

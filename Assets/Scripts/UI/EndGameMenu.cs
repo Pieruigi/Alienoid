@@ -122,16 +122,16 @@ namespace Zom.Pie.UI
 
             if (levelBeaten)
             {
-                if (AccountManager.Instance.Logged)
-                {
-                    // Save score if needed
-                    LeaderboardManager.Instance.SaveLocalPlayerScoreByLevel(GameManager.Instance.GetCurrentLevelId(), LevelManager.Instance.TimeScore).ConfigureAwait(false);
-                }
-                else
-                {
+                //if (AccountManager.Instance.Logged)
+                //{
+                //    // Save score if needed
+                //    //LeaderboardManager.Instance.SaveLocalPlayerScoreByLevel(GameManager.Instance.GetCurrentLevelId(), LevelManager.Instance.TimeScore).ConfigureAwait(false);
+                //}
+                //else
+                //{
                     // Not logged in
                     MessageBox.Show(MessageBox.Type.Ok, TextFactory.Instance.GetText(TextFactory.Type.UIMessage, 4));
-                }
+                //}
             }
 
             

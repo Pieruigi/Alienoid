@@ -13,12 +13,7 @@ namespace Zom.Pie.UI
     /// </summary>
     public class PlayButton : MonoBehaviour
     {
-        [SerializeField]
-        Color enabledColor;
-
-        [SerializeField]
-        Color disabledColor;
-
+     
         bool clicking = false;
 
         private void Awake()
@@ -114,12 +109,10 @@ namespace Zom.Pie.UI
             if (GameProgressManager.Instance.IsSpeedUnlocked(gameSpeed))
             {
                 GetComponent<Button>().interactable = true;
-                GetComponentInChildren<TMP_Text>().color =  enabledColor;
             }
             else
             {
                 GetComponent<Button>().interactable = false;
-                GetComponentInChildren<TMP_Text>().color = disabledColor;
             }
                 
         }

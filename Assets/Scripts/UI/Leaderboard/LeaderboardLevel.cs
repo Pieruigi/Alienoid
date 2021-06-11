@@ -88,10 +88,10 @@ namespace Zom.Pie.UI
                 Transform playerUI = GameObject.Instantiate(remotePlayerTemplate, remotePlayerContainer, true);
                 playerUI.gameObject.SetActive(true);
                 string userId = players[i].UserId;
-                float score = players[i].Score;
+                //float score = players[i].Score;
                 string displayName = players[i].DisplayName;
                 string avatarUrl = players[i].AvatarUrl;
-                playerUI.GetComponent<LeaderboardRemotePlayer>().Init(userId, score, i+1, displayName, avatarUrl);
+                //playerUI.GetComponent<LeaderboardRemotePlayer>().Init(userId, score, i+1, displayName, avatarUrl);
                 
             }
         }

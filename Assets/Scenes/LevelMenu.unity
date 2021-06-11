@@ -519,6 +519,63 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a2a7aad723149774396b4ad8e12e0d6e, type: 3}
+--- !u!114 &689570926046750204 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3141843370478973075, guid: a2a7aad723149774396b4ad8e12e0d6e,
+    type: 3}
+  m_PrefabInstance: {fileID: 689570926046750203}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &689570926046750205 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1757905935811499192, guid: a2a7aad723149774396b4ad8e12e0d6e,
+    type: 3}
+  m_PrefabInstance: {fileID: 689570926046750203}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &689570926046750206 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 689570927711458530, guid: a2a7aad723149774396b4ad8e12e0d6e,
+    type: 3}
+  m_PrefabInstance: {fileID: 689570926046750203}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &689570926046750207 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4442008702824347048, guid: a2a7aad723149774396b4ad8e12e0d6e,
+    type: 3}
+  m_PrefabInstance: {fileID: 689570926046750203}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &689570926046750208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 689570926046750207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 533082ee8f65a61478c01f0e12bcc4d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lable: {fileID: 689570926046750206}
+  nextButton: {fileID: 689570926046750205}
+  prevButton: {fileID: 689570926046750204}
 --- !u!1001 &2729898461089248373
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -6,43 +6,7 @@ namespace Zom.Pie.Services
 {
     public class LeaderboardData
     {
-        public class LevelData
-        {
-            int levelId = 0;
-            public int LevelId
-            {
-                get { return levelId; }
-            }
-
-            List<PlayerData> players;
-            public IList<PlayerData> Players
-            {
-                get { return players.AsReadOnly(); }
-            }
-
-            float localScore;
-            public float LocalScore
-            {
-                get { return localScore; }
-            }
-
-            public LevelData(int levelId)
-            {
-                this.levelId = levelId;
-                players = new List<PlayerData>();
-            }
-
-            public void AddPlayerData(PlayerData player)
-            {
-                players.Add(player);
-            }
-
-            public void SetLocalScore(float score)
-            {
-                localScore = score;
-            }
-        }
-
+       
         public class PlayerData
         {
             string userId;
@@ -50,10 +14,17 @@ namespace Zom.Pie.Services
             {
                 get { return userId; }
             }
-            float score;
-            public float Score
+
+            int speed;
+            public int Speed
             {
-                get { return score; }
+                get { return speed; }
+            }
+
+            int level;
+            public int Level
+            {
+                get { return level; }
             }
 
             string displayName;
@@ -68,34 +39,31 @@ namespace Zom.Pie.Services
                 get { return avatarUrl; }
             }
 
-            public PlayerData(string userId, float score, string displayName, string avatarUrl)
+            public PlayerData(string userId, int speed, int level, string displayName, string avatarUrl)
             {
                 this.userId = userId;
-                this.score = score;
+                this.speed = speed;
+                this.level = level;
                 this.displayName = displayName;
                 this.avatarUrl = avatarUrl;
             }
         }
 
-
-
-        List<LevelData> levels;
-        public IList<LevelData> Levels
+        List<PlayerData> players;
+        public IList<PlayerData> Players
         {
-            get { return levels.AsReadOnly(); }
+            get { return players.AsReadOnly(); }
         }
 
         public LeaderboardData()
         {
-            levels = new List<LevelData>();
+            players = new List<PlayerData>();
         }
-
-        public void AddLevelData(LevelData levelData)
-        {
-            levels.Add(levelData);
-        }
-
         
+        public void AddPlayerData(PlayerData playerData)
+        {
+            players.Add(playerData);
+        }
        
     }
 

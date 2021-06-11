@@ -78,6 +78,7 @@ namespace Zom.Pie.UI
             {
                 // Show padlock
                 padlock.SetActive(true);
+                levelIdText.text = "";
 
                 // Change color alpha
                 Image img = GetComponent<Image>();
