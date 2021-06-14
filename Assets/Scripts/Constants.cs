@@ -27,7 +27,7 @@ namespace Zom.Pie
 
         // Level speed info
         public static readonly float DefaultTimeScale = 1.5f;//2.5f;
-        public static readonly float LevelSpeedStep = 0.15f;
+        public static readonly float LevelSpeedStep = 0.2f;
         //public static readonly int MaxLevelSpeed = 1;
 
         // Player prefs keys

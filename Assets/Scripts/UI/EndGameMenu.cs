@@ -89,8 +89,8 @@ namespace Zom.Pie.UI
             ResetButtons();
 
             // Activate the continue button
-            restartButton.gameObject.SetActive(true);
-            //nextButton.gameObject.SetActive(true);
+            //restartButton.gameObject.SetActive(true);
+            nextButton.gameObject.SetActive(true);
 
             levelBeaten = true;
 
@@ -130,7 +130,7 @@ namespace Zom.Pie.UI
                 //else
                 //{
                     // Not logged in
-                    MessageBox.Show(MessageBox.Type.Ok, TextFactory.Instance.GetText(TextFactory.Type.UIMessage, 4));
+                    //MessageBox.Show(MessageBox.Type.Ok, TextFactory.Instance.GetText(TextFactory.Type.UIMessage, 4));
                 //}
             }
 

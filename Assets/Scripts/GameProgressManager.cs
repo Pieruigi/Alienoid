@@ -17,8 +17,8 @@ namespace Zom.Pie
         public UnityAction OnLoadedOrUpdated;
        
         //string cacheData;
-        string cacheName = "save";
-
+        public static readonly string CacheName = "save2";
+        
         int speed = 1;
         public int Speed
         {
@@ -117,7 +117,7 @@ namespace Zom.Pie
 
         public void Reset()
         {
-            PlayerPrefs.DeleteKey(cacheName);
+            PlayerPrefs.DeleteKey(CacheName);
             LoadCache();
         }
 
@@ -188,10 +188,10 @@ namespace Zom.Pie
             //progress++;
             Dictionary<string, object> data = user.ToDictionary();
             string value = string.Format("{0} {1}", this.speed, this.levelId);
-            if (!data.ContainsKey(cacheName))
-                data.Add(cacheName, value);
+            if (!data.ContainsKey(CacheName))
+                data.Add(CacheName, value);
             else
-                data[cacheName] = value;
+                data[CacheName] = value;
 
             bool ret = false;
             await user.Reference.SetAsync(data, SetOptions.MergeAll).ContinueWith(task =>
@@ -237,12 +237,12 @@ namespace Zom.Pie
             loaded = true;
             
             Dictionary<string, object> data = user.ToDictionary();
-            if (!data.ContainsKey(cacheName))
+            if (!data.ContainsKey(CacheName))
                 return;
 
-            Debug.LogFormat("Found save game:"+data[cacheName]);
+            Debug.LogFormat("Found save game:"+data[CacheName]);
 
-            string[] splits = data[cacheName].ToString().Split(' ');
+            string[] splits = data[CacheName].ToString().Split(' ');
             speed = int.Parse(splits[0]);
             levelId = int.Parse(splits[1]);
 

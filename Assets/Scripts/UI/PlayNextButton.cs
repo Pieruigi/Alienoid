@@ -28,8 +28,12 @@ namespace Zom.Pie.UI
         void HandleOnClick()
         {
             
-            int higherSpeed = GameProgressManager.Instance.Speed;
-            int nextLevel = GameProgressManager.Instance.LevelId;
+            
+
+            GameManager.Instance.GameSpeed = GameProgressManager.Instance.Speed;
+            GameManager.Instance.LevelId = GameProgressManager.Instance.LevelId;
+
+            GameManager.Instance.LoadLevel();
 
             //GameManager.Instance.GameSpeed = higherSpeed;
             //GameManager.Instance.LoadLevel(nextLevel);

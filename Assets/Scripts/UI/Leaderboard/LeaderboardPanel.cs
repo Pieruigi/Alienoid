@@ -84,8 +84,8 @@ namespace Zom.Pie.UI
                 foreach(PlayerData player in leaderboardData.Players)
                 {
                     GameObject pObj = GameObject.Instantiate(playerTemplate, content, true);
-                    pObj.GetComponent<LeaderboardRemotePlayer>().Init(player.UserId, 0, i, player.DisplayName, player.AvatarUrl);
                     pObj.SetActive(true);
+                    pObj.GetComponent<LeaderboardRemotePlayer>().Init(player.UserId, player.Speed, player.Level, i, player.DisplayName, player.AvatarUrl);
                     i++;
                 }
             }

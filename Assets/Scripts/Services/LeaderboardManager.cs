@@ -81,11 +81,13 @@ namespace Zom.Pie.Services
             LeaderboardData data = new LeaderboardData();
 
             // Get users
-            QuerySnapshot users = await db.Collection("users").OrderByDescending("save").Limit(100).GetSnapshotAsync();
+            QuerySnapshot users = await db.Collection("users").OrderByDescending(GameProgressManager.CacheName).Limit(100).GetSnapshotAsync();
 
             foreach(DocumentSnapshot user in users)
             {
-                string save = user.ToDictionary()["save"].ToString();
+                if (!user.ToDictionary().ContainsKey(GameProgressManager.CacheName))
+                    continue;
+                string save = user.ToDictionary()[GameProgressManager.CacheName].ToString();
                 if (save.Split(' ').Length < 2)
                     continue;
                 Debug.LogFormat("User:{0}; Save:{1}", user.Id, save);

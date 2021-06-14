@@ -44,10 +44,10 @@ namespace Zom.Pie.UI
 
         }
 
-        public void Init(string userId, float score, int position, string displayName, string avatarUrl)
+        public void Init(string userId, int speed, int level, int position, string displayName, string avatarUrl)
         {
             // Set the score
-            playerScore.text = GeneralUtility.FormatTime(score);
+            playerScore.text = string.Format("speed:{0} - level:{1}", speed, level);
 
             // Set position
             playerPosition.text = position.ToString();

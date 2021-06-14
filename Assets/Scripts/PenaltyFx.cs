@@ -1,3 +1,4 @@
+#if PENALTY_EFFECT
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,7 +17,7 @@ namespace Zom.Pie
         private void Awake()
         {
             penaltyFx = GameObject.Instantiate(penaltyFxPrefab.gameObject);
-            //penaltyFx.transform.position = position;
+          
         }
 
         // Start is called before the first frame update
@@ -39,3 +40,4 @@ namespace Zom.Pie
     }
 
 }
+#endif

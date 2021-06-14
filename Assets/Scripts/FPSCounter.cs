@@ -17,7 +17,7 @@ namespace UnityStandardAssets.Utility
 
         private void Awake()
         {
-            //transform.parent.gameObject.SetActive(false);
+            transform.parent.gameObject.SetActive(false);
         }
         private void Start()
         {
