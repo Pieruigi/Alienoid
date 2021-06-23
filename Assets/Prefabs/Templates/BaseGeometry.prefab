@@ -6130,7 +6130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bouncePower: 1
-  minImpulse: 2
+  minImpulse: 4
 --- !u!1 &8403119711715915882
 GameObject:
   m_ObjectHideFlags: 0
@@ -6189,7 +6189,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bouncePower: 1
-  minImpulse: 2
+  minImpulse: 4
 --- !u!1 &8403119712133164256
 GameObject:
   m_ObjectHideFlags: 0
